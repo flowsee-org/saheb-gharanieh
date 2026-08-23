@@ -56,7 +56,7 @@
             <div class="admin-head">
                 <div class="admin-head-titles">
                     @if ($heading)
-                        <h1 class="admin-head-title gold-text">{{ $heading }}</h1>
+                        <h1 class="admin-head-title">{{ $heading }}</h1>
                     @endif
                     @if ($subheading)
                         <p class="admin-head-sub">{{ $subheading }}</p>

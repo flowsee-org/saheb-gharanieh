@@ -5,14 +5,14 @@
             {{-- pr-* keeps the café mark clear of the fixed theme switch in the corner. --}}
             <div class="flex items-center justify-between gap-2 pt-2.5 pb-2 pr-11 sm:pr-12">
                 <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-1.5" aria-label="صفحه اصلی">
-                    <x-emblem class="h-6 w-10 text-gold-400" />
-                    <span class="text-xs font-bold text-gold-100 sm:text-sm">کافه صاحبقرانیه</span>
+                    <x-emblem class="h-6 w-10 text-ink-dim" />
+                    <span class="text-xs font-bold text-ink sm:text-sm">کافه صاحبقرانیه</span>
                 </a>
 
                 {{-- Always reflects the section currently in view. --}}
                 <p class="section-flag" id="section-flag" aria-live="polite">
                     <span class="flag-dot"></span>
-                    <span class="section-flag-text gold-text" id="section-flag-text">
+                    <span class="section-flag-text" id="section-flag-text">
                         {{ $categories->firstWhere('slug', $activeSection)?->name ?? $categories->first()?->name }}
                     </span>
                 </p>
@@ -53,18 +53,18 @@
                     <header class="reveal relative mb-5 text-center">
                         <x-ornament.arabesque class="watermark" />
 
-                        <p class="mb-1.5 text-[0.6875rem] tracking-wide text-gold-400/80">
+                        <p class="mb-1.5 text-[0.6875rem] tracking-wide text-ink-dim">
                             {{ $category->subtitle ?? 'منوی کافه صاحبقرانیه' }}
                         </p>
 
                         <h2 id="heading-{{ $category->slug }}"
-                            class="gold-text inline-flex items-center gap-2 text-xl font-black sm:text-3xl">
+                            class="inline-flex items-center gap-2 text-xl font-black text-ink sm:text-3xl">
                             <x-icon.section :category="$category" class="heading-glyph" />
                             {{ $category->name }}
                         </h2>
 
                         @if ($category->latin_name)
-                            <p class="latin mt-1.5 text-[0.5625rem] text-gold-300/70 sm:text-[0.625rem]" dir="ltr">
+                            <p class="latin mt-1.5 text-[0.5625rem] text-ink-dim sm:text-[0.625rem]" dir="ltr">
                                 {{ $category->latin_name }}
                             </p>
                         @endif
@@ -72,7 +72,7 @@
                         <x-ornament.divider class="mx-auto mt-3 max-w-[14rem] sm:max-w-sm" />
 
                         @if ($category->description)
-                            <p class="mx-auto mt-3 max-w-md text-[0.75rem] leading-relaxed text-cream-dim sm:text-[0.8125rem]">
+                            <p class="mx-auto mt-3 max-w-md text-[0.75rem] leading-relaxed text-ink-dim sm:text-[0.8125rem]">
                                 {{ $category->description }}
                             </p>
                         @endif
@@ -80,7 +80,7 @@
 
                     {{-- ─── Items ────────────────────────────────────────── --}}
                     @if ($category->activeProducts->isEmpty())
-                        <p class="py-6 text-center text-xs text-cream-dim">این بخش به‌زودی تکمیل می‌شود.</p>
+                        <p class="py-6 text-center text-xs text-ink-dim">این بخش به‌زودی تکمیل می‌شود.</p>
 
                     @elseif ($category->usesGrid())
                         <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3.5 lg:grid-cols-4">
@@ -90,7 +90,7 @@
                         </div>
 
                     @else
-                        <p class="mb-3.5 text-center text-xs font-bold text-gold-200">طعم‌های قلیان</p>
+                        <p class="mb-3.5 text-center text-xs font-bold text-accent-ink">طعم‌های قلیان</p>
 
                         <ul class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2.5">
                             @foreach ($category->activeProducts as $product)
@@ -100,11 +100,11 @@
 
                         {{-- Service price for the whole section --}}
                         <div class="service-price reveal mt-4">
-                            <span class="text-xs text-gold-200">{{ $category->price_note ?? 'قیمت' }}</span>
+                            <span class="text-xs text-ink-dim">{{ $category->price_note ?? 'قیمت' }}</span>
                             @if ($category->price)
                                 <span class="price-value text-sm">@price($category->price)</span>
                             @else
-                                <span class="text-[0.6875rem] text-cream-dim">در محل از پرسنل بپرسید</span>
+                                <span class="text-[0.6875rem] text-ink-dim">در محل از پرسنل بپرسید</span>
                             @endif
                         </div>
 
@@ -112,7 +112,7 @@
                         @if ($category->features->isNotEmpty())
                             <div class="mt-5">
                                 <x-ornament.divider class="mb-3" />
-                                <p class="mb-3 text-center text-[0.6875rem] font-semibold text-gold-300">
+                                <p class="mb-3 text-center text-[0.6875rem] font-semibold text-ink-dim">
                                     همراه با این سرویس شامل
                                 </p>
 
@@ -132,7 +132,7 @@
             </section>
         @empty
             <x-frame class="px-6 py-12 text-center">
-                <p class="text-sm text-cream-dim">منو در حال آماده‌سازی است.</p>
+                <p class="text-sm text-ink-dim">منو در حال آماده‌سازی است.</p>
             </x-frame>
         @endforelse
     </main>

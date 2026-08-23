@@ -12,7 +12,7 @@
                 <x-icon.admin name="warning" class="h-6 w-6" />
             </span>
 
-            <h2 class="admin-confirm-title gold-text" id="admin-confirm-title">حذف تأیید می‌شود؟</h2>
+            <h2 class="admin-confirm-title" id="admin-confirm-title">حذف تأیید می‌شود؟</h2>
             <p class="admin-confirm-text" data-confirm-text></p>
 
             <div class="admin-confirm-actions">

@@ -23,7 +23,7 @@
             <div class="admin-login-inner">
                 <x-emblem class="admin-login-emblem" />
 
-                <h1 class="admin-login-title gold-text">کافه صاحبقرانیه</h1>
+                <h1 class="admin-login-title">کافه صاحبقرانیه</h1>
                 <p class="admin-login-latin latin">Saheb Gharaniyeh</p>
 
                 <x-ornament.divider width="w-28" />

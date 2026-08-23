@@ -16,7 +16,7 @@
         @endif
 
         @if (! $product->is_available)
-            <span class="absolute inset-0 z-3 grid place-items-center bg-night-950/70 text-[0.6875rem] font-bold text-gold-200">
+            <span class="absolute inset-0 z-3 grid place-items-center bg-page/70 text-[0.6875rem] font-bold text-ink">
                 موقتاً تمام شد
             </span>
         @endif
@@ -34,7 +34,7 @@
     </div>
 
     @if ($product->description)
-        <p class="text-[0.6875rem] leading-relaxed text-cream-dim/80">{{ $product->description }}</p>
+        <p class="text-[0.6875rem] leading-relaxed text-ink-dim">{{ $product->description }}</p>
     @endif
 
     <x-price-tag :price="$product->price" />
