@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#050404">
+    <meta name="theme-color" content="#1A1A1A">
     <meta name="description"
           content="{{ $metaDescription ?? 'منوی دیجیتال کافه صاحبقرانیه — نوشیدنی‌های گرم، نوشیدنی‌های سرد و قلیان' }}">
 
@@ -22,7 +22,7 @@
 
             document.documentElement.dataset.theme = theme;
             document.querySelector('meta[name="theme-color"]')
-                ?.setAttribute('content', theme === 'light' ? '#faf4e8' : '#050404');
+                ?.setAttribute('content', theme === 'light' ? '#F2F2F2' : '#1A1A1A');
         })();
     </script>
 
@@ -33,14 +33,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-dvh antialiased">
-    {{-- Loading veil: emblem inside spinning gold rings, lifted on window load. --}}
+    {{-- Loading veil: emblem inside spinning accent rings, lifted on window load. --}}
     <div class="preloader" id="preloader" role="status" aria-live="polite">
         <div class="flex flex-col items-center gap-3">
             <div class="preloader-ring">
-                <x-emblem class="w-12 text-gold-300" />
+                <x-emblem class="w-12 text-ink-dim" />
             </div>
-            <p class="gold-text text-sm font-bold">کافه صاحبقرانیه</p>
-            <p class="latin text-[0.5625rem] tracking-[0.3em] text-gold-400/80">Saheb Gharaniyeh</p>
+            <p class="text-sm font-bold text-ink">کافه صاحبقرانیه</p>
+            <p class="latin text-[0.5625rem] tracking-[0.3em] text-ink-dim">Saheb Gharaniyeh</p>
             <p class="preloader-dots mt-1" aria-label="در حال بارگذاری">
                 <span></span><span></span><span></span>
             </p>

@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#050404">
+    <meta name="theme-color" content="#1A1A1A">
     <meta name="robots" content="noindex, nofollow">
 
     <title>{{ $title ? $title.' | پنل کافه' : 'پنل کافه صاحبقرانیه' }}</title>

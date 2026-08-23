@@ -30,7 +30,7 @@
             <div class="admin-login-inner">
                 <x-emblem class="admin-login-emblem" />
 
-                <h1 class="admin-login-title gold-text">تصویر بیش از حد بزرگ است</h1>
+                <h1 class="admin-login-title">تصویر بیش از حد بزرگ است</h1>
 
                 <x-ornament.divider width="w-28" />
 
