@@ -24,7 +24,7 @@
     <link rel="preload" href="{{ asset('fonts/vazirmatn-arabic-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
-    @vite(['resources/css/app.css', 'resources/css/brand.css', 'resources/css/theme-overrides.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/brand.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-dvh antialiased">
     {{ $slot }}
