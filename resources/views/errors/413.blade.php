@@ -30,7 +30,7 @@
             <div class="admin-login-inner">
                 <x-emblem class="admin-login-emblem" />
 
-                <h1 class="admin-login-title gold-text">تصویر بیش از حد بزرگ است</h1>
+                <h1 class="admin-login-title">تصویر بیش از حد بزرگ است</h1>
 
                 <x-ornament.divider width="w-28" />
 
@@ -39,7 +39,7 @@
                     سرور آن را نپذیرفت. یک بار به صفحهٔ قبل برگردید و عکس کوچک‌تری انتخاب کنید.
                 </p>
 
-                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--gold">
+                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--accent">
                     بازگشت
                 </a>
             </div>

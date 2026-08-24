@@ -1,7 +1,7 @@
 <x-layouts.admin title="دسته‌ها" heading="دسته‌های منو"
                  subheading="ترتیب، نمایش و محتوای بخش‌های منو">
     <x-slot:actions>
-        <a href="{{ route('admin.categories.create') }}" class="admin-btn admin-btn--gold">
+        <a href="{{ route('admin.categories.create') }}" class="admin-btn admin-btn--accent">
             <x-icon.admin name="plus" class="h-4 w-4" />
             <span>دستهٔ جدید</span>
         </a>
@@ -13,7 +13,7 @@
                            title="هنوز دسته‌ای ساخته نشده"
                            text="منو از دسته‌ها ساخته می‌شود: نوشیدنی گرم، نوشیدنی سرد، قلیان…">
                 <x-slot:action>
-                    <a href="{{ route('admin.categories.create') }}" class="admin-btn admin-btn--gold">
+                    <a href="{{ route('admin.categories.create') }}" class="admin-btn admin-btn--accent">
                         <x-icon.admin name="plus" class="h-4 w-4" />
                         <span>ساخت اولین دسته</span>
                     </a>
@@ -73,7 +73,7 @@
                             @endunless
 
                             @if ($category->card_order !== null)
-                                <span class="admin-tag admin-tag--gold">در صفحهٔ اصلی</span>
+                                <span class="admin-tag admin-tag--accent">در صفحهٔ اصلی</span>
                             @endif
 
                             @if ($category->price)
@@ -118,7 +118,7 @@
                                             @endforeach
                                         </select>
 
-                                        <button type="submit" class="admin-icon-btn admin-icon-btn--gold"
+                                        <button type="submit" class="admin-icon-btn admin-icon-btn--accent"
                                                 aria-label="ذخیرهٔ {{ $feature->name }}">
                                             <x-icon.admin name="check" class="h-4 w-4" />
                                         </button>
@@ -163,7 +163,7 @@
                                         @endforeach
                                     </select>
 
-                                    <button type="submit" class="admin-icon-btn admin-icon-btn--gold"
+                                    <button type="submit" class="admin-icon-btn admin-icon-btn--accent"
                                             aria-label="افزودن">
                                         <x-icon.admin name="plus" class="h-4 w-4" />
                                     </button>

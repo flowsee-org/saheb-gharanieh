@@ -19,7 +19,7 @@
                                dir="ltr" autocapitalize="none" spellcheck="false" required maxlength="60">
                     </x-admin.field>
 
-                    <span class="admin-card-rule gold-line" aria-hidden="true"></span>
+                    <span class="admin-card-rule hairline" aria-hidden="true"></span>
 
                     <p class="admin-note admin-note--tight">
                         <x-icon.admin name="warning" class="h-4 w-4 shrink-0" />
@@ -46,7 +46,7 @@
                 </x-admin.card>
 
                 <div class="admin-form-bar">
-                    <button type="submit" class="admin-btn admin-btn--gold">
+                    <button type="submit" class="admin-btn admin-btn--accent">
                         <x-icon.admin name="check" class="h-4 w-4" />
                         <span>ذخیرهٔ حساب</span>
                     </button>
@@ -71,7 +71,7 @@
                     </div>
                 </dl>
 
-                <span class="admin-card-rule gold-line" aria-hidden="true"></span>
+                <span class="admin-card-rule hairline" aria-hidden="true"></span>
 
                 <p class="admin-hint">
                     اگر رمز را فراموش کردید، از روی سرور این دستور رمز تازه می‌سازد:

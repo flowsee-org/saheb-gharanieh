@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#0D1126">
+    <meta name="theme-color" content="#1A1A1A">
     <meta name="robots" content="noindex, nofollow">
 
     <title>{{ $title ? $title.' | پنل کافه' : 'پنل کافه صاحبقرانیه' }}</title>
@@ -56,7 +56,7 @@
             <div class="admin-head">
                 <div class="admin-head-titles">
                     @if ($heading)
-                        <h1 class="admin-head-title gold-text">{{ $heading }}</h1>
+                        <h1 class="admin-head-title">{{ $heading }}</h1>
                     @endif
                     @if ($subheading)
                         <p class="admin-head-sub">{{ $subheading }}</p>

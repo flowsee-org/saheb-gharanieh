@@ -23,7 +23,7 @@
             <div class="admin-login-inner">
                 <x-emblem class="admin-login-emblem" />
 
-                <h1 class="admin-login-title gold-text">کافه صاحبقرانیه</h1>
+                <h1 class="admin-login-title">کافه صاحبقرانیه</h1>
                 <p class="admin-login-latin latin">Saheb Gharaniyeh</p>
 
                 <x-ornament.divider width="w-28" />
@@ -62,7 +62,7 @@
                         <span>مرا به خاطر بسپار</span>
                     </label>
 
-                    <button type="submit" class="admin-btn admin-btn--gold admin-login-submit">
+                    <button type="submit" class="admin-btn admin-btn--accent admin-login-submit">
                         <span>ورود</span>
                     </button>
                 </form>

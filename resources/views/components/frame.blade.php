@@ -1,7 +1,7 @@
-{{-- Ornate panel: double gold rule + four arabesque corners. --}}
-@props(['corners' => true, 'flat' => false])
+{{-- Ornate panel: double brand rule + four arabesque corners. Carries no fill. --}}
+@props(['corners' => true])
 
-<div {{ $attributes->class(['frame', 'frame-flat' => $flat]) }}>
+<div {{ $attributes->class('frame') }}>
     @if ($corners)
         <x-ornament.corner class="frame-corner frame-corner--tr" />
         <x-ornament.corner class="frame-corner frame-corner--tl" />

@@ -1,6 +1,6 @@
 <x-layouts.admin title="داشبورد" heading="داشبورد" subheading="یک نگاه کلی به منو">
     <x-slot:actions>
-        <a href="{{ route('admin.products.create') }}" class="admin-btn admin-btn--gold">
+        <a href="{{ route('admin.products.create') }}" class="admin-btn admin-btn--accent">
             <x-icon.admin name="plus" class="h-4 w-4" />
             <span>مورد جدید</span>
         </a>
@@ -105,7 +105,7 @@
             @empty
                 <x-admin.empty title="هنوز موردی اضافه نشده" text="اولین نوشیدنی یا طعم قلیان را اضافه کنید.">
                     <x-slot:action>
-                        <a href="{{ route('admin.products.create') }}" class="admin-btn admin-btn--gold">
+                        <a href="{{ route('admin.products.create') }}" class="admin-btn admin-btn--accent">
                             <x-icon.admin name="plus" class="h-4 w-4" />
                             <span>مورد جدید</span>
                         </a>

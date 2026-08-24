@@ -99,7 +99,7 @@
         </div>
 
         <div class="admin-form-bar">
-            <button type="submit" class="admin-btn admin-btn--gold">
+            <button type="submit" class="admin-btn admin-btn--accent">
                 <x-icon.admin name="check" class="h-4 w-4" />
                 <span>{{ $editing ? 'ذخیرهٔ تغییرات' : 'افزودن به منو' }}</span>
             </button>

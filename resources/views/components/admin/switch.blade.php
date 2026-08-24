@@ -1,5 +1,5 @@
 {{-- On/off control. A real checkbox underneath, so it submits, tabs and reads
-     correctly; the gold track is drawn from its :checked state in CSS. --}}
+     correctly; the accent track is drawn from its :checked state in CSS. --}}
 @props(['name', 'label', 'checked' => false, 'hint' => null, 'value' => 1])
 
 @php $id = $name.'-switch'; @endphp

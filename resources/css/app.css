@@ -47,31 +47,81 @@
 /*  Design tokens                                                     */
 /* ------------------------------------------------------------------ */
 
+/*
+ * Two ramps, straight from the design system:
+ *
+ *   Brand     — the house periwinkle, folded to black at both ends.
+ *   Dominant  — neutral grey, mirrored about 500.
+ *
+ * Dark is the house theme, so @theme carries the dark column and
+ * `html[data-theme='light']` at the bottom of this file re-points it. Both
+ * ramps are indexed by *role*, not by lightness: dominant-100 is the page in
+ * either theme, 200 the card, 600 the quiet copy, 900 the ink. That is why
+ * almost nothing below needs a light-mode counterpart.
+ */
+
 @theme {
     --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
     --font-latin: 'Cinzel', 'Times New Roman', serif;
 
-    --color-night-950: #050404;
-    --color-night-900: #0a0807;
-    --color-night-800: #100d0a;
-    --color-night-700: #17120c;
-    --color-night-600: #211a11;
+    /* Brand. 500 is the true blue and is shared by both themes — so are
+       600–1000, which is why the light block only restates 0–400. */
+    --color-brand-0: #000000;
+    --color-brand-100: #0d1126;
+    --color-brand-200: #19224d;
+    --color-brand-300: #263373;
+    --color-brand-400: #334499;
+    --color-brand-500: #4055bf;
+    --color-brand-600: #334499;
+    --color-brand-700: #263373;
+    --color-brand-800: #19224d;
+    --color-brand-900: #0d1126;
+    --color-brand-1000: #000000;
 
-    --color-gold-50: #fdf7e8;
-    --color-gold-100: #f8e9c6;
-    --color-gold-200: #eed99e;
-    --color-gold-300: #e1bf76;
-    --color-gold-400: #d1a451;
-    --color-gold-500: #b9873a;
-    --color-gold-600: #97682b;
-    --color-gold-700: #714b1e;
-    --color-gold-800: #4a3013;
-    --color-gold-900: #2a1b0a;
+    /* Dominant. 500 is the midpoint and is shared. */
+    --color-dominant-100: #1a1a1a;
+    --color-dominant-200: #333333;
+    --color-dominant-300: #4d4d4d;
+    --color-dominant-400: #666666;
+    --color-dominant-500: #808080;
+    --color-dominant-600: #999999;
+    --color-dominant-700: #b3b3b3;
+    --color-dominant-800: #cccccc;
+    --color-dominant-900: #f2f2f2;
 
-    --color-cream: #f5ede1;
-    --color-cream-dim: #bdb09b;
+    /*
+     * Roles — what the components actually reach for. Spelled out as literals
+     * rather than var() onto the ramps above: Tailwind drops a @theme variable
+     * that no utility mentions, and a chain read only by another custom
+     * property is exactly that case.
+     */
 
-    --shadow-gold-glow: 0 0 40px -12px rgba(209, 164, 81, 0.45);
+    /* Surfaces. The page is flat, and the card is the only thing that lifts. */
+    --color-page: #1a1a1a; /* dominant-100 */
+    --color-chrome: #141414; /* sticky bar — a shade under the page */
+    --color-card: #333333; /* dominant-200 */
+    --color-sunk: #0f0f0f; /* photo wells, inputs */
+
+    /* Type. */
+    --color-ink: #f2f2f2; /* dominant-900 */
+    --color-ink-dim: #999999; /* dominant-600 */
+    --color-ink-faint: #666666; /* dominant-400 */
+
+    /* Accent. `accent` fills (chips, badges), `accent-ink` is blue *text*:
+       dark needs a lighter step than its own ramp carries, because brand-500
+       on a #333 card is 2.4:1 where brand-300's light value is 4.6:1. */
+    --color-accent: #4055bf;
+    --color-accent-ink: #8c99d9;
+    --color-on-accent: #ffffff;
+
+    /* Hairlines. `hair` is the neutral one (card edges, price rules);
+       `rule` is the brand-tinted line the printed ornament is drawn with. */
+    --color-hair: rgba(242, 242, 242, 0.1);
+    --color-hair-soft: rgba(242, 242, 242, 0.06);
+    --color-rule: rgba(64, 85, 191, 0.34);
+    --color-rule-soft: rgba(64, 85, 191, 0.18);
+
+    --shadow-accent-glow: 0 0 32px -14px rgba(64, 85, 191, 0.45);
     --radius-card: 14px;
 
     --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
@@ -85,7 +135,10 @@
     html {
         scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
-        background-color: var(--color-night-950);
+        /* Tells the UA which way to paint form controls and the scrollbar
+           gutter; the light block flips it. */
+        color-scheme: dark;
+        background-color: var(--color-page);
         /* `clip` (not `hidden`) so decorative bleed never turns the page into an
            RTL horizontal scroll container. */
         overflow-x: clip;
@@ -105,83 +158,49 @@
         }
     }
 
+    /* Flat on purpose. The page is one unbroken tone in both themes — no
+       vignette, no grain; the frame and the cards do all the shaping. */
     body {
         font-family: var(--font-sans);
-        color: var(--color-cream);
-        background-color: var(--color-night-950);
+        color: var(--color-ink);
+        background-color: var(--color-page);
         overflow-x: clip;
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* Warm vignette + fine grain, fixed behind everything. */
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: -2;
-        background:
-            radial-gradient(120% 65% at 50% -12%, #1d160d 0%, rgba(12, 10, 8, 0.9) 45%, #050404 100%),
-            linear-gradient(180deg, #070605 0%, #050404 100%);
-    }
-
-    body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-        opacity: 0.32;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-        mix-blend-mode: overlay;
-    }
-
     ::selection {
-        background: var(--color-gold-600);
-        color: #fff;
+        background: var(--color-accent);
+        color: var(--color-on-accent);
     }
 
-    /* Slim gold scrollbar */
+    /* Slim accent scrollbar */
     ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
     }
 
     ::-webkit-scrollbar-track {
-        background: #0a0807;
+        background: var(--color-page);
     }
 
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, var(--color-gold-600), var(--color-gold-800));
+        background: var(--color-accent);
         border-radius: 999px;
     }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Gold typography                                                   */
+/*  Typography helpers                                                */
 /* ------------------------------------------------------------------ */
 
-@utility gold-text {
-    background-image: linear-gradient(
-        180deg,
-        #fdf3d6 0%,
-        #f0d693 26%,
-        #d1a451 58%,
-        #a67c2e 82%,
-        #d8b264 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-}
-
-@utility gold-line {
+/* The printed rule: a brand hairline that fades out at both ends. */
+@utility hairline {
     background-image: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(209, 164, 81, 0.15) 15%,
-        rgba(232, 205, 145, 0.75) 50%,
-        rgba(209, 164, 81, 0.15) 85%,
+        var(--color-rule-soft) 18%,
+        var(--color-rule) 50%,
+        var(--color-rule-soft) 82%,
         transparent 100%
     );
 }
@@ -197,15 +216,14 @@
 /* ------------------------------------------------------------------ */
 
 @layer components {
+    /* Pure ornament: double brand rule and four corner flourishes over the
+       page colour. It carries no surface of its own — the cards inside it are
+       the only things that lift off the page. */
     .frame {
         position: relative;
-        border: 1px solid rgba(209, 164, 81, 0.34);
+        border: 1px solid var(--color-rule);
         border-radius: 18px;
-        background:
-            linear-gradient(180deg, rgba(33, 26, 17, 0.55) 0%, rgba(10, 8, 7, 0.72) 55%, rgba(6, 5, 4, 0.85) 100%);
-        box-shadow:
-            inset 0 1px 0 rgba(248, 233, 198, 0.08),
-            0 18px 40px -28px rgba(0, 0, 0, 0.9);
+        background: transparent;
     }
 
     /* The inner hairline, offset like the double rule on the real menu. */
@@ -213,22 +231,19 @@
         content: '';
         position: absolute;
         inset: 6px;
-        border: 1px solid rgba(209, 164, 81, 0.16);
+        border: 1px solid var(--color-rule-soft);
         border-radius: 13px;
         pointer-events: none;
     }
 
-    .frame-flat {
-        background: linear-gradient(180deg, rgba(23, 18, 12, 0.5), rgba(8, 7, 6, 0.6));
-    }
-
-    /* Corner flourishes are absolutely positioned <x-ornament.corner> SVGs. */
+    /* Corner flourishes are absolutely positioned <x-ornament.corner> SVGs.
+       brand-300 is lavender on paper and deep navy on black, so this one
+       token is right in both themes. */
     .frame-corner {
         position: absolute;
         width: 34px;
         height: 34px;
-        color: var(--color-gold-400);
-        opacity: 0.75;
+        color: var(--color-brand-300);
         pointer-events: none;
     }
 
@@ -274,28 +289,16 @@
         top: 0;
         z-index: 50;
         /* Fully opaque: the bar sits over dense content, legibility wins. */
-        background: linear-gradient(180deg, #070605 0%, #0b0907 100%);
-        border-bottom: 1px solid rgba(209, 164, 81, 0.22);
+        background: var(--color-chrome);
+        border-bottom: 1px solid var(--color-hair);
         transition: box-shadow 0.4s var(--ease-silk);
     }
 
-    /* Short fade below the bar so content slides under it softly. */
-    .topbar::after {
-        content: '';
-        position: absolute;
-        inset-inline: 0;
-        top: 100%;
-        height: 18px;
-        z-index: 1;
-        background: linear-gradient(180deg, rgba(7, 6, 5, 0.85), transparent);
-        pointer-events: none;
-    }
-
     .topbar[data-scrolled='true'] {
-        box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.95);
+        box-shadow: 0 14px 34px -26px rgba(0, 0, 0, 0.6);
     }
 
-    /* Thin gold reading-progress rule pinned to the bar's bottom edge. */
+    /* Thin reading-progress rule pinned to the bar's bottom edge. */
     .topbar-progress {
         position: absolute;
         inset-inline-start: 0;
@@ -303,8 +306,7 @@
         height: 2px;
         width: 0;
         z-index: 2;
-        background: linear-gradient(90deg, var(--color-gold-700), var(--color-gold-300) 60%, var(--color-gold-100));
-        box-shadow: 0 0 12px rgba(209, 164, 81, 0.6);
+        background: var(--color-accent);
         transition: width 0.12s linear;
     }
 
@@ -314,9 +316,10 @@
         align-items: center;
         gap: 0.4rem;
         padding: 0.3rem 0.7rem;
-        border: 1px solid rgba(209, 164, 81, 0.35);
+        border: 1px solid var(--color-hair);
         border-radius: 999px;
-        background: linear-gradient(180deg, rgba(42, 33, 20, 0.9), rgba(14, 11, 8, 0.9));
+        background: var(--color-card);
+        color: var(--color-ink);
         font-size: 0.8125rem;
         font-weight: 600;
         white-space: nowrap;
@@ -335,8 +338,7 @@
         width: 0.375rem;
         height: 0.375rem;
         border-radius: 50%;
-        background: var(--color-gold-300);
-        box-shadow: 0 0 8px rgba(225, 191, 118, 0.9);
+        background: var(--color-accent);
     }
 
     @keyframes flag-in {
@@ -372,30 +374,27 @@
         gap: 0.35rem;
         padding: 0.4rem 0.85rem;
         border-radius: 999px;
-        border: 1px solid rgba(209, 164, 81, 0.22);
-        background: rgba(20, 16, 11, 0.7);
-        color: var(--color-cream-dim);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
+        color: var(--color-ink-dim);
         font-size: 0.75rem;
         font-weight: 500;
         white-space: nowrap;
         transition:
             color 0.3s var(--ease-silk),
             border-color 0.3s var(--ease-silk),
-            background 0.3s var(--ease-silk),
-            box-shadow 0.3s var(--ease-silk);
+            background 0.3s var(--ease-silk);
     }
 
     .chip:hover {
-        color: var(--color-gold-100);
-        border-color: rgba(209, 164, 81, 0.45);
+        color: var(--color-ink);
     }
 
     .chip[aria-current='true'] {
-        color: #1a1206;
+        color: var(--color-on-accent);
         font-weight: 700;
         border-color: transparent;
-        background: linear-gradient(180deg, #f2d896 0%, #d1a451 55%, #a97f31 100%);
-        box-shadow: 0 6px 18px -10px rgba(209, 164, 81, 0.9);
+        background: var(--color-accent);
     }
 
     /* The section's hand-drawn mark, inside its chip. */
@@ -410,14 +409,13 @@
         opacity: 1;
     }
 
-    /* The panel heading is a clipped gradient (color: transparent), so the glyph
-       beside it must state its own colour or it would draw in nothing. */
+    /* The panel heading's mark. Solid accent beside solid ink — the one spot
+       of brand colour in the heading block. */
     .heading-glyph {
         flex: 0 0 auto;
         width: 1.5rem;
         height: 1.5rem;
-        color: var(--color-gold-400);
-        filter: drop-shadow(0 4px 10px rgba(209, 164, 81, 0.3));
+        color: var(--color-accent);
     }
 
     @media (min-width: 640px) {
@@ -440,8 +438,8 @@
         gap: 0.5rem;
         padding: 0.5rem 0.5rem 0.625rem;
         border-radius: var(--radius-card);
-        border: 1px solid rgba(209, 164, 81, 0.16);
-        background: linear-gradient(180deg, rgba(26, 21, 14, 0.72) 0%, rgba(9, 8, 6, 0.72) 100%);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
         transition:
             transform 0.45s var(--ease-silk),
             border-color 0.45s var(--ease-silk),
@@ -451,17 +449,15 @@
     .product-card:hover,
     .product-card:focus-within {
         transform: translateY(-3px);
-        border-color: rgba(225, 191, 118, 0.5);
-        box-shadow:
-            0 16px 34px -22px rgba(0, 0, 0, 0.95),
-            var(--shadow-gold-glow);
+        border-color: var(--color-rule);
+        box-shadow: var(--shadow-accent-glow);
     }
 
     .product-card[data-unavailable='true'] {
         opacity: 0.55;
     }
 
-    /* Empty photo slot: spotlit stage, hairline gold frame, line-art glyph. */
+    /* Empty photo slot: a sunk well with a line-art glyph. */
     .media {
         position: relative;
         /* Square everywhere — a photo of a drink is square, and a row of squares
@@ -469,11 +465,8 @@
         aspect-ratio: 1 / 1;
         border-radius: 10px;
         overflow: hidden;
-        border: 1px solid rgba(209, 164, 81, 0.18);
-        background:
-            radial-gradient(72% 55% at 50% 108%, rgba(209, 164, 81, 0.22) 0%, transparent 72%),
-            radial-gradient(60% 50% at 50% 22%, rgba(248, 233, 198, 0.07) 0%, transparent 70%),
-            linear-gradient(180deg, #16110c 0%, #0b0908 100%);
+        border: 1px solid var(--color-hair-soft);
+        background: var(--color-sunk);
         display: grid;
         place-items: center;
         isolation: isolate;
@@ -493,7 +486,7 @@
         opacity: 1;
     }
 
-    /* Slow gold sweep so an empty slot still feels alive. */
+    /* Slow neutral sweep so an empty slot still feels alive. */
     .media::after {
         content: '';
         position: absolute;
@@ -502,9 +495,9 @@
         background: linear-gradient(
             105deg,
             transparent 35%,
-            rgba(248, 233, 198, 0.09) 48%,
-            rgba(248, 233, 198, 0.16) 50%,
-            rgba(248, 233, 198, 0.09) 52%,
+            rgba(255, 255, 255, 0.05) 48%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 52%,
             transparent 65%
         );
         transform: translateX(-130%);
@@ -526,16 +519,14 @@
     .media-glyph {
         width: 42%;
         max-width: 62px;
-        color: var(--color-gold-400);
-        opacity: 0.5;
-        filter: drop-shadow(0 6px 14px rgba(209, 164, 81, 0.25));
+        color: var(--color-ink-faint);
         transition:
-            opacity 0.45s var(--ease-silk),
+            color 0.45s var(--ease-silk),
             transform 0.45s var(--ease-silk);
     }
 
     .product-card:hover .media-glyph {
-        opacity: 0.78;
+        color: var(--color-ink-dim);
         transform: translateY(-2px) scale(1.04);
     }
 
@@ -546,7 +537,7 @@
         text-align: center;
         font-size: 0.5rem;
         letter-spacing: 0.04em;
-        color: rgba(225, 191, 118, 0.3);
+        color: var(--color-ink-faint);
     }
 
     @media (min-width: 40rem) {
@@ -555,7 +546,7 @@
         }
     }
 
-    /* Gold index badge, mirrors the numbered squares on the printed menu. */
+    /* Index badge, mirrors the numbered squares on the printed menu. */
     .num-badge {
         display: inline-grid;
         place-items: center;
@@ -563,19 +554,18 @@
         height: 1.25rem;
         padding: 0 0.25rem;
         border-radius: 5px;
-        background: linear-gradient(180deg, #f2d896 0%, #d1a451 52%, #a97f31 100%);
-        color: #1a1206;
+        background: var(--color-accent);
+        color: var(--color-on-accent);
         font-size: 0.625rem;
         font-weight: 700;
         line-height: 1;
-        box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.8);
     }
 
     .product-name {
         font-size: 0.8125rem;
         font-weight: 600;
         line-height: 1.5;
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     .product-latin {
@@ -583,7 +573,7 @@
         line-height: 1.4;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: rgba(189, 176, 155, 0.5);
+        color: var(--color-ink-dim);
         font-family: var(--font-latin);
         /* Wrap to a second line rather than truncating mid-word. */
         display: -webkit-box;
@@ -592,32 +582,32 @@
         overflow: hidden;
     }
 
-    /* Price slot: dotted gold rule + value (or a clean placeholder). */
+    /* Price slot: a solid hairline above the value. */
     .price-slot {
         display: flex;
         align-items: baseline;
         gap: 0.35rem;
         margin-top: auto;
         padding-top: 0.35rem;
-        border-top: 1px dashed rgba(209, 164, 81, 0.22);
+        border-top: 1px solid var(--color-hair);
     }
 
     .price-label {
         font-size: 0.625rem;
-        color: rgba(209, 164, 81, 0.75);
+        color: var(--color-ink-dim);
     }
 
     .price-value {
         font-size: 0.75rem;
         font-weight: 700;
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
         font-variant-numeric: tabular-nums;
     }
 
     .price-empty {
         flex: 1;
         height: 0.55rem;
-        border-bottom: 1px dotted rgba(209, 164, 81, 0.3);
+        border-bottom: 1px dotted var(--color-hair);
     }
 
     @media (min-width: 640px) {
@@ -642,21 +632,15 @@
         gap: 0.45rem;
         padding: 0.5rem 0.5rem;
         border-radius: 10px;
-        border: 1px solid rgba(209, 164, 81, 0.2);
-        background: linear-gradient(
-            90deg,
-            rgba(30, 24, 15, 0.85) 0%,
-            rgba(14, 11, 8, 0.7) 55%,
-            rgba(30, 24, 15, 0.85) 100%
-        );
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
         transition:
             border-color 0.35s var(--ease-silk),
-            transform 0.35s var(--ease-silk),
-            background 0.35s var(--ease-silk);
+            transform 0.35s var(--ease-silk);
     }
 
     .flavor-row:hover {
-        border-color: rgba(225, 191, 118, 0.45);
+        border-color: var(--color-rule);
         transform: translateX(-2px);
     }
 
@@ -664,13 +648,12 @@
         flex: 0 0 auto;
         width: 1.125rem;
         height: 1.125rem;
-        color: var(--color-gold-400);
-        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+        color: var(--color-accent-ink);
         transition: color 0.35s var(--ease-silk);
     }
 
     .flavor-row:hover .flavor-glyph {
-        color: var(--color-gold-200);
+        color: var(--color-accent);
     }
 
     .flavor-name {
@@ -703,8 +686,8 @@
         gap: 1rem;
         padding: 0.75rem 1rem;
         border-radius: 12px;
-        border: 1px solid rgba(209, 164, 81, 0.3);
-        background: linear-gradient(180deg, rgba(46, 36, 21, 0.7), rgba(12, 10, 7, 0.8));
+        border: 1px solid var(--color-rule);
+        background: var(--color-card);
     }
 
     .feature-pill {
@@ -714,21 +697,21 @@
         gap: 0.3rem;
         padding: 0.6rem 0.35rem;
         border-radius: 10px;
-        border: 1px solid rgba(209, 164, 81, 0.16);
-        background: rgba(16, 13, 10, 0.6);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
         text-align: center;
     }
 
     .feature-name {
         font-size: 0.625rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         line-height: 1.4;
     }
 
     .feature-glyph {
         width: 1.375rem;
         height: 1.375rem;
-        color: var(--color-gold-400);
+        color: var(--color-accent-ink);
     }
 }
 
@@ -742,10 +725,8 @@
         display: block;
         overflow: hidden;
         border-radius: 18px;
-        border: 1px solid rgba(209, 164, 81, 0.28);
-        background:
-            radial-gradient(120% 100% at 100% 0%, rgba(209, 164, 81, 0.16) 0%, transparent 55%),
-            linear-gradient(180deg, rgba(30, 24, 15, 0.8) 0%, rgba(9, 8, 6, 0.9) 100%);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
         transition:
             transform 0.5s var(--ease-silk),
             border-color 0.5s var(--ease-silk),
@@ -756,7 +737,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(100deg, transparent 40%, rgba(248, 233, 198, 0.12) 50%, transparent 60%);
+        background: linear-gradient(100deg, transparent 40%, rgba(255, 255, 255, 0.07) 50%, transparent 60%);
         transform: translateX(-120%);
         transition: transform 0.9s var(--ease-silk);
         pointer-events: none;
@@ -765,10 +746,8 @@
     .hero-card:hover,
     .hero-card:active {
         transform: translateY(-4px);
-        border-color: rgba(232, 205, 145, 0.6);
-        box-shadow:
-            0 24px 50px -30px rgba(0, 0, 0, 1),
-            0 0 44px -16px rgba(209, 164, 81, 0.4);
+        border-color: var(--color-rule);
+        box-shadow: var(--shadow-accent-glow);
     }
 
     .hero-card:hover::after {
@@ -778,9 +757,8 @@
     .hero-card-glyph {
         width: 3rem;
         height: 3rem;
-        color: var(--color-gold-300);
+        color: var(--color-accent);
         flex: 0 0 auto;
-        filter: drop-shadow(0 6px 16px rgba(209, 164, 81, 0.3));
     }
 
     @media (min-width: 640px) {
@@ -803,7 +781,7 @@
         display: grid;
         place-items: center;
         gap: 1rem;
-        background: radial-gradient(80% 60% at 50% 40%, #14100a 0%, #060505 70%);
+        background: var(--color-page);
         transition:
             opacity 0.6s var(--ease-silk),
             visibility 0.6s var(--ease-silk);
@@ -832,14 +810,14 @@
     }
 
     .preloader-ring::before {
-        border-top-color: var(--color-gold-300);
-        border-inline-end-color: rgba(209, 164, 81, 0.35);
+        border-top-color: var(--color-accent);
+        border-inline-end-color: var(--color-rule);
         animation: spin 1.5s linear infinite;
     }
 
     .preloader-ring::after {
         inset: 10px;
-        border-bottom-color: rgba(232, 205, 145, 0.55);
+        border-bottom-color: var(--color-rule);
         animation: spin 2.4s linear infinite reverse;
     }
 
@@ -855,7 +833,7 @@
         height: 4px;
         margin-inline: 2px;
         border-radius: 50%;
-        background: var(--color-gold-400);
+        background: var(--color-accent);
         animation: dot-pulse 1.2s var(--ease-silk) infinite;
     }
 
@@ -916,10 +894,9 @@
         width: 2.75rem;
         height: 2.75rem;
         border-radius: 50%;
-        border: 1px solid rgba(209, 164, 81, 0.4);
-        background: linear-gradient(180deg, rgba(36, 28, 17, 0.95), rgba(10, 8, 6, 0.95));
-        color: var(--color-gold-200);
-        backdrop-filter: blur(8px);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
+        color: var(--color-ink);
         opacity: 0;
         visibility: hidden;
         transform: translateY(10px) scale(0.9);
@@ -944,20 +921,19 @@
         width: 2.375rem;
         height: 2.375rem;
         border-radius: 50%;
-        border: 1px solid rgba(209, 164, 81, 0.4);
-        background: linear-gradient(180deg, rgba(36, 28, 17, 0.94), rgba(10, 8, 6, 0.94));
-        color: var(--color-gold-200);
-        box-shadow: 0 8px 22px -14px rgba(0, 0, 0, 0.9);
-        backdrop-filter: blur(8px);
+        border: 1px solid var(--color-hair);
+        background: var(--color-card);
+        color: var(--color-ink);
         transition:
             color 0.35s var(--ease-silk),
             border-color 0.35s var(--ease-silk),
             transform 0.35s var(--ease-silk);
     }
 
+    .to-top:hover,
     .theme-toggle:hover {
-        color: var(--color-gold-100);
-        border-color: rgba(232, 205, 145, 0.65);
+        border-color: var(--color-rule);
+        color: var(--color-accent-ink);
     }
 
     .theme-toggle:active {
@@ -1015,320 +991,69 @@
         top: -22px;
         margin-inline: auto;
         width: 168px;
-        color: var(--color-gold-400);
-        opacity: 0.055;
+        color: var(--color-brand-300);
+        opacity: 0.3;
         pointer-events: none;
     }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Light theme — the same printed menu, on cream card stock          */
+/*  Light theme                                                       */
 /* ------------------------------------------------------------------ */
 
 /*
  * Dark is the house theme; `html[data-theme='light']` is the opt-in, set before
  * first paint by the inline script in the layout.
  *
- * Two moves cover most of the page:
- *   1. the palette tokens are re-pointed, so every Tailwind utility in Blade
- *      (`text-cream-dim`, `bg-gold-900/30`, `border-gold-400/35` …) follows along.
- *      The ramps keep their meaning — a low gold index is still "for headings",
- *      it is simply deep bronze here instead of pale gold.
- *   2. the rules below restate only the hard-coded colours: the ones tuned for
- *      glow on black, which would wash out on paper.
+ * This is the whole of it. Because every rule above reaches for a role token
+ * and both ramps are indexed by role, re-pointing the tokens is the entire
+ * light theme — there are no per-component restatements to keep in sync.
  *
  * These rules sit outside `@layer`, so they win over the component layer above
  * without needing !important.
  */
 
 html[data-theme='light'] {
-    /* Surfaces: warm ivory paper. Same order as night-*, lightest at 950. */
-    --color-night-950: #faf4e8;
-    --color-night-900: #f6efe0;
-    --color-night-800: #f1e7d4;
-    --color-night-700: #ebdfc7;
-    --color-night-600: #e3d4b6;
+    color-scheme: light;
 
-    /* Antique gold, deep end first — 100/200/300 are text, 400 is line art. */
-    --color-gold-50: #241607;
-    --color-gold-100: #4b3111;
-    --color-gold-200: #6d4816;
-    --color-gold-300: #8a5c1f;
-    --color-gold-400: #a87c30;
-    --color-gold-500: #c1923f;
-    --color-gold-600: #d8b478;
-    --color-gold-700: #ead0a1;
-    --color-gold-800: #f3e2c4;
-    --color-gold-900: #faf0da;
+    /* Brand — only 0–400 move; 500 up is shared with the dark column. */
+    --color-brand-0: #ffffff;
+    --color-brand-100: #d9ddf2;
+    --color-brand-200: #b2bbe6;
+    --color-brand-300: #8c99d9;
+    --color-brand-400: #6677cc;
 
-    --color-cream: #2b2016;
-    --color-cream-dim: #6f5c44;
+    /* Dominant — the mirror. 500 is shared. */
+    --color-dominant-100: #f2f2f2;
+    --color-dominant-200: #cccccc;
+    --color-dominant-300: #b3b3b3;
+    --color-dominant-400: #999999;
+    --color-dominant-600: #666666;
+    --color-dominant-700: #4d4d4d;
+    --color-dominant-800: #333333;
+    --color-dominant-900: #1a1a1a;
 
-    --shadow-gold-glow: 0 0 34px -14px rgba(168, 124, 48, 0.35);
-}
+    /* Roles. The card is brand-0 white, a step above the grey page. */
+    --color-page: #f2f2f2;
+    --color-chrome: #ffffff;
+    --color-card: #ffffff;
+    --color-sunk: #e9e9e9;
 
-html[data-theme='light'] body::before {
-    background:
-        radial-gradient(120% 65% at 50% -12%, #fffbf2 0%, #f9f2e3 45%, #f3e9d5 100%),
-        linear-gradient(180deg, #fdf8ee 0%, #f6eddd 100%);
-}
+    --color-ink: #1a1a1a;
+    --color-ink-dim: #666666;
+    --color-ink-faint: #999999;
 
-/* Grain reads as paper texture when it darkens instead of lightens. */
-html[data-theme='light'] body::after {
-    opacity: 0.16;
-    mix-blend-mode: multiply;
-}
+    /* On paper brand-500 is already 6.4:1, so fills and text share it. */
+    --color-accent: #4055bf;
+    --color-accent-ink: #4055bf;
+    --color-on-accent: #ffffff;
 
-html[data-theme='light'] ::selection {
-    background: #e7ce99;
-    color: #241607;
-}
+    --color-hair: rgba(26, 26, 26, 0.12);
+    --color-hair-soft: rgba(26, 26, 26, 0.07);
+    --color-rule: rgba(64, 85, 191, 0.26);
+    --color-rule-soft: rgba(64, 85, 191, 0.14);
 
-html[data-theme='light'] ::-webkit-scrollbar-track {
-    background: #f1e7d3;
-}
-
-html[data-theme='light'] ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #c1923f, #96692a);
-}
-
-/* Embossed bronze rather than lit gold. */
-html[data-theme='light'] .gold-text {
-    background-image: linear-gradient(
-        180deg,
-        #a1712a 0%,
-        #7d5318 32%,
-        #5c3a12 68%,
-        #8a5c20 100%
-    );
-}
-
-html[data-theme='light'] .gold-line {
-    background-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(168, 124, 48, 0.2) 15%,
-        rgba(150, 105, 42, 0.7) 50%,
-        rgba(168, 124, 48, 0.2) 85%,
-        transparent 100%
-    );
-}
-
-/* ── Panels ── */
-
-html[data-theme='light'] .frame {
-    border-color: rgba(168, 124, 48, 0.42);
-    background: linear-gradient(180deg, #fffdf7 0%, #fdf7ea 55%, #f9f1e0 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        0 18px 34px -30px rgba(74, 48, 19, 0.5);
-}
-
-html[data-theme='light'] .frame::before {
-    border-color: rgba(168, 124, 48, 0.22);
-}
-
-html[data-theme='light'] .frame-flat {
-    background: linear-gradient(180deg, #fdf8ec, #f8f0de);
-}
-
-html[data-theme='light'] .frame-corner {
-    opacity: 0.8;
-}
-
-/* ── Sticky bar ── */
-
-html[data-theme='light'] .topbar {
-    background: linear-gradient(180deg, #fffbf2 0%, #f8f0df 100%);
-    border-bottom-color: rgba(168, 124, 48, 0.3);
-}
-
-html[data-theme='light'] .topbar::after {
-    background: linear-gradient(180deg, rgba(250, 244, 232, 0.9), transparent);
-}
-
-html[data-theme='light'] .topbar[data-scrolled='true'] {
-    box-shadow: 0 14px 28px -24px rgba(74, 48, 19, 0.55);
-}
-
-html[data-theme='light'] .topbar-progress {
-    box-shadow: 0 0 8px rgba(168, 124, 48, 0.4);
-}
-
-html[data-theme='light'] .section-flag {
-    border-color: rgba(168, 124, 48, 0.4);
-    background: linear-gradient(180deg, #fdf3dd, #f7ead0);
-}
-
-html[data-theme='light'] .flag-dot {
-    background: var(--color-gold-500);
-    box-shadow: 0 0 0 2px rgba(168, 124, 48, 0.18);
-}
-
-html[data-theme='light'] .chip {
-    border-color: rgba(168, 124, 48, 0.3);
-    background: rgba(255, 253, 246, 0.9);
-}
-
-html[data-theme='light'] .chip:hover {
-    border-color: rgba(168, 124, 48, 0.55);
-}
-
-html[data-theme='light'] .chip[aria-current='true'] {
-    color: #2a1b0a;
-    background: linear-gradient(180deg, #e3bf76 0%, #c1923f 55%, #9b6f27 100%);
-    box-shadow: 0 6px 16px -10px rgba(120, 84, 30, 0.9);
-}
-
-/* ── Product cards ── */
-
-html[data-theme='light'] .product-card {
-    border-color: rgba(168, 124, 48, 0.24);
-    background: linear-gradient(180deg, #fffdf8 0%, #fbf5e8 100%);
-}
-
-html[data-theme='light'] .product-card:hover,
-html[data-theme='light'] .product-card:focus-within {
-    border-color: rgba(168, 124, 48, 0.55);
-    box-shadow:
-        0 16px 30px -24px rgba(74, 48, 19, 0.5),
-        var(--shadow-gold-glow);
-}
-
-html[data-theme='light'] .media {
-    border-color: rgba(168, 124, 48, 0.26);
-    background:
-        radial-gradient(72% 55% at 50% 108%, rgba(193, 146, 63, 0.22) 0%, transparent 72%),
-        radial-gradient(60% 50% at 50% 22%, rgba(255, 255, 255, 0.9) 0%, transparent 70%),
-        linear-gradient(180deg, #f7edd9 0%, #efe2c9 100%);
-}
-
-html[data-theme='light'] .media::after {
-    background: linear-gradient(
-        105deg,
-        transparent 35%,
-        rgba(255, 255, 255, 0.28) 48%,
-        rgba(255, 255, 255, 0.5) 50%,
-        rgba(255, 255, 255, 0.28) 52%,
-        transparent 65%
-    );
-}
-
-html[data-theme='light'] .media-glyph {
-    opacity: 0.6;
-    filter: drop-shadow(0 4px 10px rgba(168, 124, 48, 0.28));
-}
-
-html[data-theme='light'] .product-card:hover .media-glyph {
-    opacity: 0.85;
-}
-
-html[data-theme='light'] .media-note {
-    color: rgba(122, 92, 40, 0.6);
-}
-
-html[data-theme='light'] .num-badge {
-    background: linear-gradient(180deg, #e6c47f 0%, #c1923f 52%, #9b6f27 100%);
-    color: #2a1b0a;
-    box-shadow: 0 2px 5px -2px rgba(74, 48, 19, 0.55);
-}
-
-html[data-theme='light'] .product-latin {
-    color: rgba(111, 92, 68, 0.8);
-}
-
-html[data-theme='light'] .price-slot {
-    border-top-color: rgba(168, 124, 48, 0.32);
-}
-
-html[data-theme='light'] .price-label {
-    color: rgba(140, 102, 40, 0.95);
-}
-
-html[data-theme='light'] .price-empty {
-    border-bottom-color: rgba(168, 124, 48, 0.45);
-}
-
-/* ── Hookah rows ── */
-
-html[data-theme='light'] .flavor-row {
-    border-color: rgba(168, 124, 48, 0.28);
-    background: linear-gradient(90deg, #fdf6e7 0%, #fffdf7 55%, #fdf6e7 100%);
-}
-
-html[data-theme='light'] .flavor-row:hover {
-    border-color: rgba(168, 124, 48, 0.55);
-}
-
-html[data-theme='light'] .flavor-glyph {
-    color: var(--color-gold-500);
-    filter: drop-shadow(0 1px 2px rgba(74, 48, 19, 0.25));
-}
-
-html[data-theme='light'] .flavor-row:hover .flavor-glyph {
-    color: var(--color-gold-300);
-}
-
-html[data-theme='light'] .feature-glyph,
-html[data-theme='light'] .heading-glyph {
-    color: var(--color-gold-500);
-}
-
-html[data-theme='light'] .service-price {
-    border-color: rgba(168, 124, 48, 0.4);
-    background: linear-gradient(180deg, #fdf2da, #f8ecd6);
-}
-
-html[data-theme='light'] .feature-pill {
-    border-color: rgba(168, 124, 48, 0.24);
-    background: #fffbf1;
-}
-
-/* ── Landing cards ── */
-
-html[data-theme='light'] .hero-card {
-    border-color: rgba(168, 124, 48, 0.36);
-    background:
-        radial-gradient(120% 100% at 100% 0%, rgba(193, 146, 63, 0.2) 0%, transparent 55%),
-        linear-gradient(180deg, #fffdf8 0%, #faf3e4 100%);
-}
-
-html[data-theme='light'] .hero-card::after {
-    background: linear-gradient(100deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%);
-}
-
-html[data-theme='light'] .hero-card:hover,
-html[data-theme='light'] .hero-card:active {
-    border-color: rgba(168, 124, 48, 0.65);
-    box-shadow:
-        0 24px 40px -32px rgba(74, 48, 19, 0.55),
-        0 0 30px -16px rgba(193, 146, 63, 0.55);
-}
-
-html[data-theme='light'] .hero-card-glyph {
-    filter: drop-shadow(0 5px 12px rgba(168, 124, 48, 0.3));
-}
-
-/* ── Floating controls + veil ── */
-
-html[data-theme='light'] .preloader {
-    background: radial-gradient(80% 60% at 50% 40%, #fffbf2 0%, #f3e9d5 70%);
-}
-
-html[data-theme='light'] .preloader-ring::after {
-    border-bottom-color: rgba(168, 124, 48, 0.5);
-}
-
-html[data-theme='light'] .to-top,
-html[data-theme='light'] .theme-toggle {
-    border-color: rgba(168, 124, 48, 0.42);
-    background: linear-gradient(180deg, rgba(255, 253, 246, 0.96), rgba(247, 238, 222, 0.96));
-    box-shadow: 0 10px 22px -16px rgba(74, 48, 19, 0.5);
-}
-
-html[data-theme='light'] .to-top:hover,
-html[data-theme='light'] .theme-toggle:hover {
-    border-color: rgba(150, 105, 42, 0.7);
+    --shadow-accent-glow: 0 10px 26px -18px rgba(64, 85, 191, 0.5);
 }
 
 /* Sun sinks, moon rises. */
@@ -1342,7 +1067,7 @@ html[data-theme='light'] .theme-toggle-icon--moon {
     transform: none;
 }
 
-/* Line art needs a touch more presence on paper. */
+/* Line art needs a touch less presence on paper. */
 html[data-theme='light'] .watermark {
-    opacity: 0.085;
+    opacity: 0.22;
 }
