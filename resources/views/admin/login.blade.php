@@ -62,7 +62,7 @@
                         <span>مرا به خاطر بسپار</span>
                     </label>
 
-                    <button type="submit" class="admin-btn admin-btn--gold admin-login-submit">
+                    <button type="submit" class="admin-btn admin-btn--accent admin-login-submit">
                         <span>ورود</span>
                     </button>
                 </form>

@@ -1,6 +1,6 @@
 {{-- A number and what it counts. `tone` tints the figure when it is a to-do
      rather than a fact (items without a price, hidden sections …). --}}
-@props(['label', 'value', 'icon' => null, 'tone' => 'gold', 'href' => null, 'note' => null])
+@props(['label', 'value', 'icon' => null, 'tone' => 'accent', 'href' => null, 'note' => null])
 
 @php $tag = $href ? 'a' : 'div'; @endphp
 

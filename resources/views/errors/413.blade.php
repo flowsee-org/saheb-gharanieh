@@ -39,7 +39,7 @@
                     سرور آن را نپذیرفت. یک بار به صفحهٔ قبل برگردید و عکس کوچک‌تری انتخاب کنید.
                 </p>
 
-                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--gold">
+                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--accent">
                     بازگشت
                 </a>
             </div>
