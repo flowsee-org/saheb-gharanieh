@@ -1,8 +1,8 @@
 # کافه صاحبقرانیه — Saheb Gharaniyeh Cafe
 
-A mobile-first digital menu for a traditional Persian café. Deep black and antique gold,
-ornate line-art frames, full RTL, Persian typography — modelled on the café's printed
-four-panel menu (`images/photo_5767233449319141139_y.jpg`).
+A mobile-first digital menu for a traditional Persian café. Deep navy and brand blue, ruled
+rather than framed, full RTL, Persian typography — with the menu itself transcribed from the
+café's printed four-panel card.
 
 No cart, no checkout, no payments: it is a menu you read on a phone at the table.
 
@@ -67,7 +67,7 @@ Both routes are single-action controllers (`HomeController`, `MenuController`). 
 
 Dark is the house theme. The switch is the round button pinned to the **top-right corner**
 of every page (`resources/views/components/theme-toggle.blade.php`), and light is the
-opt-in: the same printed menu on cream card stock.
+opt-in: the same menu on white, with the blues darkened to hold their contrast on paper.
 
 - The palette is chosen in `<head>` by a short inline script — before the first paint, so
   no page ever flashes the wrong theme — and remembered in `localStorage` under `sg-theme`.
@@ -79,15 +79,18 @@ opt-in: the same printed menu on cream card stock.
   in Blade (`text-cream-dim`, `bg-gold-900/30` …) follows along without touching a view —
   and then restates only the hard-coded colours that were tuned to glow on black. Those
   rules sit outside `@layer`, so they win over the component layer without `!important`.
-- Ramp semantics are preserved: a low gold index still means "for headings", it is just
-  deep bronze on paper instead of pale gold on black.
+- Ramp semantics are preserved: a low gold index still means "for headings". That ramp is
+  legacy on the public pages, though — it still drives the panel and the `gold-*` utilities,
+  while the menu's own colours come from the `--sg-*` tokens in `theme-overrides.css`, which
+  are declared after `app.css` and win. `.gold-text` and `.gold-line` are re-pointed there to
+  the house blue, so a view that still asks for gold gets the current design.
 
 ### Sticky section bar
 
 `resources/js/app.js` runs a rAF-throttled scroll spy: the current section is the last one
 whose top edge has passed under the bar. It swaps the label in `#section-flag-text`, marks
 the matching chip with `aria-current="true"`, scrolls that chip into view, updates the URL
-hash with `history.replaceState`, and drives the thin gold progress rule. Anchor clicks are
+hash with `history.replaceState`, and drives the thin progress rule. Anchor clicks are
 intercepted so the sticky bar height is subtracted from the scroll target.
 
 ---
@@ -110,8 +113,9 @@ Everything on both pages comes from the database — no menu copy is hard-coded 
 | `sort_order`, `is_active` | Ordering and visibility |
 
 **`products`** — one row per item. `price` is nullable on purpose: the printed menu leaves
-`قیمت :` blank, so an empty price renders a dotted gold slot instead of a number.
-`image_path` is nullable too — when it is empty the card shows the ornate placeholder.
+`قیمت :` blank, so an empty price prints «قیمت در محل» where the number would go — including
+on both hookah sections, which price per flavour now. `image_path` is nullable too — when it
+is empty the card shows the plain blue well (`--sg-media`) rather than a photo.
 `is_active` hides an item, `is_available` renders it as "موقتاً تمام شد".
 
 **`category_features`** — the extras strip under the Super Deluxe hookah panel
@@ -258,9 +262,14 @@ password hash). Move the database between machines out of band — `scp`, not `g
   (see `App\Support\Persian` and `AppServiceProvider`).
 - Vanilla JS only: theme switch, preloader, IntersectionObserver reveals, image fade-in,
   scroll spy, back-to-top. `prefers-reduced-motion` is respected.
-- Four Vite entries: `app.css` / `app.js` for the menu, `admin.css` / `admin.js` for the
-  panel. `php artisan test` leaves Vite switched on, so an entry missing from
-  `public/build/manifest.json` fails the suite rather than 500-ing in production.
+- Eight Vite entries. The public menu loads four CSS files in this order — `app.css`
+  (Tailwind and the `@theme` tokens), `brand.css`, `theme-overrides.css` (the `--sg-*`
+  tokens and the `.menu-*` components), `menu-redesign.css` — plus `app.js` and
+  `menu-redesign.js`; the panel loads `admin.css` / `admin.js`. **Every entry named in an
+  `@vite([...])` call must also be listed in `vite.config.js`.** A name that is in the Blade
+  call but not the config is absent from `public/build/manifest.json`, and `@vite` then
+  throws — which 500s every page using that layout, not just the styling. `php artisan test`
+  leaves Vite switched on precisely so that fails the suite instead of reaching production.
 
 ### Screenshots during development
 
