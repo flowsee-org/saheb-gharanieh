@@ -27,13 +27,30 @@ class SettingSeeder extends Seeder
             ['key' => 'address', 'value' => 'تهران، نیاوران، خیابان صاحبقرانیه', 'group' => 'contact', 'label' => 'نشانی'],
             ['key' => 'phone', 'value' => '۰۲۱-۱۲۳۴۵۶۷۸', 'group' => 'contact', 'label' => 'شماره تماس'],
             ['key' => 'instagram', 'value' => 'sahebgharaniyeh.cafe', 'group' => 'social', 'label' => 'اینستاگرام'],
+
+            // No value: the owner pastes the two map links in the admin panel.
+            // Also added by 2026_08_25_000001_add_navigation_link_settings, which
+            // is what puts them on the server — deploy migrates, it never seeds.
+            ['key' => 'balad_url', 'value' => null, 'type' => 'url', 'group' => 'navigation', 'label' => 'ادرس بلد'],
+            ['key' => 'neshan_url', 'value' => null, 'type' => 'url', 'group' => 'navigation', 'label' => 'ادرس نشان'],
         ];
 
         foreach ($settings as $setting) {
-            Setting::updateOrCreate(
-                ['key' => $setting['key']],
-                $setting + ['type' => 'string']
-            );
+            // The value is seeded on create only. Re-running the seeder used to
+            // overwrite every box the owner had edited in the panel with these
+            // defaults; the shape of the row (label, group, type) is still kept
+            // current, since that is ours to own and not editable in the panel.
+            $row = Setting::firstOrNew(['key' => $setting['key']]);
+
+            $existing = $row->exists ? $row->value : null;
+
+            $row->fill($setting + ['type' => 'string']);
+
+            if ($row->exists) {
+                $row->value = $existing;
+            }
+
+            $row->save();
         }
     }
 }

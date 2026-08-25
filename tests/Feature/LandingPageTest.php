@@ -64,19 +64,20 @@ class LandingPageTest extends TestCase
         $this->get('/')->assertOk()->assertSeeInOrder(['اولی', 'دومی'], false);
     }
 
-    /** The cards are the point of the page, so the about block sits under them. */
-    public function test_the_about_block_comes_after_the_cards(): void
+    /**
+     * This used to assert the about block sat under the cards. The redesign took
+     * the about block off the landing page — the intro is the page's
+     * <meta name="description"> now, and the cards are the whole page — so what
+     * is left worth pinning is that the setting still reaches the meta tag.
+     */
+    public function test_the_intro_setting_fills_the_meta_description(): void
     {
         Setting::put('intro', 'میعادگاه دوستی‌های قدیمی.');
         Category::factory()->onLanding(1)->create(['card_title' => 'نوشیدنی‌های گرم']);
 
         $content = $this->get('/')->assertOk()->getContent();
-        // The intro also fills <meta name="description">, so compare inside <main> only.
-        $main = substr($content, (int) strpos($content, '<main'));
+        $head = substr($content, 0, (int) strpos($content, '<body'));
 
-        $this->assertLessThan(
-            strpos($main, 'میعادگاه دوستی‌های قدیمی.'),
-            strpos($main, 'یک دسته را انتخاب کنید')
-        );
+        $this->assertStringContainsString('میعادگاه دوستی‌های قدیمی.', $head);
     }
 }

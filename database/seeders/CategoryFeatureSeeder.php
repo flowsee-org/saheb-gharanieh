@@ -32,7 +32,9 @@ class CategoryFeatureSeeder extends Seeder
         ];
 
         foreach ($features as $index => [$name, $glyph]) {
-            CategoryFeature::updateOrCreate(
+            // firstOrCreate: the extras are reorderable and switchable in the
+            // panel, so an existing row is the owner's, not ours.
+            CategoryFeature::firstOrCreate(
                 ['category_id' => $category->id, 'name' => $name],
                 ['glyph' => $glyph, 'sort_order' => $index + 1, 'is_active' => true]
             );

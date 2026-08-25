@@ -1,9 +1,12 @@
 <x-layouts.app title="منوی دیجیتال" :meta-description="$settings['intro'] ?? null">
     <main class="menu-home">
         <header class="menu-home__brand">
-            <x-emblem class="menu-home__mark" />
             <p class="menu-home__eyebrow">منوی دیجیتال</p>
-            <h1 class="menu-home__title">{{ $settings['cafe_name'] ?? 'کافه صاحبقرانیه' }}</h1>
+            {{-- Still an h1, still carrying the café name — the name is now in
+                 the mark's accessible label rather than set as visible type. --}}
+            <h1 class="menu-home__title">
+                <x-logo class="menu-home__mark" :label="$settings['cafe_name'] ?? 'کافه صاحبقرانیه'" />
+            </h1>
             <p class="menu-brand__latin">{{ $settings['cafe_name_latin'] ?? 'Saheb Gharaniyeh Cafe' }}</p>
             <p class="menu-home__tagline">{{ $settings['tagline'] ?? 'قهوه، قلیان و شب‌های دلنشین' }}</p>
         </header>

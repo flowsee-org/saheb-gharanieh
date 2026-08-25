@@ -72,24 +72,41 @@ class MenuPageTest extends TestCase
             ->assertViewHas('activeSection', null);
     }
 
-    public function test_hookah_sections_show_their_service_price_and_extras(): void
+    /**
+     * The hookah sections used to print one service price for the whole section
+     * («قیمت هر سرویس», falling back to «در محل از پرسنل بپرسید»). They price per
+     * flavour now, exactly like the drinks, so that row is gone — but the
+     * what's-included extras underneath it stayed.
+     */
+    public function test_hookah_sections_price_per_flavour_and_keep_their_extras(): void
     {
         $category = Category::factory()->hookah()->create([
             'slug' => 'hookah-deluxe',
             'name' => 'قلیان — سرویس سوپر ویژه',
-            'price' => 185_000,
-            'price_note' => 'قیمت هر سرویس',
         ]);
 
-        Product::factory()->for($category)->create(['name' => 'دوسیب']);
+        Product::factory()->for($category)->create(['name' => 'دوسیب', 'price' => 185_000]);
         CategoryFeature::factory()->for($category)->create(['name' => 'چای زغالی']);
 
         $this->get('/menu')
             ->assertOk()
             ->assertSee('دوسیب', false)
-            ->assertSee('قیمت هر سرویس', false)
-            ->assertSee('۱۸۵٬۰۰۰ تومان', false)
-            ->assertSee('چای زغالی', false);
+            ->assertSee('۱۸۵٬۰۰۰', false)
+            ->assertSee('چای زغالی', false)
+            ->assertDontSee('قیمت هر سرویس', false)
+            ->assertDontSee('در محل از پرسنل بپرسید', false);
+    }
+
+    /** The unit is a span of its own, so the figure must not carry one too. */
+    public function test_a_price_shows_its_unit_once(): void
+    {
+        $category = Category::factory()->create();
+        Product::factory()->for($category)->create(['name' => 'لاته', 'price' => 185_000]);
+
+        $content = $this->get('/menu')->assertOk()->getContent();
+
+        $this->assertStringContainsString('۱۸۵٬۰۰۰', $content);
+        $this->assertSame(1, substr_count($content, 'تومان'));
     }
 
     public function test_products_without_a_price_render_the_empty_price_slot(): void
@@ -99,7 +116,8 @@ class MenuPageTest extends TestCase
 
         $this->get('/menu')
             ->assertOk()
-            ->assertSee('price-empty', false)
-            ->assertSee('تصویر به‌زودی', false);
+            ->assertSee('قیمت در محل', false)
+            // No photo either, so the well falls back to the section's line art.
+            ->assertSee('menu-product__media--empty', false);
     }
 }

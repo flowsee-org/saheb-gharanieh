@@ -1,5 +1,12 @@
 @php
-    $icons = ['general' => 'sparkle', 'contact' => 'account', 'social' => 'eye'];
+    $icons = ['general' => 'sparkle', 'contact' => 'account', 'social' => 'eye', 'navigation' => 'pin'];
+
+    // The hint under the two map boxes: they are the one place in this form
+    // where the owner has to paste something from another app rather than type.
+    $hints = [
+        'balad_url' => 'در اپلیکیشن بلد کافه را پیدا کنید، «اشتراک‌گذاری» را بزنید و نشانی کپی‌شده را اینجا بچسبانید.',
+        'neshan_url' => 'در اپلیکیشن نشان کافه را پیدا کنید، «اشتراک‌گذاری» را بزنید و نشانی کپی‌شده را اینجا بچسبانید.',
+    ];
 @endphp
 
 <x-layouts.admin title="متن‌های سایت" heading="متن‌های سایت"
@@ -15,6 +22,7 @@
                         @foreach ($settings[$group] as $setting)
                             <x-admin.field :label="$setting->label ?: $setting->key"
                                            :name="'values.'.$setting->key"
+                                           :hint="$hints[$setting->key] ?? null"
                                            :for="'setting-'.$setting->key">
                                 @if ($setting->type === 'text')
                                     <textarea class="admin-input admin-textarea admin-textarea--tall"
@@ -23,12 +31,15 @@
                                               rows="6"
                                               maxlength="2000">{{ old('values.'.$setting->key, $setting->value) }}</textarea>
                                 @else
-                                    <input type="text"
+                                    {{-- type=url gets the phone's URL keyboard and the browser's own
+                                         check before the post; the server validates it again. --}}
+                                    <input type="{{ $setting->type === 'url' ? 'url' : 'text' }}"
                                            class="admin-input"
                                            id="setting-{{ $setting->key }}"
                                            name="values[{{ $setting->key }}]"
                                            value="{{ old('values.'.$setting->key, $setting->value) }}"
-                                           @if ($group === 'social') dir="ltr" @endif
+                                           @if ($setting->type === 'url') placeholder="https://" @endif
+                                           @if ($group === 'social' || $setting->type === 'url') dir="ltr" @endif
                                            maxlength="400">
                                 @endif
                             </x-admin.field>

@@ -21,7 +21,7 @@
     <main class="admin-login">
         <x-frame class="admin-login-card">
             <div class="admin-login-inner">
-                <x-emblem class="admin-login-emblem" />
+                <x-logo class="admin-login-emblem" label="" />
 
                 <h1 class="admin-login-title">کافه صاحبقرانیه</h1>
                 <p class="admin-login-latin latin">Saheb Gharaniyeh</p>

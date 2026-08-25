@@ -17,8 +17,8 @@ npm install
 cp .env.example .env         # already done in this checkout
 php artisan key:generate
 
-php artisan migrate:fresh --seed   # schema + the real menu from the printed reference
-npm run build                      # or: npm run dev
+php artisan migrate --seed   # schema + the real menu from the printed reference
+npm run build                # or: npm run dev
 
 php artisan serve
 ```
@@ -26,6 +26,29 @@ php artisan serve
 Run the test suite with `php artisan test`.
 
 The database is SQLite (`database/database.sqlite`) out of the box; nothing else is required.
+
+### Updating an install that already has data
+
+```bash
+git pull
+composer install --no-dev
+npm ci && npm run build
+php artisan migrate --force
+php artisan storage:link || true
+php artisan optimize:clear && php artisan optimize
+```
+
+No seeders. This is what `.github/workflows/ci-cd.yml` runs on the server, and it
+keeps everything entered in the panel — prices, uploaded photos, edited copy.
+
+**Never run `migrate:fresh` on an install with real data.** It drops every table,
+which takes every price and every `image_path` with it; the uploaded files are left
+orphaned in `storage/app/public` with nothing pointing at them. The seeders are safe
+to re-run (they only create missing rows, never overwrite an existing one), but
+`migrate:fresh` empties the tables before they get the chance.
+
+A new setting the panel must expose therefore ships as a migration, not a seeder
+line — see `2026_08_25_000001_add_navigation_link_settings.php`.
 
 ---
 
@@ -82,7 +105,7 @@ Everything on both pages comes from the database — no menu copy is hard-coded 
 | `kind` | `drink` \| `hookah` — `App\Enums\CategoryKind` |
 | `layout` | `grid` \| `list` — `App\Enums\CategoryLayout`; drinks use the card grid, hookah uses flavour rows |
 | `icon`, `image_path` | Small glyph next to the title; optional section image |
-| `price`, `price_note` | One service price for the whole section (the hookah panels) |
+| `price`, `price_note` | Legacy: the hookah panels used to print one service price for the whole section. They price per flavour now, so nothing reads these and the panel no longer offers them — the columns stay only so existing rows keep whatever was typed |
 | `card_order`, `card_title`, `card_subtitle`, `card_latin` | Landing-page card. `card_order = NULL` means "not on the landing page" |
 | `sort_order`, `is_active` | Ordering and visibility |
 
@@ -95,13 +118,15 @@ Everything on both pages comes from the database — no menu copy is hard-coded 
 (چای زغالی، میوه فصل، باقلوا …).
 
 **`settings`** — editable site copy (café name, tagline, intro paragraph, hours, address,
-phone, Instagram) as `key`/`value` rows. Read through `Setting::map()`, which is cached and
-busted automatically on save/delete.
+phone, Instagram, Balad and Neshan map links) as `key`/`value` rows. Read through
+`Setting::map()`, which is cached and busted automatically on save/delete.
 
 Seeders hold the real menu transcribed from the reference photo: 15 hot drinks, 18 cold
 drinks and 16 hookah flavours (seeded into both hookah services), plus 8 deluxe extras.
-They use `updateOrCreate`, so re-running them is safe. `tests/Feature/MenuSeederTest.php`
-locks those counts in.
+They **create only** — an existing row is the owner's, edited in the panel, and re-running a
+seeder must not overwrite it. `tests/Feature/MenuSeederTest.php` locks those counts in.
+The trade is that correcting a transcription typo here no longer reaches an install that
+already has the row; correct it in the panel instead.
 
 ---
 
@@ -118,8 +143,8 @@ Everything the owner edits lives under **`/wp-admin`**, behind its own `admin` a
 | `/wp-admin/items` | Menu items — search, filter by section/status, bulk actions, inline price editing, ↑/↓ ordering |
 | `/wp-admin/items/create`, `…/{id}/edit` | Full item form, including image upload and glyph picker |
 | `/wp-admin/categories` | Sections — drag to reorder, toggle, and manage the extras strip inline |
-| `/wp-admin/categories/create`, `…/{id}/edit` | Section form: copy, kind, layout, service price, landing-page card |
-| `/wp-admin/settings` | The `settings` rows — café intro, hours, address, Instagram |
+| `/wp-admin/categories/create`, `…/{id}/edit` | Section form: copy, kind, layout, landing-page card |
+| `/wp-admin/settings` | The `settings` rows — café intro, hours, address, Instagram, map links |
 | `/wp-admin/account` | Rename the account and change the password |
 
 Two rules the panel is built on:
@@ -220,11 +245,15 @@ password hash). Move the database between machines out of band — `scp`, not `g
 - Tailwind CSS 4 via `@tailwindcss/vite`, with the design tokens (night/gold palette,
   shadows, easing) declared in `@theme` in `resources/css/app.css` and re-pointed for the
   light theme (see [Themes](#themes)).
-- Self-hosted variable fonts in `public/fonts`: Vazirmatn for Persian, Cinzel for the latin
-  small-caps lines.
+- Self-hosted variable fonts in `public/fonts`: Vazirmatn for Persian, Montserrat for every
+  latin line. Montserrat is declared twice — once as `Montserrat` for the `latin` utility, and
+  once as `Montserrat Latin` restricted by `unicode-range` so it takes the latin characters out
+  of body copy without touching Persian metrics. `U+0020` is left out of that range on purpose:
+  a space taken from a latin face would change the word spacing of Persian text around it.
 - Blade anonymous components in `resources/views/components`: `frame`, `ornament.*`,
-  `icon.*`, `product-card`, `flavor-row`, `price-tag`, `emblem`, `theme-toggle`,
-  `site-footer`.
+  `icon.*`, `product-card`, `flavor-row`, `price-tag`, `logo`, `theme-toggle`,
+  `site-footer`. `logo` paints `images/logo-dark.png` / `logo-light.png` as a background
+  keyed on `html[data-theme]`, so only the active theme's file is fetched.
 - `@fa(...)` prints Persian digits and `@price(...)` prints a Persian price with " تومان"
   (see `App\Support\Persian` and `AppServiceProvider`).
 - Vanilla JS only: theme switch, preloader, IntersectionObserver reveals, image fade-in,

@@ -32,9 +32,32 @@
     --sg-text: var(--dominant-900);
     --sg-text-secondary: var(--dominant-700);
     --sg-text-muted: var(--dominant-600);
-    --sg-border: var(--dominant-300);
+
+    /* Every rule and outline on the site. These were neutral grey
+       (dominant-300), which read as a smudge rather than a line and was not
+       even blue; they are the house blue now, and --sg-border-strong is the
+       heavier weight for the rules that separate whole blocks — the sticky
+       category bar, the divider between sections. In both themes "strong"
+       means further from the page, so dark goes lighter and light goes
+       darker. */
+    --sg-border: var(--brand-500);
+    --sg-border-strong: #6677CC;
+
     --sg-accent: var(--brand-500);
-    --sg-accent-soft: var(--brand-400);
+
+    /* Lighter than --sg-accent, not darker. The dark ramp mirrors about 500,
+       so brand-400 is #334499 here — nearly invisible on a #0D1126 page, and
+       it was carrying the prices, the eyebrows and the service figures. */
+    --sg-accent-soft: #8C99D9;
+
+    /* Latin copy. Brighter than the muted grey the persian subtitles use:
+       english on this site is set small, and small grey text at .5rem is the
+       first thing to disappear. */
+    --sg-latin: var(--dominant-800);
+
+    /* The well behind an item photo, and the placeholder when there is none. */
+    --sg-media: #1E2A5E;
+
     --sg-content: 760px;
     --sg-radius: 10px;
 }
@@ -72,9 +95,12 @@ html[data-theme='light'] {
     --sg-text: #1A1A1A;
     --sg-text-secondary: #4D4D4D;
     --sg-text-muted: #666666;
-    --sg-border: #CCCCCC;
+    --sg-border: #6677CC;
+    --sg-border-strong: var(--brand-500);
     --sg-accent: #4055BF;
     --sg-accent-soft: #334499;
+    --sg-latin: #333333;
+    --sg-media: #D9DDF2;
 }
 
 html,
@@ -110,6 +136,15 @@ body {
     justify-content: space-between;
     min-height: 48px;
     gap: 16px;
+    /* The theme switch is fixed to the *physical* top-right corner of the
+       viewport (0.6rem inset + 2.375rem wide = the rightmost 2.975rem — see
+       .theme-toggle in app.css), and in this RTL header that corner is exactly
+       where the mark sits. Reserve only the part of it the shell does not
+       already clear: 8px covers the shell's own padding-inline (14px at the
+       narrowest breakpoint) less the clearance wanted, and once the viewport
+       outgrows --menu-content-width the centred shell leaves the corner empty
+       and this collapses to 0. */
+    padding-right: max(0px, 2.975rem - 8px - max(0px, (100vw - var(--menu-content-width)) / 2));
 }
 
 .menu-brand__identity {
@@ -120,24 +155,20 @@ body {
     text-decoration: none;
 }
 
+/* Sized on width only — <x-logo> carries the artwork's aspect ratio, so
+   pinning both axes would letterbox it inside a square. */
 .menu-brand__mark {
-    width: 34px;
-    height: 34px;
-    color: var(--sg-accent);
-}
-
-.menu-brand__name {
-    display: block;
-    font-size: .9rem;
-    font-weight: 800;
-    line-height: 1.3;
+    width: 46px;
+    height: auto;
 }
 
 .menu-brand__latin {
     display: block;
     margin-top: 2px;
-    color: var(--sg-text-muted);
-    font-size: .55rem;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .58rem;
+    font-weight: 600;
     letter-spacing: .12em;
     direction: ltr;
 }
@@ -187,8 +218,8 @@ body {
 }
 
 .menu-rule {
-    width: 32px;
-    height: 1px;
+    width: 44px;
+    height: 2px;
     margin: 20px auto 0;
     border: 0;
     background: var(--sg-accent);
@@ -200,7 +231,7 @@ body {
     top: 0;
     margin-inline: -20px;
     padding: 10px 20px;
-    border-block: 1px solid var(--sg-border);
+    border-block: 2px solid var(--sg-border-strong);
     background: var(--sg-bg);
 }
 
@@ -219,7 +250,7 @@ body {
     align-items: center;
     min-height: 34px;
     padding-inline: 12px;
-    border: 1px solid var(--sg-border);
+    border: 2px solid var(--sg-border);
     border-radius: 7px;
     background: transparent;
     color: var(--sg-text-secondary);
@@ -241,7 +272,7 @@ body {
 }
 
 .menu-section + .menu-section {
-    border-top: 1px solid var(--sg-border);
+    border-top: 2px solid var(--sg-border-strong);
 }
 
 .menu-section__heading {
@@ -271,8 +302,10 @@ body {
 
 .menu-section__latin {
     margin: 3px 0 0;
-    color: var(--sg-text-muted);
-    font-size: .52rem;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .56rem;
+    font-weight: 600;
     letter-spacing: .1em;
     direction: ltr;
 }
@@ -315,8 +348,11 @@ body {
 
 .menu-product__latin {
     margin: 1px 0 0;
-    color: var(--sg-text-muted);
-    font-size: .5rem;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .04em;
     direction: ltr;
 }
 
@@ -348,7 +384,7 @@ body {
     height: 82px;
     overflow: hidden;
     border-radius: 8px;
-    background: var(--sg-surface);
+    background: var(--sg-media);
 }
 
 .menu-product--image {
@@ -363,28 +399,6 @@ body {
 
 .menu-product[data-unavailable='true'] { opacity: .45; }
 
-.menu-service {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 14px;
-    padding: 12px 14px;
-    border: 1px solid var(--sg-border);
-    background: var(--sg-surface);
-}
-
-.menu-service__label {
-    color: var(--sg-text-secondary);
-    font-size: .63rem;
-}
-
-.menu-service__price {
-    color: var(--sg-accent-soft);
-    font-size: .75rem;
-    font-weight: 900;
-}
-
 .menu-features {
     display: flex;
     flex-wrap: wrap;
@@ -397,7 +411,7 @@ body {
     align-items: center;
     gap: 5px;
     padding: 6px 8px;
-    border: 1px solid var(--sg-border);
+    border: 2px solid var(--sg-border);
     color: var(--sg-text-secondary);
     font-size: .58rem;
 }
@@ -409,6 +423,100 @@ body {
     color: var(--sg-text-muted);
     text-align: center;
     font-size: .68rem;
+}
+
+/* Footer ------------------------------------------------------------- */
+/* This had no rules of its own and leaned on tailwind utilities in the
+   template, which left it with no rule above it and no padding. It is a real
+   block now: the mark, the café's details, the two map links, then contact. */
+.menu-footer {
+    padding-block: 30px 40px;
+    margin-top: 8px;
+    border-top: 2px solid var(--sg-border-strong);
+    color: var(--sg-text-secondary);
+    font-size: .68rem;
+    line-height: 1.9;
+    text-align: center;
+}
+
+.menu-footer p { margin: 0; }
+
+.menu-footer__mark {
+    width: min(46%, 150px);
+    height: auto;
+    margin: 0 auto 14px;
+}
+
+.menu-footer__name {
+    color: var(--sg-text);
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+.menu-footer__maps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.menu-footer__map {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px 8px 8px;
+    border: 2px solid var(--sg-border);
+    border-radius: 12px;
+    background: var(--sg-surface);
+    color: var(--sg-text);
+    font-size: .68rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color .16s ease, background-color .16s ease;
+}
+
+.menu-footer__map:hover {
+    border-color: var(--sg-border-strong);
+    background: var(--sg-surface-strong);
+}
+
+/* A light tile under both marks. Neshan's artwork is black paths on
+   transparent, so on the dark page it would otherwise be a blank square;
+   Balad brings its own dark tile, which sits on this one like an app icon. */
+.menu-footer__map-logo {
+    display: block;
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+    border-radius: 9px;
+    background: #FFFFFF;
+}
+
+.menu-footer__contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 18px;
+    margin-top: 16px;
+}
+
+/* Was var(--sg-brand-soft), which is defined nowhere — the two links fell back
+   to inheriting the muted footer grey. */
+.menu-footer__contact a {
+    color: var(--sg-accent-soft);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.menu-footer__contact a:hover { text-decoration: underline; }
+
+.menu-footer__legal {
+    margin-top: 18px;
+    color: var(--sg-text-muted);
+    font-size: .6rem;
 }
 
 /* Home --------------------------------------------------------------- */
@@ -425,10 +533,9 @@ body {
 }
 
 .menu-home__mark {
-    width: 68px;
-    height: 68px;
+    width: min(62%, 200px);
+    height: auto;
     margin: 0 auto 16px;
-    color: var(--sg-accent);
 }
 
 .menu-home__title {
@@ -449,7 +556,7 @@ body {
     display: grid;
     gap: 0;
     margin-top: 38px;
-    border-block: 1px solid var(--sg-border);
+    border-block: 2px solid var(--sg-border-strong);
 }
 
 .menu-home__category {
@@ -458,7 +565,7 @@ body {
     gap: 13px;
     min-height: 72px;
     padding-inline: 3px;
-    border-bottom: 1px solid var(--sg-border);
+    border-bottom: 2px solid var(--sg-border);
     color: var(--sg-text);
     text-decoration: none;
 }
@@ -481,7 +588,7 @@ body {
     min-height: 38px;
     align-items: center;
     padding-inline: 18px;
-    border: 1px solid var(--sg-accent);
+    border: 2px solid var(--sg-accent);
     border-radius: 7px;
     color: var(--sg-accent-soft);
     font-size: .66rem;
