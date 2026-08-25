@@ -75,10 +75,6 @@
                             @if ($category->card_order !== null)
                                 <span class="admin-tag admin-tag--accent">در صفحهٔ اصلی</span>
                             @endif
-
-                            @if ($category->price)
-                                <span class="admin-tag admin-tag--ghost">@price($category->price)</span>
-                            @endif
                         </div>
 
                         {{-- Section extras: «باقلوا»، «یخ»، «فویل». Managed here rather

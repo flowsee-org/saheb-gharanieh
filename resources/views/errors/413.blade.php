@@ -28,7 +28,7 @@
     <main class="admin-login">
         <x-frame class="admin-login-card">
             <div class="admin-login-inner">
-                <x-emblem class="admin-login-emblem" />
+                <x-logo class="admin-login-emblem" label="کافه صاحبقرانیه" />
 
                 <h1 class="admin-login-title">تصویر بیش از حد بزرگ است</h1>
 

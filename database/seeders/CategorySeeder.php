@@ -81,7 +81,12 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $attributes) {
-            Category::updateOrCreate(['slug' => $attributes['slug']], $attributes);
+            // firstOrCreate, not updateOrCreate: every field above is editable in
+            // the panel — name, description, glyph, layout, the landing-card copy
+            // and its order — so updating would hand the owner's wording back to
+            // the printed-menu default on any re-seed. Same reasoning as
+            // AdminUserSeeder and ProductSeeder.
+            Category::firstOrCreate(['slug' => $attributes['slug']], $attributes);
         }
     }
 }

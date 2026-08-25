@@ -22,6 +22,9 @@ class SettingsRequest extends AdminRequest
                 'text' => ['nullable', 'string', 'max:2000'],
                 'number' => ['nullable', 'string', 'max:40'],
                 'boolean' => ['nullable', 'boolean'],
+                // Map share links. Validated, because these end up as the href
+                // of a link in the footer and a typo there is a dead footer.
+                'url' => ['nullable', 'url:http,https', 'max:400'],
                 default => ['nullable', 'string', 'max:400'],
             };
         }

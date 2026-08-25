@@ -3,11 +3,10 @@
         <header class="menu-header menu-shell">
             <div class="menu-brand">
                 <a href="{{ route('home') }}" class="menu-brand__identity" aria-label="صفحه اصلی کافه صاحبقرانیه">
-                    <x-emblem class="menu-brand__mark" />
-                    <span>
-                        <span class="menu-brand__name">کافه صاحبقرانیه</span>
-                        <span class="menu-brand__latin">Saheb Gharaniyeh Cafe</span>
-                    </span>
+                    {{-- The mark carries the café name here; the anchor already
+                         names itself, so the logo stays decorative. --}}
+                    <x-logo class="menu-brand__mark" label="" />
+                    <span class="menu-brand__latin">Saheb Gharaniyeh Cafe</span>
                 </a>
                 <span class="menu-brand__meta"><span class="menu-brand__status" aria-hidden="true"></span>منوی امروز</span>
             </div>
@@ -67,26 +66,19 @@
                             @endforeach
                         </div>
 
-                        @if (!$category->usesGrid())
-                            <div class="menu-service">
-                                <span class="menu-service__label">{{ $category->price_note ?? 'قیمت سرویس' }}</span>
-                                @if ($category->price)
-                                    <span class="menu-service__price">@price($category->price)</span>
-                                @else
-                                    <span class="menu-service__label">در محل از پرسنل بپرسید</span>
-                                @endif
+                        {{-- List sections (the two hookah services) used to carry
+                             one price for the whole section here. They price per
+                             flavour now, the same as the drinks, so only the
+                             what's-included tags are left. --}}
+                        @if (!$category->usesGrid() && $category->features->isNotEmpty())
+                            <div class="menu-features" aria-label="همراه سرویس">
+                                @foreach ($category->features as $feature)
+                                    <span class="menu-feature">
+                                        <x-icon.glyph :name="$feature->glyph" class="h-3.5 w-3.5" />
+                                        {{ $feature->name }}
+                                    </span>
+                                @endforeach
                             </div>
-
-                            @if ($category->features->isNotEmpty())
-                                <div class="menu-features" aria-label="همراه سرویس">
-                                    @foreach ($category->features as $feature)
-                                        <span class="menu-feature">
-                                            <x-icon.glyph :name="$feature->glyph" class="h-3.5 w-3.5" />
-                                            {{ $feature->name }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            @endif
                         @endif
                     @endif
                 </section>

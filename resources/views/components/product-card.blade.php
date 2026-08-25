@@ -39,7 +39,11 @@
 
     <div class="menu-product__price">
         @if ($product->price)
-            <strong>@price($product->price)</strong>
+            {{-- Persian::number, not @price: @price already appends « تومان »,
+                 so with the unit span below it every price read "… تومان تومان".
+                 The unit stays a span of its own because it is set smaller and
+                 in the muted colour. --}}
+            <strong>{{ \App\Support\Persian::number($product->price) }}</strong>
             <span class="menu-product__unit">تومان</span>
         @else
             <span class="menu-product__unit">قیمت در محل</span>

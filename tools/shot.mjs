@@ -132,7 +132,9 @@ await sleep(2500);
 
 const consoleErrors = events
     .filter((e) => e.method === 'Log.entryAdded' && e.params.entry.level === 'error')
-    .map((e) => `${e.params.entry.source}: ${e.params.entry.text}`);
+    // The url is what makes a network entry actionable — "failed to load
+    // resource" on its own says nothing about which one.
+    .map((e) => [e.params.entry.source + ':', e.params.entry.text, e.params.entry.url].filter(Boolean).join(' '));
 
 const script = evalArg ?? `JSON.stringify({
     innerWidth: window.innerWidth,

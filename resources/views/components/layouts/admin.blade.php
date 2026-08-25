@@ -23,8 +23,11 @@
 
     <header class="admin-bar">
         <div class="admin-bar-inner">
-            <a href="{{ route('admin.dashboard') }}" class="admin-brand">
-                <x-emblem class="admin-brand-emblem" />
+            {{-- .admin-brand-text is display:none on narrow screens, so the
+                 label is on the anchor rather than in the mark — otherwise the
+                 link has no accessible name on a phone. --}}
+            <a href="{{ route('admin.dashboard') }}" class="admin-brand" aria-label="پنل کافه صاحبقرانیه">
+                <x-logo class="admin-brand-emblem" label="" />
                 <span class="admin-brand-text">
                     <span class="admin-brand-name">پنل کافه</span>
                     <span class="admin-brand-latin latin">Saheb Gharaniyeh</span>
