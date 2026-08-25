@@ -168,10 +168,22 @@ What is left is configuration, and all four matter:
    panel.
 4. **Upload limits, if the web server is nginx.** `client_max_body_size` defaults to **1M** and
    answers 413 by itself, before PHP is reached — so a normal phone photo never arrives no
-   matter what the panel or php.ini say. `client_max_body_size 12M;` in the server block, to
-   match `post_max_size` in `public/.user.ini`; and `location ~ /\.user\.ini { deny all; }`,
-   since that file sits in the web root and nginx will otherwise serve it. Apache needs
-   neither: `public/.htaccess` sets the limits for mod_php and denies the file already.
+   matter what the panel or php.ini say. Both files nginx needs are in `deploy/nginx/`, with
+   installation notes in their comments:
+
+   ```bash
+   # The 413 fix: raises the body limit to 12M, matching post_max_size in public/.user.ini.
+   sudo cp deploy/nginx/upload-size.conf /etc/nginx/conf.d/
+   # Denies public/.user.ini, which nginx serves as text otherwise. Needs an
+   # `include /etc/nginx/snippets/deny-user-ini.conf;` line inside the server block.
+   sudo cp deploy/nginx/deny-user-ini.conf /etc/nginx/snippets/
+
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+   Apache needs neither: `public/.htaccess` sets the limits for mod_php and denies the file
+   already. Nothing in the deploy workflow touches nginx — this is a one-off, done as root on
+   the server, and it survives deployments because it lives outside the project directory.
 
 ### How large a photo may be
 
