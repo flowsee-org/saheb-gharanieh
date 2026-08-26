@@ -28,7 +28,7 @@
     <main class="admin-login">
         <x-frame class="admin-login-card">
             <div class="admin-login-inner">
-                <x-emblem class="admin-login-emblem" />
+                <x-logo class="admin-login-emblem" label="کافه صاحبقرانیه" />
 
                 <h1 class="admin-login-title">تصویر بیش از حد بزرگ است</h1>
 
@@ -39,7 +39,7 @@
                     سرور آن را نپذیرفت. یک بار به صفحهٔ قبل برگردید و عکس کوچک‌تری انتخاب کنید.
                 </p>
 
-                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--gold">
+                <a href="{{ url()->previous(route('admin.dashboard')) }}" class="admin-btn admin-btn--accent">
                     بازگشت
                 </a>
             </div>

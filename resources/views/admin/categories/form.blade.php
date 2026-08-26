@@ -92,21 +92,12 @@
                         </select>
                     </x-admin.field>
 
-                    <x-admin.field label="قیمت سرویس (تومان)" name="price"
-                                   hint="اختیاری — یک قیمت برای کل بخش، مثل سرویس قلیان.">
-                        <span class="admin-price-wrap admin-price-wrap--wide">
-                            <input type="text" class="admin-input" id="price" name="price"
-                                   value="{{ old('price', $category->price ? \App\Support\Persian::number($category->price) : '') }}"
-                                   inputmode="numeric" placeholder="۳۵۰٬۰۰۰">
-                            <span class="admin-price-unit">تومان</span>
-                        </span>
-                    </x-admin.field>
-
-                    <x-admin.field label="توضیح قیمت" name="price_note"
-                                   hint="اختیاری — مثلاً «به همراه سرویس ویژه».">
-                        <input type="text" class="admin-input" id="price_note" name="price_note"
-                               value="{{ old('price_note', $category->price_note) }}" maxlength="120">
-                    </x-admin.field>
+                    {{-- «قیمت سرویس» and «توضیح قیمت» used to sit here. They were
+                         the one-price-for-the-whole-section pair the hookah menu
+                         printed; the hookah flavours are priced one by one in
+                         «موارد منو» now, so these two boxes had nothing left to
+                         show on the site and were a control that did nothing. The
+                         columns are still there, holding whatever was typed. --}}
                 </x-admin.card>
 
                 <x-admin.card title="نمایش" icon="eye">
@@ -148,7 +139,7 @@
         </div>
 
         <div class="admin-form-bar">
-            <button type="submit" class="admin-btn admin-btn--gold">
+            <button type="submit" class="admin-btn admin-btn--accent">
                 <x-icon.admin name="check" class="h-4 w-4" />
                 <span>{{ $editing ? 'ذخیرهٔ تغییرات' : 'ساخت دسته' }}</span>
             </button>

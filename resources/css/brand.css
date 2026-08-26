@@ -1,0 +1,129 @@
+/* Saheb Gharaniyeh brand system: Brand #4055BF + supplied Dominant neutrals. */
+:root {
+    --brand-0: #FFFFFF;
+    --brand-100: #D9DDF2;
+    --brand-200: #B2BBE6;
+    --brand-300: #8C99D9;
+    --brand-400: #6677CC;
+    --brand-500: #4055BF;
+    --brand-600: #334499;
+    --brand-700: #263373;
+    --brand-800: #19224D;
+    --brand-900: #0D1126;
+    --brand-1000: #000000;
+    --dominant-100: #1A1A1A;
+    --dominant-200: #333333;
+    --dominant-300: #4D4D4D;
+    --dominant-400: #666666;
+    --dominant-500: #808080;
+    --dominant-600: #999999;
+    --dominant-700: #B3B3B3;
+    --dominant-800: #CCCCCC;
+    --brand-glow: rgba(64, 85, 191, .32);
+}
+
+html[data-theme='dark'] {
+    --color-night-950: var(--brand-900);
+    --color-night-900: var(--brand-800);
+    --color-night-800: var(--brand-700);
+    --color-night-700: var(--dominant-100);
+    --color-night-600: var(--dominant-200);
+    --color-gold-50: var(--brand-0);
+    --color-gold-100: var(--brand-100);
+    --color-gold-200: var(--brand-200);
+    --color-gold-300: var(--brand-300);
+    --color-gold-400: var(--brand-400);
+    --color-gold-500: var(--brand-500);
+    --color-gold-600: var(--brand-600);
+    --color-gold-700: var(--brand-700);
+    --color-gold-800: var(--brand-800);
+    --color-gold-900: var(--brand-900);
+    --color-cream: #FFFFFF;
+    --color-cream-dim: var(--dominant-700);
+    --shadow-gold-glow: 0 0 40px -12px var(--brand-glow);
+    --admin-edge: rgba(64,85,191,.28);
+    --admin-edge-soft: rgba(64,85,191,.15);
+    --admin-edge-lit: rgba(102,119,204,.58);
+    --admin-sunk: rgba(13,17,38,.55);
+    --admin-raise: rgba(38,51,115,.42);
+}
+
+html[data-theme='light'] {
+    --color-night-950: #FFFFFF;
+    --color-night-900: var(--brand-100);
+    --color-night-800: #F2F2F2;
+    --color-night-700: var(--dominant-100);
+    --color-night-600: var(--dominant-200);
+    --color-gold-50: var(--brand-900);
+    --color-gold-100: var(--brand-800);
+    --color-gold-200: var(--brand-700);
+    --color-gold-300: var(--brand-600);
+    --color-gold-400: var(--brand-500);
+    --color-gold-500: var(--brand-600);
+    --color-gold-600: var(--brand-700);
+    --color-gold-700: var(--brand-800);
+    --color-gold-800: var(--brand-900);
+    --color-gold-900: var(--brand-900);
+    --color-cream: var(--dominant-100);
+    --color-cream-dim: var(--dominant-400);
+    --shadow-gold-glow: 0 0 34px -14px var(--brand-glow);
+}
+
+html[data-theme='dark'] body::before {
+    background: radial-gradient(120% 65% at 50% -12%, rgba(64,85,191,.24), rgba(13,17,38,.94) 48%, var(--brand-900)), linear-gradient(180deg,var(--brand-800),var(--brand-900));
+}
+html[data-theme='light'] body::before {
+    background: radial-gradient(120% 65% at 50% -12%, #FFFFFF, #F2F2F2 48%, var(--brand-100)), linear-gradient(180deg,#FFFFFF,#F2F2F2);
+}
+
+.gold-text { background-image: linear-gradient(180deg,var(--brand-300),var(--brand-500) 48%,var(--brand-700)); }
+.gold-line { background-image: linear-gradient(90deg,transparent,rgba(64,85,191,.16) 15%,rgba(64,85,191,.72) 50%,rgba(64,85,191,.16) 85%,transparent); }
+.frame { border-color: rgba(64,85,191,.34); background: linear-gradient(180deg,rgba(38,51,115,.48),rgba(25,34,77,.72) 55%,rgba(13,17,38,.9)); }
+.frame::before { border-color: rgba(102,119,204,.18); }
+.frame-flat { background: linear-gradient(180deg,rgba(38,51,115,.42),rgba(13,17,38,.72)); }
+.topbar { background: linear-gradient(180deg,var(--brand-900),var(--brand-800)); border-bottom-color: rgba(64,85,191,.28); }
+.topbar-progress { background: linear-gradient(90deg,var(--brand-700),var(--brand-500) 60%,var(--brand-300)); box-shadow: 0 0 12px var(--brand-glow); }
+.section-flag,.chip { border-color: rgba(64,85,191,.28); }
+.section-flag { background: linear-gradient(180deg,rgba(38,51,115,.9),rgba(25,34,77,.9)); }
+.chip { background: rgba(25,34,77,.72); }
+.chip:hover { color: var(--brand-100); border-color: rgba(102,119,204,.55); }
+.chip[aria-current='true'],.num-badge { color: var(--brand-900); background: linear-gradient(180deg,var(--brand-200),var(--brand-500) 55%,var(--brand-600)); }
+.heading-glyph,.frame-corner,.media-glyph,.hero-card-glyph,.feature-glyph { color: var(--brand-400); filter: drop-shadow(0 5px 14px rgba(64,85,191,.28)); }
+.product-card { border-color: rgba(64,85,191,.2); background: linear-gradient(180deg,rgba(38,51,115,.5),rgba(13,17,38,.76)); }
+.product-card:hover,.product-card:focus-within { border-color: rgba(102,119,204,.62); }
+.media { border-color: rgba(64,85,191,.24); background: radial-gradient(72% 55% at 50% 108%,rgba(64,85,191,.25),transparent 72%),linear-gradient(180deg,var(--brand-800),var(--brand-900)); }
+.price-slot { border-top-color: rgba(64,85,191,.25); }
+.price-label,.price-value { color: var(--brand-200); }
+.flavor-row { border-color: rgba(64,85,191,.24); background: linear-gradient(90deg,rgba(38,51,115,.7),rgba(13,17,38,.76) 55%,rgba(38,51,115,.7)); }
+.service-price { border-color: rgba(102,119,204,.5); background: linear-gradient(180deg,rgba(38,51,115,.72),rgba(13,17,38,.84)); }
+.feature-pill { border-color: rgba(64,85,191,.2); background: rgba(25,34,77,.58); }
+.hero-card { border-color: rgba(64,85,191,.3); background: radial-gradient(120% 100% at 100% 0%,rgba(64,85,191,.18),transparent 55%),linear-gradient(180deg,rgba(38,51,115,.72),rgba(13,17,38,.92)); }
+.hero-card:hover,.hero-card:active { border-color: rgba(140,153,217,.68); box-shadow: 0 0 44px -16px var(--brand-glow); }
+.preloader { background: radial-gradient(80% 60% at 50% 40%,var(--brand-800),var(--brand-900) 72%); }
+.preloader-ring::before { border-top-color: var(--brand-300); border-inline-end-color: rgba(64,85,191,.35); }
+.preloader-ring::after { border-bottom-color: rgba(140,153,217,.6); }
+.preloader-dots span { background: var(--brand-400); }
+.to-top,.theme-toggle { border-color: rgba(64,85,191,.42); background: linear-gradient(180deg,rgba(38,51,115,.96),rgba(13,17,38,.96)); color: var(--brand-200); }
+
+html[data-theme='light'] .frame { border-color: rgba(64,85,191,.32); background: linear-gradient(180deg,#FFFFFF,#F2F2F2 58%,var(--brand-100)); }
+html[data-theme='light'] .topbar { background: linear-gradient(180deg,#FFFFFF,var(--brand-100)); }
+html[data-theme='light'] .chip { background: rgba(255,255,255,.92); }
+html[data-theme='light'] .chip[aria-current='true'],html[data-theme='light'] .num-badge { color:#FFFFFF; background: linear-gradient(180deg,var(--brand-400),var(--brand-500) 55%,var(--brand-700)); }
+html[data-theme='light'] .product-card { background: linear-gradient(180deg,#FFFFFF,#F2F2F2); }
+html[data-theme='light'] .media { background: radial-gradient(72% 55% at 50% 108%,rgba(64,85,191,.16),transparent 72%),linear-gradient(180deg,#F2F2F2,var(--brand-100)); }
+html[data-theme='light'] .hero-card { background: radial-gradient(120% 100% at 100% 0%,rgba(64,85,191,.13),transparent 55%),linear-gradient(180deg,#FFFFFF,#F2F2F2); }
+html[data-theme='light'] .flavor-row { background: linear-gradient(90deg,#F2F2F2,#FFFFFF 55%,#F2F2F2); }
+html[data-theme='light'] .service-price { background: linear-gradient(180deg,var(--brand-100),#FFFFFF); }
+html[data-theme='light'] .feature-pill { background:#FFFFFF; }
+html[data-theme='light'] .preloader { background: radial-gradient(80% 60% at 50% 40%,#FFFFFF,#F2F2F2 70%); }
+html[data-theme='light'] .to-top,html[data-theme='light'] .theme-toggle { background: linear-gradient(180deg,#FFFFFF,#F2F2F2); color:var(--brand-600); }
+
+.admin-bar { background: rgba(13,17,38,.9); }
+.admin-bar-rule { background: linear-gradient(90deg,transparent,rgba(64,85,191,.38) 22%,rgba(64,85,191,.38) 78%,transparent); }
+.admin-nav--bar .admin-nav-link[aria-current='page'] { background: linear-gradient(180deg,rgba(64,85,191,.18),rgba(64,85,191,.06)); }
+.admin-nav--tabs { background: rgba(13,17,38,.96); }
+.admin-nav--tabs .admin-nav-link[aria-current='page']::before { background: var(--brand-500); }
+.admin-btn--gold { background: linear-gradient(180deg,var(--brand-300),var(--brand-500)); color:var(--brand-900); }
+.admin-btn--gold:hover { background: linear-gradient(180deg,var(--brand-200),var(--brand-400)); box-shadow:var(--shadow-gold-glow); }
+.admin-icon-btn--gold { color:var(--brand-300); }
+.admin-icon-btn--gold:hover { background:rgba(64,85,191,.16); color:var(--brand-100); }

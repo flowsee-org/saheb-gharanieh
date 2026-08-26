@@ -3,9 +3,9 @@
 /* ------------------------------------------------------------------ */
 /*
  *  Loaded alongside app.css, never instead of it. The framework, the
- *  @theme tokens and the shared pieces the panel leans on — gold-text,
- *  gold-line, latin, .frame — all live there, and app.css already scans
- *  these views through its own @source. So there is deliberately no
+ *  @theme tokens and the shared pieces the panel leans on — hairline,
+ *  latin, .frame — all live there, and app.css already scans these views
+ *  through its own @source. So there is deliberately no
  *  `@import 'tailwindcss'` in this file: that would ship the framework a
  *  second time. No @apply either, matching the rest of the project.
  *
@@ -14,12 +14,20 @@
  */
 
 :root {
-    /* One place that knows the panel's edges and surfaces. */
-    --admin-edge: rgba(209, 164, 81, 0.24);
-    --admin-edge-soft: rgba(209, 164, 81, 0.13);
-    --admin-edge-lit: rgba(209, 164, 81, 0.5);
-    --admin-sunk: rgba(5, 4, 4, 0.5);
-    --admin-raise: rgba(33, 26, 17, 0.42);
+    /*
+     * One place that knows the panel's edges and surfaces. These sit on top of
+     * app.css's role tokens: the panel pins data-theme="dark", so it always
+     * gets the dark column.
+     *
+     * `raise` is a lift *over* --color-card, not a colour of its own — the
+     * panels are already --color-card, so anything inside one has to lighten
+     * to read as raised.
+     */
+    --admin-edge: var(--color-rule);
+    --admin-edge-soft: var(--color-hair);
+    --admin-edge-lit: var(--color-accent);
+    --admin-sunk: var(--color-sunk);
+    --admin-raise: rgba(242, 242, 242, 0.06);
 
     /* Both bars are sticky/fixed, so their heights are other rules' business:
        the bulk bar parks under the top bar, and the page reserves room at the
@@ -69,8 +77,8 @@
         padding: 0.5rem 0.9rem;
         border: 1px solid var(--admin-edge-lit);
         border-radius: 999px;
-        background: var(--color-night-800);
-        color: var(--color-gold-200);
+        background: var(--color-card);
+        color: var(--color-accent-ink);
         font-size: 0.8125rem;
         transition: transform 0.2s var(--ease-silk);
     }
@@ -108,7 +116,7 @@
         position: sticky;
         top: 0;
         z-index: 40;
-        background: rgba(10, 8, 7, 0.86);
+        background: var(--color-chrome);
         backdrop-filter: blur(12px) saturate(1.2);
     }
 
@@ -131,7 +139,7 @@
     }
 
     /*
-     * The gold hairline under the bar. Its own element rather than a border, so
+     * The hairline under the bar. Its own element rather than a border, so
      * it can fade out at both ends the way the printed menu's rules do.
      */
     .admin-bar-rule {
@@ -140,8 +148,8 @@
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(209, 164, 81, 0.34) 22%,
-            rgba(209, 164, 81, 0.34) 78%,
+            var(--color-rule) 22%,
+            var(--color-rule) 78%,
             transparent
         );
     }
@@ -167,7 +175,7 @@
     .admin-brand-emblem {
         width: 2.375rem;
         height: auto;
-        color: var(--color-gold-400);
+        color: var(--color-accent);
         opacity: 0.9;
     }
 
@@ -186,12 +194,12 @@
     .admin-brand-name {
         font-size: 0.875rem;
         font-weight: 600;
-        color: var(--color-gold-100);
+        color: var(--color-ink);
     }
 
     .admin-brand-latin {
         font-size: 0.5rem;
-        color: var(--color-gold-600);
+        color: var(--color-latin);
     }
 
     /* --------------------------------------------------------------- */
@@ -207,7 +215,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         transition:
             color 0.18s var(--ease-silk),
             background-color 0.18s var(--ease-silk);
@@ -241,14 +249,14 @@
     }
 
     .admin-nav--bar .admin-nav-link:hover {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
         background: var(--admin-raise);
     }
 
     .admin-nav--bar .admin-nav-link[aria-current='page'] {
-        color: var(--color-gold-100);
+        color: var(--color-ink);
         border-color: var(--admin-edge);
-        background: linear-gradient(180deg, rgba(209, 164, 81, 0.16), rgba(209, 164, 81, 0.05));
+        background: rgba(64, 85, 191, 0.2);
     }
 
     /* ── On a phone: a fixed tab bar ───────────────────────────────── */
@@ -264,7 +272,7 @@
         height: var(--admin-tabs-h);
         padding-bottom: env(safe-area-inset-bottom);
         border-top: 1px solid var(--admin-edge-soft);
-        background: rgba(10, 8, 7, 0.94);
+        background: var(--color-chrome);
         backdrop-filter: blur(12px);
     }
 
@@ -288,7 +296,7 @@
     }
 
     .admin-nav--tabs .admin-nav-link[aria-current='page'] {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     /* A short gold rule over the current tab. */
@@ -299,7 +307,7 @@
         inset-inline: 25%;
         height: 2px;
         border-radius: 0 0 2px 2px;
-        background: var(--color-gold-400);
+        background: var(--color-accent);
     }
 
     .admin-nav-label {
@@ -326,6 +334,7 @@
         font-size: 1.375rem;
         font-weight: 600;
         line-height: 1.35;
+        color: var(--color-ink);
     }
 
     @media (min-width: 768px) {
@@ -337,7 +346,7 @@
     .admin-head-sub {
         margin-top: 0.1875rem;
         font-size: 0.8125rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-head-actions {
@@ -359,7 +368,7 @@
         border: 1px solid var(--admin-edge);
         border-radius: 999px;
         background: var(--admin-raise);
-        color: var(--color-cream);
+        color: var(--color-ink);
         font-family: inherit;
         font-size: 0.8125rem;
         font-weight: 500;
@@ -375,7 +384,7 @@
 
     .admin-btn:hover {
         border-color: var(--admin-edge-lit);
-        color: var(--color-gold-100);
+        color: var(--color-ink);
     }
 
     .admin-btn:active {
@@ -386,21 +395,21 @@
     .admin-icon-btn:focus-visible,
     .admin-input:focus-visible,
     .admin-select:focus-visible {
-        outline: 2px solid var(--color-gold-400);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
     }
 
-    .admin-btn--gold {
+    .admin-btn--accent {
         border-color: transparent;
-        background: linear-gradient(180deg, var(--color-gold-300), var(--color-gold-500));
-        color: var(--color-night-900);
+        background: var(--color-accent);
+        color: var(--color-on-accent);
         font-weight: 600;
     }
 
-    .admin-btn--gold:hover {
-        color: var(--color-night-950);
-        background: linear-gradient(180deg, var(--color-gold-200), var(--color-gold-400));
-        box-shadow: var(--shadow-gold-glow);
+    .admin-btn--accent:hover {
+        color: var(--color-on-accent);
+        background: var(--color-brand-400);
+        box-shadow: var(--shadow-accent-glow);
     }
 
     .admin-btn--ghost {
@@ -410,12 +419,12 @@
     .admin-btn--quiet {
         border-color: var(--admin-edge-soft);
         background: transparent;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-btn--quiet:hover {
         border-color: var(--admin-edge);
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     .admin-btn--danger {
@@ -442,7 +451,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
         background: var(--admin-raise);
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         cursor: pointer;
         transition:
             border-color 0.18s var(--ease-silk),
@@ -452,17 +461,17 @@
 
     .admin-icon-btn:hover {
         border-color: var(--admin-edge-lit);
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
-    .admin-icon-btn--gold {
+    .admin-icon-btn--accent {
         border-color: var(--admin-edge);
-        color: var(--color-gold-300);
+        color: var(--color-accent-ink);
     }
 
-    .admin-icon-btn--gold:hover {
-        background: rgba(209, 164, 81, 0.15);
-        color: var(--color-gold-100);
+    .admin-icon-btn--accent:hover {
+        background: rgba(64, 85, 191, 0.22);
+        color: var(--color-ink);
     }
 
     .admin-icon-btn--danger:hover {
@@ -484,27 +493,30 @@
     .admin-icon-btn:disabled:hover {
         border-color: var(--admin-edge-soft);
         background: var(--admin-raise);
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-link {
-        color: var(--color-gold-300);
+        color: var(--color-accent-ink);
         font-size: 0.75rem;
-        border-bottom: 1px solid rgba(209, 164, 81, 0.3);
+        border-bottom: 1px solid var(--color-hair);
         transition: color 0.18s var(--ease-silk);
     }
 
     .admin-link:hover {
-        color: var(--color-gold-100);
-        border-bottom-color: var(--color-gold-300);
+        color: var(--color-ink);
+        border-bottom-color: var(--color-accent-ink);
     }
 
     /* --------------------------------------------------------------- */
     /*  Cards                                                          */
     /* --------------------------------------------------------------- */
 
+    /* .frame is pure ornament — the panel states its own surface. */
     .admin-card {
         padding: 1.375rem 1.25rem;
+        background: var(--color-card);
+        border-radius: 18px;
     }
 
     @media (min-width: 640px) {
@@ -529,7 +541,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 9px;
         background: var(--admin-sunk);
-        color: var(--color-gold-300);
+        color: var(--color-accent-ink);
     }
 
     .admin-card-titles {
@@ -541,13 +553,14 @@
         font-size: 0.9375rem;
         font-weight: 600;
         line-height: 1.5;
+        color: var(--color-ink);
     }
 
     .admin-card-sub {
         margin-top: 0.125rem;
         font-size: 0.75rem;
         line-height: 1.6;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-card-action {
@@ -580,14 +593,14 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: var(--radius-card);
         background: var(--admin-sunk);
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         font-size: 0.8125rem;
         line-height: 1.7;
     }
 
     .admin-note > svg {
         margin-top: 0.3125rem;
-        color: var(--color-gold-400);
+        color: var(--color-accent);
     }
 
     .admin-note--tight {
@@ -598,7 +611,7 @@
     .admin-hint {
         font-size: 0.75rem;
         line-height: 1.65;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-facts {
@@ -615,11 +628,11 @@
     }
 
     .admin-facts dt {
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-facts dd {
-        color: var(--color-cream);
+        color: var(--color-ink);
         font-weight: 500;
     }
 
@@ -629,8 +642,8 @@
         padding: 0.625rem 0.75rem;
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
-        background: var(--color-night-950);
-        color: var(--color-gold-200);
+        background: var(--color-sunk);
+        color: var(--color-accent-ink);
         font-family: ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
         font-size: 0.75rem;
         line-height: 1.6;
@@ -720,12 +733,12 @@
     .admin-label {
         font-size: 0.8125rem;
         font-weight: 500;
-        color: var(--color-gold-100);
+        color: var(--color-ink);
     }
 
     .admin-label-req {
         margin-inline-start: 0.1875rem;
-        color: var(--color-gold-400);
+        color: var(--color-accent);
     }
 
     .admin-error {
@@ -751,7 +764,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
         background: var(--admin-sunk);
-        color: var(--color-cream);
+        color: var(--color-ink);
         font-family: inherit;
         font-size: 0.875rem;
         line-height: 1.6;
@@ -761,7 +774,7 @@
     }
 
     .admin-input::placeholder {
-        color: rgba(189, 176, 155, 0.5);
+        color: var(--color-ink-faint);
     }
 
     .admin-input:hover,
@@ -772,7 +785,7 @@
     .admin-input:focus,
     .admin-select:focus {
         border-color: var(--admin-edge-lit);
-        background: rgba(5, 4, 4, 0.72);
+        background: var(--color-sunk);
         outline: none;
     }
 
@@ -801,8 +814,8 @@
     .admin-select {
         appearance: none;
         padding-inline-end: 2rem;
-        background-image: linear-gradient(45deg, transparent 50%, var(--color-gold-400) 50%),
-            linear-gradient(135deg, var(--color-gold-400) 50%, transparent 50%);
+        background-image: linear-gradient(45deg, transparent 50%, var(--color-accent) 50%),
+            linear-gradient(135deg, var(--color-accent) 50%, transparent 50%);
         background-position:
             calc(0.75rem + 1px) calc(50% - 1px),
             0.75rem calc(50% - 1px);
@@ -814,12 +827,12 @@
 
     .admin-select option,
     .admin-select optgroup {
-        background: var(--color-night-800);
-        color: var(--color-cream);
+        background: var(--color-card);
+        color: var(--color-ink);
     }
 
     /*
-     * Latin text the owner types — usernames, slugs, LATIN NAMES. Cinzel
+     * Latin text the owner types — usernames, slugs, LATIN NAMES. Montserrat
      * with modest tracking, and no uppercasing: a slug is lowercase and
      * must read back exactly as it will appear in the URL. That is what
      * separates this from app.css's `latin` utility.
@@ -853,7 +866,7 @@
         transform: translateY(-50%);
         pointer-events: none;
         font-size: 0.6875rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     /* --------------------------------------------------------------- */
@@ -907,7 +920,7 @@
         width: 0.875rem;
         height: 0.875rem;
         border-radius: 999px;
-        background: var(--color-cream-dim);
+        background: var(--color-ink-dim);
         transition:
             transform 0.2s var(--ease-silk),
             background-color 0.2s var(--ease-silk);
@@ -915,7 +928,7 @@
 
     .admin-switch-input:checked + .admin-switch-label .admin-switch-track {
         border-color: transparent;
-        background: linear-gradient(180deg, var(--color-gold-300), var(--color-gold-500));
+        background: var(--color-accent);
     }
 
     /*
@@ -924,11 +937,11 @@
      */
     .admin-switch-input:checked + .admin-switch-label .admin-switch-knob {
         transform: translateX(calc(-1 * (2.375rem - 1.25rem)));
-        background: var(--color-night-900);
+        background: var(--color-on-accent);
     }
 
     .admin-switch-input:focus-visible + .admin-switch-label .admin-switch-track {
-        outline: 2px solid var(--color-gold-400);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
     }
 
@@ -942,13 +955,13 @@
     .admin-switch-name {
         font-size: 0.8125rem;
         font-weight: 500;
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     .admin-switch-hint {
         font-size: 0.6875rem;
         line-height: 1.6;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     /* --------------------------------------------------------------- */
@@ -961,7 +974,7 @@
         align-items: center;
         gap: 0.5rem;
         font-size: 0.8125rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         cursor: pointer;
     }
 
@@ -971,7 +984,7 @@
         width: 1.0625rem;
         height: 1.0625rem;
         flex-shrink: 0;
-        accent-color: var(--color-gold-400);
+        accent-color: var(--color-accent);
         cursor: pointer;
     }
 
@@ -1002,7 +1015,7 @@
 
     .admin-glyphs-summary:focus-visible,
     .admin-features-summary:focus-visible {
-        outline: 2px solid var(--color-gold-400);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
         border-radius: 10px;
     }
@@ -1016,8 +1029,8 @@
         flex-shrink: 0;
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
-        background: var(--color-night-900);
-        color: var(--color-gold-300);
+        background: var(--color-sunk);
+        color: var(--color-accent-ink);
     }
 
     .admin-glyphs-summary-text {
@@ -1029,13 +1042,13 @@
 
     .admin-glyphs-label {
         font-size: 0.6875rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-glyphs-value {
         font-size: 0.8125rem;
         font-weight: 500;
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     .admin-glyphs-chevron,
@@ -1043,7 +1056,7 @@
         width: 1rem;
         height: 1rem;
         flex-shrink: 0;
-        color: var(--color-gold-400);
+        color: var(--color-accent);
         transition: transform 0.2s var(--ease-silk);
     }
 
@@ -1060,7 +1073,7 @@
     .admin-glyphs-group {
         margin-block: 0.75rem 0.4375rem;
         font-size: 0.6875rem;
-        color: var(--color-gold-500);
+        color: var(--color-accent-ink);
     }
 
     .admin-glyphs-grid {
@@ -1105,8 +1118,8 @@
         height: 2.5rem;
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
-        background: var(--color-night-900);
-        color: var(--color-cream-dim);
+        background: var(--color-sunk);
+        color: var(--color-ink-dim);
         transition:
             border-color 0.18s var(--ease-silk),
             color 0.18s var(--ease-silk),
@@ -1114,13 +1127,13 @@
     }
 
     .admin-glyph-option input[type='radio']:checked + .admin-glyph-swatch {
-        border-color: var(--color-gold-400);
-        color: var(--color-gold-200);
-        box-shadow: var(--shadow-gold-glow);
+        border-color: var(--color-accent);
+        color: var(--color-accent-ink);
+        box-shadow: var(--shadow-accent-glow);
     }
 
     .admin-glyph-option input[type='radio']:focus-visible + .admin-glyph-swatch {
-        outline: 2px solid var(--color-gold-400);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
     }
 
@@ -1128,11 +1141,11 @@
         font-size: 0.625rem;
         line-height: 1.4;
         text-align: center;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-glyph-option input[type='radio']:checked ~ .admin-glyph-caption {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     /* --------------------------------------------------------------- */
@@ -1183,7 +1196,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.375rem;
-        color: rgba(189, 176, 155, 0.55);
+        color: var(--color-ink-faint);
         font-size: 0.75rem;
     }
 
@@ -1210,7 +1223,7 @@
 
     /* The input is off-screen, so the label has to show its focus for it. */
     .admin-image-pick:focus-within {
-        outline: 2px solid var(--color-gold-400);
+        outline: 2px solid var(--color-accent);
         outline-offset: 2px;
     }
 
@@ -1226,7 +1239,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 999px;
         background: var(--admin-sunk);
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         font-size: 0.6875rem;
         line-height: 1.5;
         white-space: nowrap;
@@ -1234,24 +1247,24 @@
 
     .admin-tag--count {
         border-color: var(--admin-edge);
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
         transition: background-color 0.18s var(--ease-silk);
     }
 
     .admin-tag--count:hover {
-        background: rgba(209, 164, 81, 0.14);
+        background: rgba(64, 85, 191, 0.18);
     }
 
-    .admin-tag--gold {
+    .admin-tag--accent {
         border-color: var(--admin-edge);
-        background: rgba(209, 164, 81, 0.14);
-        color: var(--color-gold-100);
+        background: rgba(64, 85, 191, 0.18);
+        color: var(--color-ink);
     }
 
     .admin-tag--mute {
         border-color: transparent;
-        background: rgba(189, 176, 155, 0.12);
-        color: rgba(189, 176, 155, 0.85);
+        background: rgba(242, 242, 242, 0.08);
+        color: var(--color-ink-dim);
     }
 
     .admin-tag--warn {
@@ -1308,7 +1321,7 @@
         padding-inline-end: 2.25rem;
         border: 1px solid var(--admin-edge-soft);
         border-radius: var(--radius-card);
-        background: linear-gradient(180deg, var(--admin-raise), rgba(6, 5, 4, 0.6));
+        background: var(--admin-raise);
         transition:
             border-color 0.18s var(--ease-silk),
             transform 0.18s var(--ease-silk);
@@ -1318,25 +1331,25 @@
         position: absolute;
         top: 0.75rem;
         inset-inline-end: 0.75rem;
-        color: var(--color-gold-600);
+        color: var(--color-ink-dim);
     }
 
     .admin-stat-value {
         font-size: 1.5rem;
         font-weight: 600;
         line-height: 1.3;
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     .admin-stat-label {
         font-size: 0.75rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-stat-note {
         margin-top: 0.1875rem;
         font-size: 0.6875rem;
-        color: var(--color-gold-600);
+        color: var(--color-ink-dim);
     }
 
     .admin-stat--link:hover {
@@ -1350,7 +1363,7 @@
     }
 
     .admin-stat--mute .admin-stat-value {
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-stat--warn {
@@ -1399,7 +1412,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 9px;
         background: var(--admin-sunk);
-        color: var(--color-gold-400);
+        color: var(--color-accent);
     }
 
     .admin-row-thumb img {
@@ -1419,7 +1432,7 @@
     .admin-row-title {
         font-size: 0.8125rem;
         font-weight: 500;
-        color: var(--color-cream);
+        color: var(--color-ink);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1431,14 +1444,14 @@
         flex-wrap: wrap;
         gap: 0.25rem;
         font-size: 0.6875rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-row-count,
     .admin-row-price {
         flex-shrink: 0;
         font-size: 0.75rem;
-        color: var(--color-gold-300);
+        color: var(--color-accent-ink);
     }
 
     .admin-row-count {
@@ -1496,7 +1509,7 @@
         width: 1rem;
         height: 1rem;
         pointer-events: none;
-        color: var(--color-gold-500);
+        color: var(--color-accent-ink);
     }
 
     .admin-search-input {
@@ -1519,7 +1532,7 @@
         width: 1.375rem;
         height: 1.375rem;
         border-radius: 999px;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         transition:
             background-color 0.18s var(--ease-silk),
             color 0.18s var(--ease-silk);
@@ -1527,7 +1540,7 @@
 
     .admin-search-clear:hover {
         background: var(--admin-raise);
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     .admin-filter-row {
@@ -1575,7 +1588,7 @@
         padding: 0.75rem 0.9375rem;
         border: 1px solid var(--admin-edge);
         border-radius: var(--radius-card);
-        background: rgba(23, 18, 12, 0.94);
+        background: var(--color-card);
         backdrop-filter: blur(10px);
         box-shadow: 0 12px 32px -20px rgba(0, 0, 0, 0.95);
     }
@@ -1583,7 +1596,7 @@
     .admin-bulk-count {
         font-size: 0.8125rem;
         font-weight: 500;
-        color: var(--color-gold-100);
+        color: var(--color-ink);
     }
 
     .admin-bulk-actions {
@@ -1664,7 +1677,7 @@
     .admin-item-thumb-glyph {
         width: 1.5rem;
         height: 1.5rem;
-        color: var(--color-gold-500);
+        color: var(--color-accent-ink);
     }
 
     .admin-item-body {
@@ -1684,12 +1697,12 @@
     .admin-item-name {
         font-size: 0.875rem;
         font-weight: 500;
-        color: var(--color-cream);
+        color: var(--color-ink);
         transition: color 0.18s var(--ease-silk);
     }
 
     .admin-item-name:hover {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     .admin-item-meta {
@@ -1698,12 +1711,12 @@
         flex-wrap: wrap;
         gap: 0.1875rem;
         font-size: 0.6875rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-item-latin {
         font-size: 0.5625rem;
-        color: var(--color-gold-600);
+        color: var(--color-latin);
     }
 
     .admin-item-tags {
@@ -1790,7 +1803,7 @@
         justify-content: center;
         width: 1.5rem;
         align-self: stretch;
-        color: var(--color-gold-600);
+        color: var(--color-ink-dim);
         cursor: grab;
         touch-action: none;
     }
@@ -1820,7 +1833,7 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 10px;
         background: var(--admin-sunk);
-        color: var(--color-gold-300);
+        color: var(--color-accent-ink);
     }
 
     .admin-cat-body {
@@ -1840,12 +1853,12 @@
     .admin-cat-name {
         font-size: 0.9375rem;
         font-weight: 600;
-        color: var(--color-cream);
+        color: var(--color-ink);
         transition: color 0.18s var(--ease-silk);
     }
 
     .admin-cat-name:hover {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     .admin-cat-meta {
@@ -1854,12 +1867,12 @@
         flex-wrap: wrap;
         gap: 0.1875rem;
         font-size: 0.6875rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-cat-slug {
         font-size: 0.5625rem;
-        color: var(--color-gold-600);
+        color: var(--color-latin);
     }
 
     .admin-cat-tags {
@@ -1903,8 +1916,8 @@
     .admin-cat[data-dragging] {
         position: relative;
         z-index: 5;
-        border-color: var(--color-gold-400);
-        box-shadow: var(--shadow-gold-glow);
+        border-color: var(--color-accent);
+        box-shadow: var(--shadow-accent-glow);
     }
 
     /* --------------------------------------------------------------- */
@@ -1920,11 +1933,11 @@
     .admin-features-summary {
         padding: 0.4375rem 0.625rem;
         font-size: 0.75rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-features-summary > svg:first-child {
-        color: var(--color-gold-500);
+        color: var(--color-accent-ink);
         flex-shrink: 0;
     }
 
@@ -1973,16 +1986,16 @@
         flex-shrink: 0;
         border-radius: 8px;
         background: var(--admin-raise);
-        color: var(--color-gold-400);
+        color: var(--color-accent);
     }
 
     .admin-feature--new {
         padding-top: 0.375rem;
-        border-top: 1px dashed var(--admin-edge-soft);
+        border-top: 1px solid var(--admin-edge-soft);
     }
 
     .admin-feature--new .admin-feature-glyph {
-        color: var(--color-gold-600);
+        color: var(--color-ink-dim);
     }
 
     /* --------------------------------------------------------------- */
@@ -2003,7 +2016,7 @@
         padding: 0.4375rem 0.875rem;
         border: 1px solid var(--admin-edge-soft);
         border-radius: 999px;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         font-size: 0.8125rem;
         transition:
             border-color 0.18s var(--ease-silk),
@@ -2012,7 +2025,7 @@
 
     .admin-pager-btn:hover {
         border-color: var(--admin-edge-lit);
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 
     .admin-pager-btn--off {
@@ -2022,7 +2035,7 @@
 
     .admin-pager-count {
         font-size: 0.75rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     /* --------------------------------------------------------------- */
@@ -2048,20 +2061,20 @@
         border: 1px solid var(--admin-edge-soft);
         border-radius: 999px;
         background: var(--admin-sunk);
-        color: var(--color-gold-500);
+        color: var(--color-accent-ink);
     }
 
     .admin-empty-title {
         font-size: 0.9375rem;
         font-weight: 600;
-        color: var(--color-gold-100);
+        color: var(--color-ink);
     }
 
     .admin-empty-text {
         max-width: 26rem;
         font-size: 0.8125rem;
         line-height: 1.75;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-empty-action {
@@ -2102,7 +2115,7 @@
         padding: 0.75rem 0.875rem;
         border: 1px solid var(--admin-edge);
         border-radius: var(--radius-card);
-        background: rgba(16, 13, 10, 0.96);
+        background: var(--color-card);
         backdrop-filter: blur(10px);
         box-shadow: 0 16px 40px -24px rgba(0, 0, 0, 0.95);
         pointer-events: auto;
@@ -2153,7 +2166,7 @@
         min-width: 0;
         font-size: 0.8125rem;
         line-height: 1.65;
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     .admin-toast-list {
@@ -2161,7 +2174,7 @@
         padding-inline-start: 1rem;
         list-style: disc;
         font-size: 0.75rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-toast-close {
@@ -2172,7 +2185,7 @@
         width: 1.375rem;
         height: 1.375rem;
         border-radius: 999px;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         cursor: pointer;
         transition:
             background-color 0.18s var(--ease-silk),
@@ -2181,7 +2194,7 @@
 
     .admin-toast-close:hover {
         background: var(--admin-raise);
-        color: var(--color-cream);
+        color: var(--color-ink);
     }
 
     /* --------------------------------------------------------------- */
@@ -2201,7 +2214,7 @@
     .admin-confirm-veil {
         position: absolute;
         inset: 0;
-        background: rgba(3, 2, 2, 0.78);
+        background: rgba(0, 0, 0, 0.72);
         backdrop-filter: blur(3px);
         animation: admin-veil-in 0.2s var(--ease-silk) both;
     }
@@ -2214,6 +2227,8 @@
 
     .admin-confirm-box {
         position: relative;
+        background: var(--color-card);
+        border-radius: 18px;
         width: 100%;
         max-width: 25rem;
         animation: admin-box-in 0.24s var(--ease-silk) both;
@@ -2251,12 +2266,13 @@
     .admin-confirm-title {
         font-size: 1.0625rem;
         font-weight: 600;
+        color: var(--color-ink);
     }
 
     .admin-confirm-text {
         font-size: 0.8125rem;
         line-height: 1.8;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-confirm-actions {
@@ -2288,6 +2304,8 @@
 
     .admin-login-card {
         width: 100%;
+        background: var(--color-card);
+        border-radius: 18px;
     }
 
     .admin-login-inner {
@@ -2300,26 +2318,27 @@
     .admin-login-emblem {
         width: 5.5rem;
         height: auto;
-        color: var(--color-gold-400);
+        color: var(--color-accent);
     }
 
     .admin-login-title {
         margin-top: 0.875rem;
         font-size: 1.25rem;
         font-weight: 600;
+        color: var(--color-ink);
     }
 
     .admin-login-latin {
         margin-top: 0.25rem;
         margin-bottom: 0.875rem;
         font-size: 0.5625rem;
-        color: var(--color-gold-600);
+        color: var(--color-latin);
     }
 
     .admin-login-note {
         margin-top: 0.875rem;
         font-size: 0.8125rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
     }
 
     .admin-login-form {
@@ -2339,11 +2358,11 @@
     .admin-login-back {
         margin-top: 1.125rem;
         font-size: 0.75rem;
-        color: var(--color-cream-dim);
+        color: var(--color-ink-dim);
         transition: color 0.18s var(--ease-silk);
     }
 
     .admin-login-back:hover {
-        color: var(--color-gold-200);
+        color: var(--color-accent-ink);
     }
 }

@@ -1,8 +1,8 @@
 # کافه صاحبقرانیه — Saheb Gharaniyeh Cafe
 
-A mobile-first digital menu for a traditional Persian café. Deep black and antique gold,
-ornate line-art frames, full RTL, Persian typography — modelled on the café's printed
-four-panel menu (`images/photo_5767233449319141139_y.jpg`).
+A mobile-first digital menu for a traditional Persian café. Deep navy and brand blue, ruled
+rather than framed, full RTL, Persian typography — with the menu itself transcribed from the
+café's printed four-panel card.
 
 No cart, no checkout, no payments: it is a menu you read on a phone at the table.
 
@@ -17,8 +17,8 @@ npm install
 cp .env.example .env         # already done in this checkout
 php artisan key:generate
 
-php artisan migrate:fresh --seed   # schema + the real menu from the printed reference
-npm run build                      # or: npm run dev
+php artisan migrate --seed   # schema + the real menu from the printed reference
+npm run build                # or: npm run dev
 
 php artisan serve
 ```
@@ -26,6 +26,29 @@ php artisan serve
 Run the test suite with `php artisan test`.
 
 The database is SQLite (`database/database.sqlite`) out of the box; nothing else is required.
+
+### Updating an install that already has data
+
+```bash
+git pull
+composer install --no-dev
+npm ci && npm run build
+php artisan migrate --force
+php artisan storage:link || true
+php artisan optimize:clear && php artisan optimize
+```
+
+No seeders. This is what `.github/workflows/ci-cd.yml` runs on the server, and it
+keeps everything entered in the panel — prices, uploaded photos, edited copy.
+
+**Never run `migrate:fresh` on an install with real data.** It drops every table,
+which takes every price and every `image_path` with it; the uploaded files are left
+orphaned in `storage/app/public` with nothing pointing at them. The seeders are safe
+to re-run (they only create missing rows, never overwrite an existing one), but
+`migrate:fresh` empties the tables before they get the chance.
+
+A new setting the panel must expose therefore ships as a migration, not a seeder
+line — see `2026_08_25_000001_add_navigation_link_settings.php`.
 
 ---
 
@@ -44,7 +67,7 @@ Both routes are single-action controllers (`HomeController`, `MenuController`). 
 
 Dark is the house theme. The switch is the round button pinned to the **top-right corner**
 of every page (`resources/views/components/theme-toggle.blade.php`), and light is the
-opt-in: the same printed menu on cream card stock.
+opt-in: the same menu on white, with the blues darkened to hold their contrast on paper.
 
 - The palette is chosen in `<head>` by a short inline script — before the first paint, so
   no page ever flashes the wrong theme — and remembered in `localStorage` under `sg-theme`.
@@ -56,15 +79,18 @@ opt-in: the same printed menu on cream card stock.
   in Blade (`text-cream-dim`, `bg-gold-900/30` …) follows along without touching a view —
   and then restates only the hard-coded colours that were tuned to glow on black. Those
   rules sit outside `@layer`, so they win over the component layer without `!important`.
-- Ramp semantics are preserved: a low gold index still means "for headings", it is just
-  deep bronze on paper instead of pale gold on black.
+- Ramp semantics are preserved: a low gold index still means "for headings". That ramp is
+  legacy on the public pages, though — it still drives the panel and the `gold-*` utilities,
+  while the menu's own colours come from the `--sg-*` tokens in `theme-overrides.css`, which
+  are declared after `app.css` and win. `.gold-text` and `.gold-line` are re-pointed there to
+  the house blue, so a view that still asks for gold gets the current design.
 
 ### Sticky section bar
 
 `resources/js/app.js` runs a rAF-throttled scroll spy: the current section is the last one
 whose top edge has passed under the bar. It swaps the label in `#section-flag-text`, marks
 the matching chip with `aria-current="true"`, scrolls that chip into view, updates the URL
-hash with `history.replaceState`, and drives the thin gold progress rule. Anchor clicks are
+hash with `history.replaceState`, and drives the thin progress rule. Anchor clicks are
 intercepted so the sticky bar height is subtracted from the scroll target.
 
 ---
@@ -82,26 +108,29 @@ Everything on both pages comes from the database — no menu copy is hard-coded 
 | `kind` | `drink` \| `hookah` — `App\Enums\CategoryKind` |
 | `layout` | `grid` \| `list` — `App\Enums\CategoryLayout`; drinks use the card grid, hookah uses flavour rows |
 | `icon`, `image_path` | Small glyph next to the title; optional section image |
-| `price`, `price_note` | One service price for the whole section (the hookah panels) |
+| `price`, `price_note` | Legacy: the hookah panels used to print one service price for the whole section. They price per flavour now, so nothing reads these and the panel no longer offers them — the columns stay only so existing rows keep whatever was typed |
 | `card_order`, `card_title`, `card_subtitle`, `card_latin` | Landing-page card. `card_order = NULL` means "not on the landing page" |
 | `sort_order`, `is_active` | Ordering and visibility |
 
 **`products`** — one row per item. `price` is nullable on purpose: the printed menu leaves
-`قیمت :` blank, so an empty price renders a dotted gold slot instead of a number.
-`image_path` is nullable too — when it is empty the card shows the ornate placeholder.
+`قیمت :` blank, so an empty price prints «قیمت در محل» where the number would go — including
+on both hookah sections, which price per flavour now. `image_path` is nullable too — when it
+is empty the card shows the plain blue well (`--sg-media`) rather than a photo.
 `is_active` hides an item, `is_available` renders it as "موقتاً تمام شد".
 
 **`category_features`** — the extras strip under the Super Deluxe hookah panel
 (چای زغالی، میوه فصل، باقلوا …).
 
 **`settings`** — editable site copy (café name, tagline, intro paragraph, hours, address,
-phone, Instagram) as `key`/`value` rows. Read through `Setting::map()`, which is cached and
-busted automatically on save/delete.
+phone, Instagram, Balad and Neshan map links) as `key`/`value` rows. Read through
+`Setting::map()`, which is cached and busted automatically on save/delete.
 
 Seeders hold the real menu transcribed from the reference photo: 15 hot drinks, 18 cold
 drinks and 16 hookah flavours (seeded into both hookah services), plus 8 deluxe extras.
-They use `updateOrCreate`, so re-running them is safe. `tests/Feature/MenuSeederTest.php`
-locks those counts in.
+They **create only** — an existing row is the owner's, edited in the panel, and re-running a
+seeder must not overwrite it. `tests/Feature/MenuSeederTest.php` locks those counts in.
+The trade is that correcting a transcription typo here no longer reaches an install that
+already has the row; correct it in the panel instead.
 
 ---
 
@@ -118,8 +147,8 @@ Everything the owner edits lives under **`/wp-admin`**, behind its own `admin` a
 | `/wp-admin/items` | Menu items — search, filter by section/status, bulk actions, inline price editing, ↑/↓ ordering |
 | `/wp-admin/items/create`, `…/{id}/edit` | Full item form, including image upload and glyph picker |
 | `/wp-admin/categories` | Sections — drag to reorder, toggle, and manage the extras strip inline |
-| `/wp-admin/categories/create`, `…/{id}/edit` | Section form: copy, kind, layout, service price, landing-page card |
-| `/wp-admin/settings` | The `settings` rows — café intro, hours, address, Instagram |
+| `/wp-admin/categories/create`, `…/{id}/edit` | Section form: copy, kind, layout, landing-page card |
+| `/wp-admin/settings` | The `settings` rows — café intro, hours, address, Instagram, map links |
 | `/wp-admin/account` | Rename the account and change the password |
 
 Two rules the panel is built on:
@@ -168,10 +197,22 @@ What is left is configuration, and all four matter:
    panel.
 4. **Upload limits, if the web server is nginx.** `client_max_body_size` defaults to **1M** and
    answers 413 by itself, before PHP is reached — so a normal phone photo never arrives no
-   matter what the panel or php.ini say. `client_max_body_size 12M;` in the server block, to
-   match `post_max_size` in `public/.user.ini`; and `location ~ /\.user\.ini { deny all; }`,
-   since that file sits in the web root and nginx will otherwise serve it. Apache needs
-   neither: `public/.htaccess` sets the limits for mod_php and denies the file already.
+   matter what the panel or php.ini say. Both files nginx needs are in `deploy/nginx/`, with
+   installation notes in their comments:
+
+   ```bash
+   # The 413 fix: raises the body limit to 12M, matching post_max_size in public/.user.ini.
+   sudo cp deploy/nginx/upload-size.conf /etc/nginx/conf.d/
+   # Denies public/.user.ini, which nginx serves as text otherwise. Needs an
+   # `include /etc/nginx/snippets/deny-user-ini.conf;` line inside the server block.
+   sudo cp deploy/nginx/deny-user-ini.conf /etc/nginx/snippets/
+
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+   Apache needs neither: `public/.htaccess` sets the limits for mod_php and denies the file
+   already. Nothing in the deploy workflow touches nginx — this is a one-off, done as root on
+   the server, and it survives deployments because it lives outside the project directory.
 
 ### How large a photo may be
 
@@ -208,18 +249,27 @@ password hash). Move the database between machines out of band — `scp`, not `g
 - Tailwind CSS 4 via `@tailwindcss/vite`, with the design tokens (night/gold palette,
   shadows, easing) declared in `@theme` in `resources/css/app.css` and re-pointed for the
   light theme (see [Themes](#themes)).
-- Self-hosted variable fonts in `public/fonts`: Vazirmatn for Persian, Cinzel for the latin
-  small-caps lines.
+- Self-hosted variable fonts in `public/fonts`: Vazirmatn for Persian, Montserrat for every
+  latin line. Montserrat is declared twice — once as `Montserrat` for the `latin` utility, and
+  once as `Montserrat Latin` restricted by `unicode-range` so it takes the latin characters out
+  of body copy without touching Persian metrics. `U+0020` is left out of that range on purpose:
+  a space taken from a latin face would change the word spacing of Persian text around it.
 - Blade anonymous components in `resources/views/components`: `frame`, `ornament.*`,
-  `icon.*`, `product-card`, `flavor-row`, `price-tag`, `emblem`, `theme-toggle`,
-  `site-footer`.
+  `icon.*`, `product-card`, `flavor-row`, `price-tag`, `logo`, `theme-toggle`,
+  `site-footer`. `logo` paints `images/logo-dark.png` / `logo-light.png` as a background
+  keyed on `html[data-theme]`, so only the active theme's file is fetched.
 - `@fa(...)` prints Persian digits and `@price(...)` prints a Persian price with " تومان"
   (see `App\Support\Persian` and `AppServiceProvider`).
 - Vanilla JS only: theme switch, preloader, IntersectionObserver reveals, image fade-in,
   scroll spy, back-to-top. `prefers-reduced-motion` is respected.
-- Four Vite entries: `app.css` / `app.js` for the menu, `admin.css` / `admin.js` for the
-  panel. `php artisan test` leaves Vite switched on, so an entry missing from
-  `public/build/manifest.json` fails the suite rather than 500-ing in production.
+- Eight Vite entries. The public menu loads four CSS files in this order — `app.css`
+  (Tailwind and the `@theme` tokens), `brand.css`, `theme-overrides.css` (the `--sg-*`
+  tokens and the `.menu-*` components), `menu-redesign.css` — plus `app.js` and
+  `menu-redesign.js`; the panel loads `admin.css` / `admin.js`. **Every entry named in an
+  `@vite([...])` call must also be listed in `vite.config.js`.** A name that is in the Blade
+  call but not the config is absent from `public/build/manifest.json`, and `@vite` then
+  throws — which 500s every page using that layout, not just the styling. `php artisan test`
+  leaves Vite switched on precisely so that fails the suite instead of reaching production.
 
 ### Screenshots during development
 

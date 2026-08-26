@@ -129,6 +129,12 @@
                 <path d="M12 3.5q1 8.5 8.5 9.5-7.5 1-8.5 9.5-1-8.5-8.5-9.5 7.5-1 8.5-9.5Z" />
                 @break
 
+            {{-- Map pin, for the Balad/Neshan addresses. --}}
+            @case('pin')
+                <path d="M12 21c-4.2-4.4-6.3-7.7-6.3-10.4a6.3 6.3 0 0 1 12.6 0C18.3 13.3 16.2 16.6 12 21Z" />
+                <circle cx="12" cy="10.3" r="2.4" />
+                @break
+
             @default
                 <circle cx="12" cy="12" r="7.5" />
         @endswitch

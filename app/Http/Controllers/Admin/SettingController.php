@@ -8,7 +8,7 @@ use App\Models\Setting;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
-/** The café's own copy: name, intro, hours, address, phone, Instagram. */
+/** The café's own copy: name, intro, hours, address, phone, Instagram, map links. */
 class SettingController extends Controller
 {
     /** Group headings, in the order the form shows them. */
@@ -16,6 +16,7 @@ class SettingController extends Controller
         'general' => 'معرفی کافه',
         'contact' => 'تماس و ساعات کاری',
         'social' => 'شبکه‌های اجتماعی',
+        'navigation' => 'مسیریابی',
     ];
 
     public function edit(): View

@@ -10,6 +10,8 @@ use Illuminate\Database\Seeder;
  * Every item is transcribed from the printed menu (photo_5767233449319141139_y.jpg).
  * Prices are intentionally left NULL — the printed menu leaves "قیمت :" blank,
  * so the site shows a styled placeholder until prices are entered in the admin panel.
+ *
+ * Rows are created, never updated: see the note in seed().
  */
 class ProductSeeder extends Seeder
 {
@@ -94,7 +96,16 @@ class ProductSeeder extends Seeder
         }
 
         foreach ($items as $index => $item) {
-            Product::updateOrCreate(
+            // firstOrCreate, not updateOrCreate — same reasoning as
+            // AdminUserSeeder. Every field below is one the owner edits in the
+            // panel: 'price' => null was resetting every price that had been
+            // entered, and sort_order was undoing the hand-sorted order. Once a
+            // row exists the database is the source of truth for it; this
+            // seeder only puts the printed menu in place the first time.
+            //
+            // The trade: fixing a transcription typo here no longer reaches an
+            // installation that already has the row. Correct it in the panel.
+            Product::firstOrCreate(
                 ['category_id' => $category->id, 'name' => $item[0]],
                 [
                     'latin_name' => $item[1] ?? null,

@@ -27,20 +27,36 @@
         U+2193, U+2212, U+2215;
 }
 
+/*
+ * Montserrat carries every latin word on the site. Two faces, one file:
+ *
+ *   'Montserrat'        no range — for the places that ask for it by name
+ *                       (the `latin` utility, --font-latin).
+ *   'Montserrat Latin'  range-limited — sits in front of Vazirmatn in
+ *                       --font-sans, so english inside otherwise-persian copy
+ *                       picks it up without a class having to be added.
+ *
+ * Same URL both times, so it is one download. The range deliberately stops at
+ * letters, digits and the punctuation that shows up inside a latin name: U+0020
+ * is left to Vazirmatn, because taking the space over would re-metric every
+ * persian line on the site to fix english that has no visible space anyway.
+ */
 @font-face {
-    font-family: 'Cinzel';
+    font-family: 'Montserrat';
     font-style: normal;
-    font-weight: 400;
     font-display: swap;
-    src: url('/fonts/cinzel-latin-400-normal.woff2') format('woff2');
+    font-weight: 100 900;
+    src: url('/fonts/montserrat-latin-wght-normal.woff2') format('woff2-variations');
 }
 
 @font-face {
-    font-family: 'Cinzel';
+    font-family: 'Montserrat Latin';
     font-style: normal;
-    font-weight: 600;
     font-display: swap;
-    src: url('/fonts/cinzel-latin-600-normal.woff2') format('woff2');
+    font-weight: 100 900;
+    src: url('/fonts/montserrat-latin-wght-normal.woff2') format('woff2-variations');
+    unicode-range: U+0026-0027, U+0028-0029, U+002C-002F, U+0030-0039, U+003A-003B, U+0040,
+        U+0041-005A, U+005F, U+0061-007A, U+00C0-00FF;
 }
 
 /* ------------------------------------------------------------------ */
@@ -61,8 +77,8 @@
  */
 
 @theme {
-    --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
-    --font-latin: 'Cinzel', 'Times New Roman', serif;
+    --font-sans: 'Montserrat Latin', 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
+    --font-latin: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
 
     /* Brand. 500 is the true blue and is shared by both themes — so are
        600–1000, which is why the light block only restates 0–400. */
@@ -100,12 +116,23 @@
     --color-page: #1a1a1a; /* dominant-100 */
     --color-chrome: #141414; /* sticky bar — a shade under the page */
     --color-card: #333333; /* dominant-200 */
-    --color-sunk: #0f0f0f; /* photo wells, inputs */
+    --color-sunk: #0f0f0f; /* inputs, code blocks, swatches */
+
+    /* The well behind an item photo — its own token, not --color-sunk, because
+       the wells are blue now and the inputs are not. Kept in step with
+       --sg-media in theme-overrides.css. */
+    --color-media: #1e2a5e;
 
     /* Type. */
     --color-ink: #f2f2f2; /* dominant-900 */
     --color-ink-dim: #999999; /* dominant-600 */
     --color-ink-faint: #666666; /* dominant-400 */
+
+    /* Latin lines (the small uppercase names under a persian title). They sat
+       on ink-dim and read as an afterthought; one step up is bright enough to
+       be read and still a step below the persian heading above it, so the
+       hierarchy holds. Kept in step with --sg-latin in theme-overrides.css. */
+    --color-latin: #cccccc; /* dominant-800 */
 
     /* Accent. `accent` fills (chips, badges), `accent-ink` is blue *text*:
        dark needs a lighter step than its own ramp carries, because brand-500
@@ -207,7 +234,11 @@
 
 @utility latin {
     font-family: var(--font-latin);
-    letter-spacing: 0.28em;
+    /* Cinzel needed 0.28em to breathe; Montserrat is a geometric sans and gets
+       muddy that far apart at these sizes, so it is tighter and heavier —
+       which is also what makes the latin lines read stronger. */
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
@@ -275,6 +306,41 @@
             width: 44px;
             height: 44px;
         }
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Brand mark                                                        */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+    /* <x-logo>. Lives here rather than in theme-overrides.css or
+       menu-redesign.css because app.css is the one bundle every layout pulls
+       in — the panel, the login page and the 413 page load app.css + admin.css
+       and nothing else, and the mark appears on all three.
+
+       The two files are the same artwork inverted: the calligraphy inside the
+       cartouche is transparent in both, so it takes the colour of whatever is
+       behind it. That is the whole reason there are two — on a dark page the
+       cartouche has to be light, on a light page dark.
+
+       No width or height here: every caller already sizes its own mark
+       (.menu-brand__mark, .admin-brand-emblem, …) and this replaced an <svg>
+       that behaved the same way. aspect-ratio covers the callers that set only
+       one axis. */
+    .sg-logo {
+        display: block;
+        aspect-ratio: 640 / 529;
+        background-image: url('/images/logo-dark.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+
+    /* The panel, login and 413 pages hardcode data-theme="dark", so this rule
+       simply never matches there. */
+    html[data-theme='light'] .sg-logo {
+        background-image: url('/images/logo-light.png');
     }
 }
 
@@ -466,7 +532,7 @@
         border-radius: 10px;
         overflow: hidden;
         border: 1px solid var(--color-hair-soft);
-        background: var(--color-sunk);
+        background: var(--color-media);
         display: grid;
         place-items: center;
         isolation: isolate;
@@ -1038,10 +1104,12 @@ html[data-theme='light'] {
     --color-chrome: #ffffff;
     --color-card: #ffffff;
     --color-sunk: #e9e9e9;
+    --color-media: #d9ddf2;
 
     --color-ink: #1a1a1a;
     --color-ink-dim: #666666;
     --color-ink-faint: #999999;
+    --color-latin: #333333;
 
     /* On paper brand-500 is already 6.4:1, so fills and text share it. */
     --color-accent: #4055bf;

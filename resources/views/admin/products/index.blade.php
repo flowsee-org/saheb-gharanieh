@@ -13,7 +13,7 @@
                  :subheading="'در مجموع '.\App\Support\Persian::digits($products->total()).' مورد'">
     <x-slot:actions>
         <a href="{{ route('admin.products.create', ['category' => $filters['category']]) }}"
-           class="admin-btn admin-btn--gold">
+           class="admin-btn admin-btn--accent">
             <x-icon.admin name="plus" class="h-4 w-4" />
             <span>مورد جدید</span>
         </a>
@@ -173,7 +173,7 @@
                                 <span class="admin-tag admin-tag--warn">تمام شده</span>
                             @endunless
                             @if ($product->is_featured)
-                                <span class="admin-tag admin-tag--gold">ویژه</span>
+                                <span class="admin-tag admin-tag--accent">ویژه</span>
                             @endif
                             @unless ($product->hasImage())
                                 <span class="admin-tag admin-tag--ghost">بدون تصویر</span>
@@ -198,7 +198,7 @@
                                 <span class="admin-price-unit">تومان</span>
                             </span>
 
-                            <button type="submit" class="admin-icon-btn admin-icon-btn--gold" aria-label="ذخیرهٔ قیمت">
+                            <button type="submit" class="admin-icon-btn admin-icon-btn--accent" aria-label="ذخیرهٔ قیمت">
                                 <x-icon.admin name="check" class="h-4 w-4" />
                             </button>
                         </form>

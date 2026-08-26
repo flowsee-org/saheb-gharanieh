@@ -1,0 +1,620 @@
+/* Saheb Gharaniyeh — Figma token driven public menu */
+
+:root {
+    /* Brand */
+    --brand-0: #000000;
+    --brand-100: #0D1126;
+    --brand-200: #19224D;
+    --brand-300: #263373;
+    --brand-400: #334499;
+    --brand-500: #4055BF;
+    --brand-600: #334499;
+    --brand-700: #263373;
+    --brand-800: #19224D;
+    --brand-900: #0D1126;
+    --brand-1000: #000000;
+
+    /* Dominant — dark mode */
+    --dominant-100: #1A1A1A;
+    --dominant-200: #333333;
+    --dominant-300: #4D4D4D;
+    --dominant-400: #666666;
+    --dominant-500: #808080;
+    --dominant-600: #999999;
+    --dominant-700: #B3B3B3;
+    --dominant-800: #CCCCCC;
+    --dominant-900: #F2F2F2;
+
+    /* Semantic */
+    --sg-bg: var(--brand-100);
+    --sg-surface: var(--brand-200);
+    --sg-surface-strong: var(--brand-300);
+    --sg-text: var(--dominant-900);
+    --sg-text-secondary: var(--dominant-700);
+    --sg-text-muted: var(--dominant-600);
+
+    /* Every rule and outline on the site. These were neutral grey
+       (dominant-300), which read as a smudge rather than a line and was not
+       even blue; they are the house blue now, and --sg-border-strong is the
+       heavier weight for the rules that separate whole blocks — the sticky
+       category bar, the divider between sections. In both themes "strong"
+       means further from the page, so dark goes lighter and light goes
+       darker. */
+    --sg-border: var(--brand-500);
+    --sg-border-strong: #6677CC;
+
+    --sg-accent: var(--brand-500);
+
+    /* Lighter than --sg-accent, not darker. The dark ramp mirrors about 500,
+       so brand-400 is #334499 here — nearly invisible on a #0D1126 page, and
+       it was carrying the prices, the eyebrows and the service figures. */
+    --sg-accent-soft: #8C99D9;
+
+    /* Latin copy. Brighter than the muted grey the persian subtitles use:
+       english on this site is set small, and small grey text at .5rem is the
+       first thing to disappear. */
+    --sg-latin: var(--dominant-800);
+
+    /* The well behind an item photo, and the placeholder when there is none. */
+    --sg-media: #1E2A5E;
+
+    --sg-content: 760px;
+    --sg-radius: 10px;
+}
+
+html[data-theme='light'] {
+    color-scheme: light;
+
+    /* Brand */
+    --brand-0: #FFFFFF;
+    --brand-100: #D9DDF2;
+    --brand-200: #B2BBE6;
+    --brand-300: #8C99D9;
+    --brand-400: #6677CC;
+    --brand-500: #4055BF;
+    --brand-600: #334499;
+    --brand-700: #263373;
+    --brand-800: #19224D;
+    --brand-900: #0D1126;
+    --brand-1000: #000000;
+
+    /* Dominant — light mode */
+    --dominant-100: #F2F2F2;
+    --dominant-200: #CCCCCC;
+    --dominant-300: #B3B3B3;
+    --dominant-400: #999999;
+    --dominant-500: #808080;
+    --dominant-600: #666666;
+    --dominant-700: #4D4D4D;
+    --dominant-800: #333333;
+    --dominant-900: #1A1A1A;
+
+    --sg-bg: #FFFFFF;
+    --sg-surface: #F2F2F2;
+    --sg-surface-strong: #D9DDF2;
+    --sg-text: #1A1A1A;
+    --sg-text-secondary: #4D4D4D;
+    --sg-text-muted: #666666;
+    --sg-border: #6677CC;
+    --sg-border-strong: var(--brand-500);
+    --sg-accent: #4055BF;
+    --sg-accent-soft: #334499;
+    --sg-latin: #333333;
+    --sg-media: #D9DDF2;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    background: var(--sg-bg);
+    color: var(--sg-text);
+    font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* Public menu ----------------------------------------------------------- */
+.menu-page {
+    min-height: 100dvh;
+    background: var(--sg-bg);
+}
+
+.menu-shell {
+    width: min(100%, var(--sg-content));
+    margin-inline: auto;
+    padding-inline: 20px;
+}
+
+.menu-header {
+    padding-top: max(18px, env(safe-area-inset-top));
+}
+
+.menu-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    gap: 16px;
+    /* The theme switch is fixed to the *physical* top-right corner of the
+       viewport (0.6rem inset + 2.375rem wide = the rightmost 2.975rem — see
+       .theme-toggle in app.css), and in this RTL header that corner is exactly
+       where the mark sits. Reserve only the part of it the shell does not
+       already clear: 8px covers the shell's own padding-inline (14px at the
+       narrowest breakpoint) less the clearance wanted, and once the viewport
+       outgrows --menu-content-width the centred shell leaves the corner empty
+       and this collapses to 0. */
+    padding-right: max(0px, 2.975rem - 8px - max(0px, (100vw - var(--menu-content-width)) / 2));
+}
+
+.menu-brand__identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--sg-text);
+    text-decoration: none;
+}
+
+/* Sized on width only — <x-logo> carries the artwork's aspect ratio, so
+   pinning both axes would letterbox it inside a square. */
+.menu-brand__mark {
+    width: 46px;
+    height: auto;
+}
+
+.menu-brand__latin {
+    display: block;
+    margin-top: 2px;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .58rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    direction: ltr;
+}
+
+.menu-brand__meta {
+    color: var(--sg-text-muted);
+    font-size: .62rem;
+    white-space: nowrap;
+}
+
+.menu-brand__status {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-inline-end: 5px;
+    border-radius: 50%;
+    background: #4CAF50;
+}
+
+.menu-intro {
+    padding: 48px 0 32px;
+    text-align: center;
+}
+
+.menu-intro__eyebrow {
+    margin: 0 0 8px;
+    color: var(--sg-accent-soft);
+    font-size: .68rem;
+    font-weight: 700;
+}
+
+.menu-intro h1 {
+    margin: 0;
+    color: var(--sg-text);
+    font-size: clamp(2rem, 9vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -.045em;
+    line-height: 1.2;
+}
+
+.menu-intro p:not(.menu-intro__eyebrow) {
+    max-width: 430px;
+    margin: 10px auto 0;
+    color: var(--sg-text-secondary);
+    font-size: .72rem;
+    line-height: 1.9;
+}
+
+.menu-rule {
+    width: 44px;
+    height: 2px;
+    margin: 20px auto 0;
+    border: 0;
+    background: var(--sg-accent);
+}
+
+.menu-category-nav {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    margin-inline: -20px;
+    padding: 10px 20px;
+    border-block: 2px solid var(--sg-border-strong);
+    background: var(--sg-bg);
+}
+
+.menu-category-nav__scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.menu-category-nav__scroll::-webkit-scrollbar { display: none; }
+
+.menu-category-link {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding-inline: 12px;
+    border: 2px solid var(--sg-border);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--sg-text-secondary);
+    font-size: .65rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color .16s ease, color .16s ease, border-color .16s ease;
+}
+
+.menu-category-link[aria-current='true'] {
+    border-color: var(--sg-accent);
+    background: var(--sg-accent);
+    color: #FFFFFF;
+}
+
+.menu-section {
+    scroll-margin-top: 62px;
+    padding-block: 34px;
+}
+
+.menu-section + .menu-section {
+    border-top: 2px solid var(--sg-border-strong);
+}
+
+.menu-section__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.menu-section__title-wrap { min-width: 0; }
+
+.menu-section__eyebrow {
+    margin: 0 0 4px;
+    color: var(--sg-accent-soft);
+    font-size: .58rem;
+    font-weight: 700;
+}
+
+.menu-section__title {
+    margin: 0;
+    color: var(--sg-text);
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -.025em;
+}
+
+.menu-section__latin {
+    margin: 3px 0 0;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .56rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    direction: ltr;
+}
+
+.menu-section__count {
+    color: var(--sg-text-muted);
+    font-size: .58rem;
+    white-space: nowrap;
+}
+
+.menu-section__description {
+    margin: 0 0 10px;
+    color: var(--sg-text-secondary);
+    font-size: .68rem;
+    line-height: 1.9;
+}
+
+.menu-items {
+    display: grid;
+}
+
+.menu-product {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    padding-block: 15px;
+    border-bottom: 1px solid var(--sg-border);
+}
+
+.menu-product:last-child { border-bottom: 0; }
+.menu-product__main { min-width: 0; }
+
+.menu-product__name {
+    margin: 0;
+    color: var(--sg-text);
+    font-size: .88rem;
+    font-weight: 800;
+    line-height: 1.65;
+}
+
+.menu-product__latin {
+    margin: 1px 0 0;
+    color: var(--sg-latin);
+    font-family: var(--font-latin);
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    direction: ltr;
+}
+
+.menu-product__description {
+    margin: 4px 0 0;
+    color: var(--sg-text-secondary);
+    font-size: .65rem;
+    line-height: 1.85;
+}
+
+.menu-product__price {
+    align-self: start;
+    padding-top: 2px;
+    color: var(--sg-accent-soft);
+    font-size: .75rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.menu-product__unit {
+    margin-inline-start: 3px;
+    color: var(--sg-text-muted);
+    font-size: .55rem;
+    font-weight: 500;
+}
+
+.menu-product__media {
+    width: 82px;
+    height: 82px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--sg-media);
+}
+
+.menu-product--image {
+    grid-template-columns: 82px minmax(0, 1fr) auto;
+}
+
+.menu-product__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-product[data-unavailable='true'] { opacity: .45; }
+
+.menu-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.menu-feature {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border: 2px solid var(--sg-border);
+    color: var(--sg-text-secondary);
+    font-size: .58rem;
+}
+
+.menu-feature svg { color: var(--sg-accent); }
+
+.menu-empty {
+    padding: 24px 0;
+    color: var(--sg-text-muted);
+    text-align: center;
+    font-size: .68rem;
+}
+
+/* Footer ------------------------------------------------------------- */
+/* This had no rules of its own and leaned on tailwind utilities in the
+   template, which left it with no rule above it and no padding. It is a real
+   block now: the mark, the café's details, the two map links, then contact. */
+.menu-footer {
+    padding-block: 30px 40px;
+    margin-top: 8px;
+    border-top: 2px solid var(--sg-border-strong);
+    color: var(--sg-text-secondary);
+    font-size: .68rem;
+    line-height: 1.9;
+    text-align: center;
+}
+
+.menu-footer p { margin: 0; }
+
+.menu-footer__mark {
+    width: min(46%, 150px);
+    height: auto;
+    margin: 0 auto 14px;
+}
+
+.menu-footer__name {
+    color: var(--sg-text);
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+.menu-footer__maps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.menu-footer__map {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px 8px 8px;
+    border: 2px solid var(--sg-border);
+    border-radius: 12px;
+    background: var(--sg-surface);
+    color: var(--sg-text);
+    font-size: .68rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color .16s ease, background-color .16s ease;
+}
+
+.menu-footer__map:hover {
+    border-color: var(--sg-border-strong);
+    background: var(--sg-surface-strong);
+}
+
+/* A light tile under both marks. Neshan's artwork is black paths on
+   transparent, so on the dark page it would otherwise be a blank square;
+   Balad brings its own dark tile, which sits on this one like an app icon. */
+.menu-footer__map-logo {
+    display: block;
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+    border-radius: 9px;
+    background: #FFFFFF;
+}
+
+.menu-footer__contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 18px;
+    margin-top: 16px;
+}
+
+/* Was var(--sg-brand-soft), which is defined nowhere — the two links fell back
+   to inheriting the muted footer grey. */
+.menu-footer__contact a {
+    color: var(--sg-accent-soft);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.menu-footer__contact a:hover { text-decoration: underline; }
+
+.menu-footer__legal {
+    margin-top: 18px;
+    color: var(--sg-text-muted);
+    font-size: .6rem;
+}
+
+/* Home --------------------------------------------------------------- */
+.menu-home {
+    width: min(100%, 620px);
+    min-height: 100dvh;
+    margin-inline: auto;
+    padding: max(34px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
+}
+
+.menu-home__brand {
+    padding-top: 18px;
+    text-align: center;
+}
+
+.menu-home__mark {
+    width: min(62%, 200px);
+    height: auto;
+    margin: 0 auto 16px;
+}
+
+.menu-home__title {
+    margin: 0;
+    color: var(--sg-text);
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -.045em;
+}
+
+.menu-home__tagline {
+    margin: 9px 0 0;
+    color: var(--sg-text-secondary);
+    font-size: .7rem;
+}
+
+.menu-home__categories {
+    display: grid;
+    gap: 0;
+    margin-top: 38px;
+    border-block: 2px solid var(--sg-border-strong);
+}
+
+.menu-home__category {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 72px;
+    padding-inline: 3px;
+    border-bottom: 2px solid var(--sg-border);
+    color: var(--sg-text);
+    text-decoration: none;
+}
+
+.menu-home__category:last-child { border-bottom: 0; }
+.menu-home__category:hover { color: var(--sg-accent-soft); }
+.menu-home__category-icon { width: 26px; color: var(--sg-accent); }
+.menu-home__category-title { flex: 1; font-size: .82rem; font-weight: 800; }
+.menu-home__category-subtitle { display: block; margin-top: 2px; color: var(--sg-text-muted); font-size: .58rem; font-weight: 500; }
+.menu-home__arrow { color: var(--sg-text-muted); }
+
+.menu-home__all {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.menu-home__all a {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    padding-inline: 18px;
+    border: 2px solid var(--sg-accent);
+    border-radius: 7px;
+    color: var(--sg-accent-soft);
+    font-size: .66rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+/* Keep legacy semantic classes functional without preserving the old gold UI. */
+.gold-text {
+    color: var(--sg-accent-soft);
+    background: none;
+    -webkit-text-fill-color: currentColor;
+}
+
+.gold-line { background: var(--sg-accent); }
+
+@media (min-width: 640px) {
+    .menu-shell { padding-inline: 28px; }
+    .menu-category-nav { margin-inline: -28px; padding-inline: 28px; }
+    .menu-section { padding-block: 42px; }
+    .menu-product__name { font-size: .92rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+    }
+}
