@@ -27,10 +27,7 @@
     @vite([
         'resources/css/app.css',
         'resources/css/brand.css',
-        'resources/css/theme-overrides.css',
-        'resources/css/menu-redesign.css',
         'resources/js/app.js',
-        'resources/js/menu-redesign.js',
     ])
 </head>
 <body class="min-h-dvh antialiased">
