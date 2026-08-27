@@ -16,7 +16,7 @@
           crossorigin>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
-    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/css/brand.css', 'resources/css/theme-overrides.css', 'resources/js/admin.js'])
+    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/admin.js'])
 </head>
 <body class="admin-body">
     <a href="#admin-main" class="admin-skip">رفتن به محتوا</a>

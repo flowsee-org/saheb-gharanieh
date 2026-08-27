@@ -1,5 +1,5 @@
 {{-- The panel's front door. Deliberately its own page rather than the admin
-     layout: there is no nav to show yet, and the emblem centred on black is
+     layout: there is no nav to show yet, and the mark centred on black is
      the same welcome the site itself opens with. --}}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl" data-theme="dark">
