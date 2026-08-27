@@ -32,7 +32,7 @@
 
     @vite([
          'resources/css/app.css',
-
+        'resources/js/app.js',
     ])
 </head>
 <body class="min-h-dvh antialiased">
