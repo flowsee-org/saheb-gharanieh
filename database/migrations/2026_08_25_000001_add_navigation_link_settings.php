@@ -15,12 +15,13 @@ return new class extends Migration
      * and the footer would silently show no links. (They are in the seeder too,
      * for a fresh local install.)
      *
-     * Empty on purpose: the owner pastes the two share links in the panel, and
-     * the footer hides a logo whose link is not set yet.
+     * Seeded with the café's own two share links, so the footer works the moment
+     * this runs; the owner can replace either one in the panel, and the footer
+     * hides a logo whose link has been cleared.
      */
     private const SETTINGS = [
-        ['key' => 'balad_url', 'group' => 'navigation', 'label' => 'ادرس بلد'],
-        ['key' => 'neshan_url', 'group' => 'navigation', 'label' => 'ادرس نشان'],
+        ['key' => 'balad_url', 'group' => 'navigation', 'label' => 'آدرس بلد', 'value' => 'https://balad.ir/p/PA8U4WiqGnyitG'],
+        ['key' => 'neshan_url', 'group' => 'navigation', 'label' => 'آدرس نشان', 'value' => 'https://nshn.ir/4e_b1xGB2B0Jq9'],
     ];
 
     public function up(): void
@@ -30,7 +31,7 @@ return new class extends Migration
             // not wipe an address the owner has already saved.
             Setting::query()->firstOrCreate(
                 ['key' => $setting['key']],
-                $setting + ['type' => 'url', 'value' => null]
+                $setting + ['type' => 'url']
             );
         }
     }

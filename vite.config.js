@@ -8,12 +8,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/admin.css',
-                'resources/css/brand.css',
-                'resources/css/theme-overrides.css',
-                'resources/css/menu-redesign.css',
                 'resources/js/app.js',
                 'resources/js/admin.js',
-                'resources/js/menu-redesign.js',
             ],
             refresh: true,
         }),

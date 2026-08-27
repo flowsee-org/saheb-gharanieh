@@ -31,8 +31,8 @@ class SettingSeeder extends Seeder
             // No value: the owner pastes the two map links in the admin panel.
             // Also added by 2026_08_25_000001_add_navigation_link_settings, which
             // is what puts them on the server — deploy migrates, it never seeds.
-            ['key' => 'balad_url', 'value' => null, 'type' => 'url', 'group' => 'navigation', 'label' => 'ادرس بلد'],
-            ['key' => 'neshan_url', 'value' => null, 'type' => 'url', 'group' => 'navigation', 'label' => 'ادرس نشان'],
+            ['key' => 'balad_url', 'value' => 'https://balad.ir/p/PA8U4WiqGnyitG', 'type' => 'url', 'group' => 'navigation', 'label' => 'آدرس بلد'],
+            ['key' => 'neshan_url', 'value' => 'https://nshn.ir/4e_b1xGB2B0Jq9', 'type' => 'url', 'group' => 'navigation', 'label' => 'آدرس نشان'],
         ];
 
         foreach ($settings as $setting) {

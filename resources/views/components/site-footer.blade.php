@@ -4,50 +4,60 @@
     // Balad and Neshan, the two iranian map apps. A logo is only shown once its
     // link is saved in the panel — an unset link would be a dead tile.
     $maps = array_values(array_filter([
-        ['key' => 'balad', 'label' => 'ادرس بلد', 'url' => $settings['balad_url'] ?? null],
-        ['key' => 'neshan', 'label' => 'ادرس نشان', 'url' => $settings['neshan_url'] ?? null],
+        ['key' => 'balad', 'label' => 'آدرس بلد', 'url' => $settings['balad_url'] ?? null],
+        ['key' => 'neshan', 'label' => 'آدرس نشان', 'url' => $settings['neshan_url'] ?? null],
     ], fn ($map) => filled($map['url'])));
 @endphp
 
-<footer class="menu-footer menu-shell">
-    <x-logo class="menu-footer__mark" label="" />
+<footer class="relative mt-14 pb-10">
+    <x-ornament.divider class="mb-6 px-6" />
 
-    <p class="menu-footer__name">{{ $settings['cafe_name'] ?? 'کافه صاحبقرانیه' }}</p>
+    <div class="mx-auto flex max-w-md flex-col items-center gap-3 px-6 text-center">
+        <x-logo class="w-32 sm:w-36" label="" />
 
-    @if ($hours = $settings['working_hours'] ?? null)
-        <p>{{ $hours }}</p>
-    @endif
+        <p class="latin text-[0.6875rem] text-latin">
+            {{ $settings['cafe_name_latin'] ?? 'Saheb Gharaniyeh Cafe' }}
+        </p>
 
-    @if ($address = $settings['address'] ?? null)
-        <p>{{ $address }}</p>
-    @endif
+        @if ($hours = $settings['working_hours'] ?? null)
+            <p class="text-xs text-ink-dim">{{ $hours }}</p>
+        @endif
 
-    @if ($maps)
-        <nav class="menu-footer__maps" aria-label="مسیریابی به کافه">
-            @foreach ($maps as $map)
-                <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="menu-footer__map">
-                    <img src="{{ asset('images/'.$map['key'].'.svg') }}"
-                         alt=""
-                         class="menu-footer__map-logo"
-                         width="40" height="40"
-                         loading="lazy" decoding="async">
-                    <span>{{ $map['label'] }}</span>
+        @if ($address = $settings['address'] ?? null)
+            <p class="text-xs text-ink-dim">{{ $address }}</p>
+        @endif
+
+        @if ($maps)
+            <nav class="mt-2 flex flex-wrap items-center justify-center gap-2.5" aria-label="مسیریابی به کافه">
+                @foreach ($maps as $map)
+                    <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link">
+                        <img src="{{ asset('images/'.$map['key'].'.svg') }}"
+                             alt=""
+                             class="map-logo"
+                             width="40" height="40"
+                             loading="lazy" decoding="async">
+                        <span>{{ $map['label'] }}</span>
+                    </a>
+                @endforeach
+            </nav>
+        @endif
+
+        <div class="mt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
+            @if ($phone = $settings['phone'] ?? null)
+                <a href="tel:{{ \App\Support\Persian::western($phone) }}"
+                   class="text-accent-ink transition hover:text-ink">{{ $phone }}</a>
+            @endif
+
+            @if ($instagram = $settings['instagram'] ?? null)
+                <a href="https://instagram.com/{{ $instagram }}" target="_blank" rel="noopener" dir="ltr"
+                   class="latin text-[0.6875rem] text-latin transition hover:text-ink">
+                    {{ '@'.$instagram }}
                 </a>
-            @endforeach
-        </nav>
-    @endif
+            @endif
+        </div>
 
-    <div class="menu-footer__contact">
-        @if ($phone = $settings['phone'] ?? null)
-            <a href="tel:{{ \App\Support\Persian::western($phone) }}">{{ $phone }}</a>
-        @endif
-
-        @if ($instagram = $settings['instagram'] ?? null)
-            <a href="https://instagram.com/{{ $instagram }}" target="_blank" rel="noopener" dir="ltr">
-                {{ '@'.$instagram }}
-            </a>
-        @endif
+        <p class="mt-3 text-[0.625rem] text-ink-faint">
+            تمام حقوق برای کافه صاحبقرانیه محفوظ است.
+        </p>
     </div>
-
-    <p class="menu-footer__legal">تمام حقوق برای کافه صاحبقرانیه محفوظ است.</p>
 </footer>
