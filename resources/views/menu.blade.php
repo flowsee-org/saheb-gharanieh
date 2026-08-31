@@ -3,7 +3,7 @@
     <div class="topbar" id="topbar" data-scrolled="false">
         <div class="mx-auto w-full max-w-3xl px-3 sm:px-6">
             {{-- pr-* keeps the café mark clear of the fixed theme switch in the corner. --}}
-            <div class="flex items-center justify-between gap-2 pt-2.5 pb-2 pr-11 sm:pr-12">
+            <div class="flex items-center justify-between gap-2 pt-2.5 pb-2 pl-11 sm:pl-12 pr-11 sm:pr-12">
                 <a href="{{ route('home') }}" class="flex shrink-0 items-center" aria-label="صفحه اصلی">
                     <x-logo class="w-12 sm:w-14" label="" />
                 </a>
@@ -50,11 +50,6 @@
                 <x-frame class="px-3 py-6 sm:px-6 sm:py-8">
                     {{-- ─── Panel heading ────────────────────────────────── --}}
                     <header class="reveal relative mb-5 text-center">
-                        <x-ornament.arabesque class="watermark" />
-
-                        <p class="mb-1.5 text-[0.6875rem] tracking-wide text-ink-dim">
-                            {{ $category->subtitle ?? 'منوی کافه صاحبقرانیه' }}
-                        </p>
 
                         <h2 id="heading-{{ $category->slug }}"
                             class="inline-flex items-center gap-2 text-xl font-black text-ink sm:text-3xl">
@@ -62,19 +57,7 @@
                             {{ $category->name }}
                         </h2>
 
-                        @if ($category->latin_name)
-                            <p class="latin mt-1.5 text-[0.625rem] text-latin sm:text-xs" dir="ltr">
-                                {{ $category->latin_name }}
-                            </p>
-                        @endif
-
                         <x-ornament.divider class="mx-auto mt-3 max-w-[14rem] sm:max-w-sm" />
-
-                        @if ($category->description)
-                            <p class="mx-auto mt-3 max-w-md text-[0.75rem] leading-relaxed text-ink-dim sm:text-[0.8125rem]">
-                                {{ $category->description }}
-                            </p>
-                        @endif
                     </header>
 
                     {{-- ─── Items ────────────────────────────────────────── --}}
@@ -82,7 +65,7 @@
                         <p class="py-6 text-center text-xs text-ink-dim">این بخش به‌زودی تکمیل می‌شود.</p>
 
                     @elseif ($category->usesGrid())
-                        <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3.5 lg:grid-cols-4">
+                        <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3.5 lg:grid-cols-4 mb-8">
                             @foreach ($category->activeProducts as $product)
                                 <x-product-card :product="$product" :category="$category" :index="$loop->iteration" />
                             @endforeach
@@ -91,7 +74,7 @@
                     @else
                         <p class="mb-3.5 text-center text-xs font-bold text-accent-ink">طعم‌های قلیان</p>
 
-                        <ul class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2.5">
+                        <ul class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2.5 mb-8">
                             @foreach ($category->activeProducts as $product)
                                 <x-flavor-row :product="$product" :index="$loop->iteration" />
                             @endforeach
@@ -119,8 +102,8 @@
                                     @foreach ($category->features as $feature)
                                         <div class="feature-pill reveal"
                                              style="--reveal-delay: {{ $loop->iteration * 40 }}ms">
-                                            <x-icon.glyph :name="$feature->glyph" class="feature-glyph" />
                                             <span class="feature-name">{{ $feature->name }}</span>
+                                            <x-icon.glyph :name="$feature->glyph" class="feature-glyph" />
                                         </div>
                                     @endforeach
                                 </div>
