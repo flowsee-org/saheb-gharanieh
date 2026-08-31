@@ -1102,8 +1102,7 @@
             scroll-margin-top: 112px;
         }
     }
-
-    }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Light theme                                                       */
@@ -1177,4 +1176,3 @@ html[data-theme='light'] .theme-toggle-icon--moon {
 }
 
 /* Line art needs a touch less presence on paper. */
-}
