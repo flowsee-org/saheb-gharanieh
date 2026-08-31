@@ -25,7 +25,7 @@
 
         
         @if ($maps)
-            <nav class="mt-2 flex flex-col items-center gap-3" aria-label="مسیریابی به کافه">
+            <nav class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-2" aria-label="مسیریابی به کافه">
                 @foreach ($maps as $map)
                     <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link flex flex-col items-center gap-1">
                         <img src="{{ asset('images/'.$map['key'].'.svg') }}"
