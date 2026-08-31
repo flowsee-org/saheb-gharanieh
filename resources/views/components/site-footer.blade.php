@@ -23,20 +23,17 @@
             <p class="text-xs text-ink-dim">{{ $hours }}</p>
         @endif
 
-        @if ($address = $settings['address'] ?? null)
-            <p class="text-xs text-ink-dim">{{ $address }}</p>
-        @endif
-
+        
         @if ($maps)
-            <nav class="mt-2 flex flex-wrap items-center justify-center gap-2.5" aria-label="مسیریابی به کافه">
+            <nav class="mt-2 flex flex-col items-center gap-3" aria-label="مسیریابی به کافه">
                 @foreach ($maps as $map)
-                    <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link">
+                    <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link flex flex-col items-center gap-1">
                         <img src="{{ asset('images/'.$map['key'].'.svg') }}"
                              alt=""
                              class="map-logo"
                              width="40" height="40"
                              loading="lazy" decoding="async">
-                        <span>{{ $map['label'] }}</span>
+                        <span class="text-[0.6875rem] text-ink-dim">{{ $map['key'] === 'balad' ? 'بلد' : 'نشان' }}</span>
                     </a>
                 @endforeach
             </nav>

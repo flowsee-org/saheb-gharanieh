@@ -4,10 +4,6 @@
         <div class="mx-auto w-full max-w-3xl px-3 sm:px-6">
             {{-- pr-* keeps the café mark clear of the fixed theme switch in the corner. --}}
             <div class="flex items-center justify-between gap-2 pt-2.5 pb-2 pl-11 sm:pl-12 pr-11 sm:pr-12">
-                <a href="{{ route('home') }}" class="flex shrink-0 items-center" aria-label="صفحه اصلی">
-                    <x-logo class="w-12 sm:w-14" label="" />
-                </a>
-
                 {{-- Always reflects the section currently in view. --}}
                 <p class="section-flag" id="section-flag" aria-live="polite">
                     <span class="flag-dot"></span>
@@ -15,6 +11,10 @@
                         {{ $categories->firstWhere('slug', $activeSection)?->name ?? $categories->first()?->name }}
                     </span>
                 </p>
+
+                <a href="{{ route('home') }}" class="flex shrink-0 items-center" aria-label="صفحه اصلی">
+                    <x-logo class="w-12 sm:w-14" label="" />
+                </a>
             </div>
 
             <nav class="chips pb-2" id="section-chips" aria-label="بخش‌های منو">
@@ -51,29 +51,13 @@
                     {{-- ─── Panel heading ────────────────────────────────── --}}
                     <header class="reveal relative mb-5 text-center">
 
-                        <p class="mb-1.5 text-[0.6875rem] tracking-wide text-ink-dim">
-                            {{ $category->subtitle ?? 'منوی کافه صاحبقرانیه' }}
-                        </p>
-
                         <h2 id="heading-{{ $category->slug }}"
                             class="inline-flex items-center gap-2 text-xl font-black text-ink sm:text-3xl">
                             <x-icon.section :category="$category" class="heading-glyph" />
                             {{ $category->name }}
                         </h2>
 
-                        @if ($category->latin_name)
-                            <p class="latin mt-1.5 text-[0.625rem] text-latin sm:text-xs" dir="ltr">
-                                {{ $category->latin_name }}
-                            </p>
-                        @endif
-
                         <x-ornament.divider class="mx-auto mt-3 max-w-[14rem] sm:max-w-sm" />
-
-                        @if ($category->description)
-                            <p class="mx-auto mt-3 max-w-md text-[0.75rem] leading-relaxed text-ink-dim sm:text-[0.8125rem]">
-                                {{ $category->description }}
-                            </p>
-                        @endif
                     </header>
 
                     {{-- ─── Items ────────────────────────────────────────── --}}
@@ -118,8 +102,8 @@
                                     @foreach ($category->features as $feature)
                                         <div class="feature-pill reveal"
                                              style="--reveal-delay: {{ $loop->iteration * 40 }}ms">
-                                            <x-icon.glyph :name="$feature->glyph" class="feature-glyph" />
                                             <span class="feature-name">{{ $feature->name }}</span>
+                                            <x-icon.glyph :name="$feature->glyph" class="feature-glyph" />
                                         </div>
                                     @endforeach
                                 </div>

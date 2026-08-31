@@ -3,26 +3,12 @@
 
         {{-- ─── Hero ─────────────────────────────────────────────────────── --}}
         <header class="relative text-center">
-            <div class="pointer-events-none absolute inset-x-0 -top-10 flex justify-center" aria-hidden="true">
-                <x-ornament.arabesque class="w-64 text-ink-dim opacity-[0.06] sm:w-80" />
-            </div>
-
             <div class="reveal relative flex flex-col items-center gap-3">
                 {{-- The mark *is* the name — it carries the calligraphy — so the
                      heading holds it instead of repeating the words underneath. --}}
                 <h1 class="m-0">
                     <x-logo class="w-36 sm:w-44" :label="$settings['cafe_name'] ?? 'کافه صاحبقرانیه'" />
                 </h1>
-
-                <p class="latin text-[0.625rem] text-latin sm:text-xs">
-                    {{ $settings['cafe_name_latin'] ?? 'Saheb Gharaniyeh Cafe' }}
-                </p>
-
-                <x-ornament.divider class="mt-1 max-w-[16rem] sm:max-w-xs" />
-
-                <p class="text-sm text-ink sm:text-base">
-                    {{ $settings['tagline'] ?? 'قهوه، قلیان و شب‌های دلنشین' }}
-                </p>
             </div>
         </header>
 
