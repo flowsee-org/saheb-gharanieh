@@ -13,7 +13,7 @@
     <x-ornament.divider class="mb-6 px-6" />
 
     <div class="mx-auto flex max-w-md flex-col items-center gap-3 px-6 text-center">
-        <x-logo class="w-32 sm:w-36" label="" />
+        <x-logo class="w-32 sm:w-36 mt-4" label="" />
 
         <p class="latin text-[0.6875rem] text-latin">
             {{ $settings['cafe_name_latin'] ?? 'Saheb Gharaniyeh Cafe' }}

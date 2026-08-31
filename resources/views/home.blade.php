@@ -11,7 +11,7 @@
                 {{-- The mark *is* the name — it carries the calligraphy — so the
                      heading holds it instead of repeating the words underneath. --}}
                 <h1 class="m-0">
-                    <x-logo class="w-44 sm:w-52" :label="$settings['cafe_name'] ?? 'کافه صاحبقرانیه'" />
+                    <x-logo class="w-36 sm:w-44" :label="$settings['cafe_name'] ?? 'کافه صاحبقرانیه'" />
                 </h1>
 
                 <p class="latin text-[0.625rem] text-latin sm:text-xs">
