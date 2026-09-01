@@ -27,7 +27,7 @@
         @if ($maps)
             <nav class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-2" aria-label="مسیریابی به کافه">
                 @foreach ($maps as $map)
-                    <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link flex flex-col items-center gap-1">
+                    <a href="{{ $map['url'] }}" target="_blank" rel="noopener" class="map-link flex flex-col items-center gap-1 px-3 py-2">
                         <img src="{{ asset('images/'.$map['key'].'.svg') }}"
                              alt=""
                              class="map-logo"
@@ -38,6 +38,9 @@
                 @endforeach
             </nav>
         @endif
+        <style>
+            .map-link { padding-inline: 1rem !important; }
+        </style>
 
         <div class="mt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
             @if ($phone = $settings['phone'] ?? null)

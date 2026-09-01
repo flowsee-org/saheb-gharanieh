@@ -14,3 +14,9 @@
         <x-icon.glyph :name="$product->glyph" class="flavor-glyph" />
     @endif
 </li>
+<style>
+    .flavor-row .price-value { font-size: 0.8125rem !important; }
+    /* Theme-aware num-badge colors */
+    html[data-theme="light"] .flavor-row .num-badge { background: var(--color-ink); color: var(--color-on-accent); }
+    html[data-theme="dark"] .flavor-row .num-badge { background: var(--color-accent); color: var(--color-on-accent); }
+</style>
