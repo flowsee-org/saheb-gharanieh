@@ -1,13 +1,14 @@
 <x-layouts.app title="منو">
     {{-- ─── Sticky bar: café mark, live section flag, chip nav, progress ──── --}}
     <div class="topbar" id="topbar" data-scrolled="false">
-        <div class="mx-auto w-full max-w-3xl px-3 sm:px-6">
-            {{-- pr-* keeps the café mark clear of the fixed theme switch in the corner. --}}
-            <div class="flex items-center justify-between gap-2 pt-2.5 pb-2 pl-11 sm:pl-12 pr-11 sm:pr-12">
-                <a href="{{ route('home') }}" class="flex shrink-0 items-center" aria-label="صفحه اصلی">
-                    <x-logo class="w-12 sm:w-14" label="" />
-                </a>
+        <div class="mx-auto w-full max-w-3xl px-3 sm:px-6 relative">
+            {{-- Logo at true viewport top-right (visual right in RTL), outside the centered container --}}
+            <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center" aria-label="صفحه اصلی">
+                <x-logo class="w-12 sm:w-14" label="" />
+            </a>
 
+            {{-- Centered content: section flag + chips --}}
+            <div class="flex flex-col items-center gap-2 pt-2.5 pb-2">
                 {{-- Always reflects the section currently in view. --}}
                 <p class="section-flag" id="section-flag" aria-live="polite">
                     <span class="flag-dot"></span>
@@ -15,21 +16,21 @@
                         {{ $categories->firstWhere('slug', $activeSection)?->name ?? $categories->first()?->name }}
                     </span>
                 </p>
-            </div>
 
-            <nav class="chips pb-2" id="section-chips" aria-label="بخش‌های منو">
-                @foreach ($categories as $category)
-                    <a href="#{{ $category->slug }}"
-                       class="chip"
-                       data-chip="{{ $category->slug }}"
-                       aria-current="{{ $loop->first ? 'true' : 'false' }}">
-                        @if ($category->glyph)
-                            <x-icon.glyph :name="$category->glyph" class="chip-glyph" />
-                        @endif
-                        {{ $category->shortName() }}
-                    </a>
-                @endforeach
-            </nav>
+                <nav class="chips pb-2" id="section-chips" aria-label="بخش‌های منو">
+                    @foreach ($categories as $category)
+                        <a href="#{{ $category->slug }}"
+                           class="chip"
+                           data-chip="{{ $category->slug }}"
+                           aria-current="{{ $loop->first ? 'true' : 'false' }}">
+                            @if ($category->glyph)
+                                <x-icon.glyph :name="$category->glyph" class="chip-glyph" />
+                            @endif
+                            {{ $category->shortName() }}
+                        </a>
+                    @endforeach
+                </nav>
+            </div>
         </div>
 
         <span class="topbar-progress" id="topbar-progress" aria-hidden="true"></span>
