@@ -4,7 +4,7 @@
         <div class="mx-auto w-full max-w-3xl px-3 sm:px-6 relative">
             {{-- Logo at true viewport top-right (visual right in RTL), outside the centered container --}}
             <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center" aria-label="صفحه اصلی">
-                <x-logo class="w-12 sm:w-14" label="" />
+                <x-logo class="h-[2.375rem] sm:h-[2.625rem]" label="" />
             </a>
 
             {{-- Centered content: section flag + chips --}}
@@ -36,7 +36,7 @@
         <span class="topbar-progress" id="topbar-progress" aria-hidden="true"></span>
     </div>
 
-    <main class="mx-auto w-full max-w-3xl px-2.5 pb-6 pt-[104px] sm:px-6 sm:pt-[116px]"
+    <main class="mx-auto w-full max-w-3xl px-2.5 pb-6 pt-[104px] sm:px-6 sm:pt-[116px] text-lg leading-relaxed text-right"
           id="menu-root"
           data-initial-section="{{ $activeSection }}">
 
@@ -63,7 +63,7 @@
 
                     {{-- ─── Items ────────────────────────────────────────── --}}
                     @if ($category->activeProducts->isEmpty())
-                        <p class="py-6 text-center text-xs text-ink-dim">این بخش به‌زودی تکمیل می‌شود.</p>
+                        <p class="py-6 text-center text-sm text-ink-dim">این بخش به‌زودی تکمیل می‌شود.</p>
 
                     @elseif ($category->usesGrid())
                         <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3.5 lg:grid-cols-4 mb-8">
@@ -73,7 +73,7 @@
                         </div>
 
                     @else
-                        <p class="mb-3.5 text-center text-xs font-bold text-accent-ink">طعم‌های قلیان</p>
+                        <p class="mb-3.5 text-center text-sm font-bold text-accent-ink">طعم‌های قلیان</p>
 
                         <ul class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2.5 mb-8">
                             @foreach ($category->activeProducts as $product)
@@ -83,11 +83,11 @@
 
                         {{-- Service price for the whole section --}}
                         <div class="service-price reveal mt-4">
-                            <span class="text-xs text-ink-dim">{{ $category->price_note ?? 'قیمت' }}</span>
+                            <span class="text-sm text-ink-dim">{{ $category->price_note ?? 'قیمت' }}</span>
                             @if ($category->price)
-                                <span class="price-value text-sm">@price($category->price)</span>
+                                <span class="price-value text-base">@price($category->price)</span>
                             @else
-                                <span class="text-[0.6875rem] text-ink-dim">در محل از پرسنل بپرسید</span>
+                                <span class="text-sm text-ink-dim">در محل از پرسنل بپرسید</span>
                             @endif
                         </div>
 
@@ -95,7 +95,7 @@
                         @if ($category->features->isNotEmpty())
                             <div class="mt-5">
                                 <x-ornament.divider class="mb-3" />
-                                <p class="mb-3 text-center text-[0.6875rem] font-semibold text-ink-dim">
+                                <p class="mb-3 text-center text-sm font-semibold text-ink-dim">
                                     همراه با این سرویس شامل
                                 </p>
 
@@ -115,7 +115,7 @@
             </section>
         @empty
             <x-frame class="px-6 py-12 text-center">
-                <p class="text-sm text-ink-dim">منو در حال آماده‌سازی است.</p>
+                <p class="text-base text-ink-dim">منو در حال آماده‌سازی است.</p>
             </x-frame>
         @endforelse
     </main>

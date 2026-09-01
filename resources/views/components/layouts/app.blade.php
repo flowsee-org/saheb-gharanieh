@@ -15,9 +15,9 @@
          purpose — the bundle is deferred, which would flash the wrong palette. --}}
     <script>
         (function () {
-            var theme = 'dark';
+            var theme = 'light';
             try {
-                if (localStorage.getItem('sg-theme') === 'light') theme = 'light';
+                if (localStorage.getItem('sg-theme') === 'dark') theme = 'dark';
             } catch (e) { /* private mode: stay on the house theme */ }
 
             document.documentElement.dataset.theme = theme;

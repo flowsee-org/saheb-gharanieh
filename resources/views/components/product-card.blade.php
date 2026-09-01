@@ -6,6 +6,15 @@
     style="--reveal-delay: {{ min($index * 45, 360) }}ms; --sheen-delay: {{ ($index % 6) * 0.55 }}s"
     @if (! $product->is_available) data-unavailable="true" @endif
 >
+    <style>
+        .product-card .product-latin { font-size: 0.625rem !important; }
+        .product-card .price-label { font-size: 0.6875rem !important; }
+        .product-card .price-value { font-size: 0.875rem !important; }
+        .product-card .price-empty { height: 0.625rem !important; }
+        /* Theme-aware num-badge colors */
+        html[data-theme="light"] .product-card .num-badge { background: var(--color-ink); color: var(--color-on-accent); }
+        html[data-theme="dark"] .product-card .num-badge { background: var(--color-accent); color: var(--color-on-accent); }
+    </style>
     <div class="media">
         @if ($url = $product->imageUrl())
             <img src="{{ $url }}" alt="{{ $product->name }}" loading="lazy" decoding="async" data-fade-in>

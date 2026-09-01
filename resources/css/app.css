@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Light mode: make gray text black for better visibility */
+html[data-theme="light"] {
+    --color-ink-dim: #1a1a1a;
+    --color-ink-faint: #333;
+    --color-latin: #1a1a1a;
+}
