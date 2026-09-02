@@ -3,7 +3,7 @@
     <div class="topbar" id="topbar" data-scrolled="false">
         <div class="mx-auto w-full max-w-3xl px-3 sm:px-6 relative">
             {{-- Logo at true viewport top-right (visual right in RTL), outside the centered container --}}
-            <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center absolute " style="top:5px" aria-label="صفحه اصلی">
+            <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center absolute " style="top:30px" aria-label="صفحه اصلی">
                 <x-logo class="h-[2.375rem] sm:h-[2.625rem]" label="" />
             </a>
 
