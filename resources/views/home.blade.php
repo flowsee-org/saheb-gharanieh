@@ -17,7 +17,7 @@
         <section class="mt-7 sm:mt-9" aria-labelledby="menu-heading">
             <div class="reveal flex flex-col items-center gap-2">
                 <h2 id="menu-heading" class="text-lg font-bold text-ink sm:text-2xl">منوی کافه</h2>
-                <p class="text-[0.6875rem] text-ink-dim">یک دسته را انتخاب کنید</p>
+                <p class="text-[0.6875rem] text-ink-dim">یک دسته رااااااااااااا انتخاب کنید</p>
                 <x-ornament.divider class="mt-1 max-w-[12rem]" />
             </div>
 
