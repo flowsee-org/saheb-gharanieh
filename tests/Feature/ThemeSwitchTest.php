@@ -35,7 +35,7 @@ class ThemeSwitchTest extends TestCase
         foreach (self::pages() as $page) {
             $response = $this->get($page)->assertOk();
 
-            $response->assertSee("var theme = 'dark';", false);
+            $response->assertSee("var theme = 'light';", false);
             $response->assertSee('aria-pressed="false"', false);
         }
     }
