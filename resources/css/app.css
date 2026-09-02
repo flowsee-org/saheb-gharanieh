@@ -3,6 +3,9 @@
 @source '../views';
 @source '../../app';
 
+/* Safelist for dynamically applied classes */
+@source inline("sg-logo num-badge flavor-row product-card media media-glyph media-note preloader preloader-ring preloader-dots reveal watermark to-top theme-toggle theme-toggle-icon theme-toggle-icon--sun theme-toggle-icon--moon section-flag flag-dot section-flag-text chip chip-glyph heading-glyph frame frame-corner");
+
 /* ------------------------------------------------------------------ */
 /*  Fonts — self hosted (public/fonts)                                */
 /* ------------------------------------------------------------------ */
@@ -852,7 +855,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.55rem;
-        padding: 0.4rem 0.75rem 0.4rem 0.4rem;
+        padding: 0.4rem 0.75rem;
         border-radius: 12px;
         border: 1px solid var(--color-hair);
         background: var(--color-card);
