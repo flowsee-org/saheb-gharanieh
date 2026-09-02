@@ -38,9 +38,6 @@
                 @endforeach
             </nav>
         @endif
-        <style>
-            .map-link { padding-inline: 1rem !important; }
-        </style>
 
         <div class="mt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
             @if ($phone = $settings['phone'] ?? null)

@@ -2,15 +2,20 @@
 @props(['product', 'category', 'index' => 1])
 
 <article
-    class="product-card reveal"
+    class="product-card reveal text-right"
     style="--reveal-delay: {{ min($index * 45, 360) }}ms; --sheen-delay: {{ ($index % 6) * 0.55 }}s"
     @if (! $product->is_available) data-unavailable="true" @endif
 >
     <style>
-        .product-card .product-latin { font-size: 0.625rem !important; }
-        .product-card .price-label { font-size: 0.6875rem !important; }
-        .product-card .price-value { font-size: 0.875rem !important; }
-        .product-card .price-empty { height: 0.625rem !important; }
+        .product-card .product-latin { font-size: 0.75rem !important; }
+        .product-card .price-label { font-size: 0.8125rem !important; }
+        .product-card .price-value { font-size: 1rem !important; }
+        .product-card .price-empty { height: 0.75rem !important; }
+        .product-card .product-name { font-size: 0.875rem !important; }
+        @media (min-width: 640px) {
+            .product-card .product-name { font-size: 1rem !important; }
+            .product-card .price-value { font-size: 1.125rem !important; }
+        }
         /* Theme-aware num-badge colors */
         html[data-theme="light"] .product-card .num-badge { background: var(--color-ink); color: var(--color-on-accent); }
         html[data-theme="dark"] .product-card .num-badge { background: var(--color-accent); color: var(--color-on-accent); }

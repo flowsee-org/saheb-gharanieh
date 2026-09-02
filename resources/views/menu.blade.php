@@ -3,7 +3,7 @@
     <div class="topbar" id="topbar" data-scrolled="false">
         <div class="mx-auto w-full max-w-3xl px-3 sm:px-6 relative">
             {{-- Logo at true viewport top-right (visual right in RTL), outside the centered container --}}
-            <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center" aria-label="صفحه اصلی">
+            <a href="{{ route('home') }}" class="topbar-logo flex shrink-0 items-center mt-[1rem] sm:mt-[1.25rem]" aria-label="صفحه اصلی">
                 <x-logo class="h-[2.375rem] sm:h-[2.625rem]" label="" />
             </a>
 
@@ -36,7 +36,7 @@
         <span class="topbar-progress" id="topbar-progress" aria-hidden="true"></span>
     </div>
 
-    <main class="mx-auto w-full max-w-3xl px-2.5 pb-6 pt-[104px] sm:px-6 sm:pt-[116px] text-lg leading-relaxed text-right"
+    <main class="mx-auto w-full max-w-3xl px-2.5 pb-6 pt-[104px] sm:px-6 sm:pt-[116px] text-2xl leading-relaxed text-right"
           id="menu-root"
           data-initial-section="{{ $activeSection }}">
 
@@ -50,7 +50,7 @@
 
                 <x-frame class="px-3 py-6 sm:px-6 sm:py-8">
                     {{-- ─── Panel heading ────────────────────────────────── --}}
-                    <header class="reveal relative mb-5 text-center">
+                    <header class="reveal relative mb-5 text-right">
 
                         <h2 id="heading-{{ $category->slug }}"
                             class="inline-flex items-center gap-2 text-xl font-black text-ink sm:text-3xl">
@@ -73,7 +73,7 @@
                         </div>
 
                     @else
-                        <p class="mb-3.5 text-center text-sm font-bold text-accent-ink">طعم‌های قلیان</p>
+                        <p class="mb-3.5 text-right text-sm font-bold text-accent-ink">طعم‌های قلیان</p>
 
                         <ul class="grid grid-cols-2 gap-1.5 sm:grid-cols-3 sm:gap-2.5 mb-8">
                             @foreach ($category->activeProducts as $product)
