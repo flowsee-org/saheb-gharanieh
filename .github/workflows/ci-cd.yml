@@ -124,11 +124,6 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
           timeout: 60s
-<<<<<<< HEAD
-=======
-          
->>>>>>> 6af81d1 (Fix SSH deployment action configuration)
-
           script: |
             set -e
 
@@ -172,14 +167,6 @@ jobs:
             echo "==> Installing Node dependencies"
 
             npm ci
-
-            # ----------------------------------
-            # Frontend build
-            # ----------------------------------
-
-            echo "==> Building frontend"
-
-            npm run build
 
             # ----------------------------------
             # Laravel
