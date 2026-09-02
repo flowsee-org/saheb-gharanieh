@@ -557,7 +557,7 @@
 
     .media img.is-loaded {
         opacity: 1;
-    }
+    } s
 
     /* Slow neutral sweep so an empty slot still feels alive. */
     .media::after {
