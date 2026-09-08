@@ -15,11 +15,11 @@
     @endif
 </li>
 <style>
-    .flavor-row .price-value { font-size: 1rem !important; }
+    .flavor-row .price-value { font-size: 0.75rem !important; }
     .flavor-row .flavor-name { font-size: 0.875rem !important; }
     @media (min-width: 40rem) {
         .flavor-row .flavor-name { font-size: 0.9375rem !important; }
-        .flavor-row .price-value { font-size: 1.125rem !important; }
+        .flavor-row .price-value { font-size: 0.875rem !important; }
     }
     /* Theme-aware num-badge colors */
     html[data-theme="light"] .flavor-row .num-badge { background: var(--color-ink); color: var(--color-on-accent); }

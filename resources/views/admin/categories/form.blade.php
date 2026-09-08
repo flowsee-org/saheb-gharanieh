@@ -69,15 +69,9 @@
             <div class="admin-form-col">
                 <x-admin.card title="نوع و چیدمان" icon="items">
                     <x-admin.field label="نوع بخش" name="kind" required
-                                   hint="بخش قلیان نقش و چیدمان مخصوص خودش را می‌گیرد.">
-                        <select class="admin-select" id="kind" name="kind" required>
-                            @foreach ($kinds as $kind)
-                                <option value="{{ $kind->value }}"
-                                        @selected(old('kind', $category->kind?->value) === $kind->value)>
-                                    {{ $kind->label() }}
-                                </option>
-                            @endforeach
-                        </select>
+                                   hint="مثلاً نوشیدنی، قلیان، قهوه و غیره.">
+                        <input type="text" class="admin-input" id="kind" name="kind"
+                               value="{{ old('kind', $category->kind) }}" required maxlength="40">
                     </x-admin.field>
 
                     <x-admin.field label="چیدمان" name="layout" required

@@ -56,7 +56,7 @@
                             <span class="admin-cat-meta">
                                 <span class="latin admin-cat-slug" dir="ltr">{{ $category->slug }}</span>
                                 <span class="admin-dot" aria-hidden="true"></span>
-                                {{ $category->kind->label() }}
+                                {{ $category->kind }}
                                 <span class="admin-dot" aria-hidden="true"></span>
                                 {{ $category->layout->label() }}
                             </span>

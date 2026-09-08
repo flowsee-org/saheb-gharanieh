@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\CategoryKind;
 use App\Enums\CategoryLayout;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
@@ -34,7 +33,7 @@ class CategoryController extends Controller
     public function create(): View
     {
         return $this->form(new Category([
-            'kind' => CategoryKind::Drink,
+            'kind' => 'drink',
             'layout' => CategoryLayout::Grid,
             'is_active' => true,
             'sort_order' => (int) Category::query()->max('sort_order') + 1,
@@ -139,7 +138,6 @@ class CategoryController extends Controller
     {
         return view('admin.categories.form', [
             'category' => $category,
-            'kinds' => CategoryKind::cases(),
             'layouts' => CategoryLayout::cases(),
             'glyphGroups' => Glyph::GROUPS,
         ]);

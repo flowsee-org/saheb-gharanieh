@@ -139,17 +139,10 @@ function scrollToSection(slug, behavior) {
 function centerChip(chip) {
     if (!chipsNav || !chip) return;
 
-    const navBox = chipsNav.getBoundingClientRect();
-    const chipBox = chip.getBoundingClientRect();
-    const overflowsStart = chipBox.right > navBox.right;
-    const overflowsEnd = chipBox.left < navBox.left;
-
-    if (overflowsStart || overflowsEnd) {
-        chipsNav.scrollTo({
-            left: chipsNav.scrollLeft + (chipBox.left - navBox.left) - navBox.width / 2 + chipBox.width / 2,
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        });
-    }
+    // scrollIntoView lets the browser resolve RTL scrolling (including the
+    // no-scroll-room-at-the-end case) instead of hand-rolling scrollLeft math.
+    const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+    chip.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior });
 }
 
 let currentSlug = null;

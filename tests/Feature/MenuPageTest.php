@@ -72,13 +72,11 @@ class MenuPageTest extends TestCase
             ->assertViewHas('activeSection', null);
     }
 
-    public function test_hookah_sections_show_their_service_price_and_extras(): void
+    public function test_hookah_sections_show_their_flavours_and_extras(): void
     {
         $category = Category::factory()->hookah()->create([
             'slug' => 'hookah-deluxe',
             'name' => 'قلیان — سرویس سوپر ویژه',
-            'price' => 185_000,
-            'price_note' => 'قیمت هر سرویس',
         ]);
 
         Product::factory()->for($category)->create(['name' => 'دوسیب']);
@@ -87,8 +85,6 @@ class MenuPageTest extends TestCase
         $this->get('/menu')
             ->assertOk()
             ->assertSee('دوسیب', false)
-            ->assertSee('قیمت هر سرویس', false)
-            ->assertSee('۱۸۵٬۰۰۰ تومان', false)
             ->assertSee('چای زغالی', false);
     }
 

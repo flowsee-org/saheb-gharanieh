@@ -81,16 +81,6 @@
                             @endforeach
                         </ul>
 
-                        {{-- Service price for the whole section --}}
-                        <div class="service-price reveal mt-4">
-                            <span class="text-sm text-ink-dim">{{ $category->price_note ?? 'قیمت' }}</span>
-                            @if ($category->price)
-                                <span class="price-value text-base">@price($category->price)</span>
-                            @else
-                                <span class="text-sm text-ink-dim">در محل از پرسنل بپرسید</span>
-                            @endif
-                        </div>
-
                         {{-- Extras bundled with the service (Super Deluxe) --}}
                         @if ($category->features->isNotEmpty())
                             <div class="mt-5">

@@ -327,10 +327,8 @@
        in — the panel, the login page and the 413 page load app.css + admin.css
        and nothing else, and the mark appears on all three.
 
-       The two files are the same artwork inverted: the calligraphy inside the
-       cartouche is transparent in both, so it takes the colour of whatever is
-       behind it. That is the whole reason there are two — on a dark page the
-       cartouche has to be light, on a light page dark.
+       The same blue mark in both themes — light-logo.svg everywhere, on a dark
+       page and on a light one.
 
        No width or height here: every caller sizes its own mark, exactly as they
        did when this was an <svg>. aspect-ratio covers the callers that set only
@@ -338,16 +336,10 @@
     .sg-logo {
         display: block;
         aspect-ratio: 640 / 529;
-        background-image: url('/images/logo-dark.png');
+        background-image: url('/images/light-logo.svg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-    }
-
-    /* The panel, login and 413 pages hardcode data-theme="dark", so this rule
-       simply never matches there. */
-    html[data-theme='light'] .sg-logo {
-        background-image: url('/images/light-logo.svg');
     }
 }
 
@@ -428,11 +420,13 @@
     /* Horizontal chip nav */
     .chips {
         display: flex;
+        flex-wrap: nowrap;
         gap: 0.5rem;
+        width: 100%;
         overflow-x: auto;
         scrollbar-width: none;
-        padding: 0 0 0.125rem;
-        scroll-snap-type: x proximity;
+        padding: 0 1rem 0.125rem;
+        direction: rtl;
     }
 
     .chips::-webkit-scrollbar {
@@ -441,7 +435,6 @@
 
     .chip {
         flex: 0 0 auto;
-        scroll-snap-align: center;
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
@@ -672,7 +665,7 @@
     }
 
     .price-value {
-        font-size: 0.75rem;
+        font-size: 0.625rem;
         font-weight: 700;
         color: var(--color-accent-ink);
         font-variant-numeric: tabular-nums;
@@ -690,7 +683,7 @@
         }
 
         .price-value {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
         }
     }
 }
@@ -1032,7 +1025,7 @@
     /* Theme switch — top-left corner of every page, above the sticky bar. */
     .theme-toggle {
         position: fixed;
-        top: 0.6rem;
+        top: 0.4rem;
         /* Physical left on purpose: the corner stays put in this RTL layout. */
         left: 0.6rem;
         z-index: 60;

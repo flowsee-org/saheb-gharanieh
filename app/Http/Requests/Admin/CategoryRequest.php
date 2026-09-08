@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Enums\CategoryKind;
 use App\Enums\CategoryLayout;
 use App\Support\Glyph;
 use App\Support\Persian;
@@ -26,7 +25,7 @@ class CategoryRequest extends AdminRequest
                 'nullable', 'string', 'max:80', 'alpha_dash',
                 Rule::unique('categories', 'slug')->ignore($this->route('category')),
             ],
-            'kind' => ['required', Rule::enum(CategoryKind::class)],
+            'kind' => ['required', 'string', 'max:40'],
             'layout' => ['required', Rule::enum(CategoryLayout::class)],
             'glyph' => ['nullable', Rule::in(Glyph::keys())],
 

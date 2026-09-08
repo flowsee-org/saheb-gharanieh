@@ -20,7 +20,7 @@
         </p>
 
         @if ($hours = $settings['working_hours'] ?? null)
-            <p class="text-xs text-ink-dim">{{ $hours }}</p>
+            <p class="text-[0.9375rem] text-ink-dim">{{ $hours }}</p>
         @endif
 
         
@@ -33,7 +33,7 @@
                              class="map-logo"
                              width="40" height="40"
                              loading="lazy" decoding="async">
-                        <span class="text-[0.6875rem] text-ink-dim">{{ $map['key'] === 'balad' ? 'بلد' : 'نشان' }}</span>
+                        <span class="text-[0.9375rem] text-ink-dim">{{ $map['key'] === 'balad' ? 'بلد' : 'نشان' }}</span>
                     </a>
                 @endforeach
             </nav>
@@ -42,7 +42,7 @@
         <div class="mt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
             @if ($phone = $settings['phone'] ?? null)
                 <a href="tel:{{ \App\Support\Persian::western($phone) }}"
-                   class="text-accent-ink transition hover:text-ink">{{ $phone }}</a>
+                   class="text-[0.9375rem] text-accent-ink transition hover:text-ink">{{ $phone }}</a>
             @endif
 
             @if ($instagram = $settings['instagram'] ?? null)
@@ -53,7 +53,7 @@
             @endif
         </div>
 
-        <p class="mt-3 text-[0.625rem] text-ink-faint">
+        <p class="mt-3 text-[0.9375rem] text-ink-faint">
             تمام حقوق برای کافه صاحبقرانیه محفوظ است.
         </p>
     </div>
