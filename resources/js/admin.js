@@ -505,6 +505,29 @@ document.querySelectorAll('[data-quick-price]').forEach((form) => {
 /* ------------------------------------------------------------------ */
 
 /*
+ * Hidden behind the header button so the list stays quiet most of the time.
+ * The button toggles the panel in place and says which state it is in, so the
+ * press is never a surprise: opening shows the editor, closing tucks it away.
+ */
+const bulkPricePanel = document.getElementById('bulk-price-panel');
+const bulkPriceToggle = document.querySelector('[data-bulk-price-toggle]');
+
+if (bulkPricePanel && bulkPriceToggle) {
+    const toggleLabel = bulkPriceToggle.querySelector('[data-bulk-price-toggle-label]');
+
+    const show = (open) => {
+        bulkPricePanel.hidden = !open;
+        bulkPriceToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+        if (toggleLabel) toggleLabel.textContent = open ? 'بستن ویرایش گروهی' : 'ویرایش گروهی قیمت';
+    };
+
+    bulkPriceToggle.addEventListener('click', () => {
+        show(bulkPricePanel.hidden);
+    });
+}
+
+/*
  * The price form's unit flips with its mode: درصد shows a percent sign,
  * مبلغ ثابت shows تومان. The radios already submit without help — this only
  * keeps the field's unit from lying about what will be applied.

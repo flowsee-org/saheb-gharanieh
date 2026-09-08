@@ -12,6 +12,12 @@
 <x-layouts.admin title="موارد منو" heading="موارد منو"
                  :subheading="'در مجموع '.\App\Support\Persian::digits($products->total()).' مورد'">
     <x-slot:actions>
+        <button type="button" class="admin-btn admin-btn--ghost" data-bulk-price-toggle
+                aria-expanded="false" aria-controls="bulk-price-panel">
+            <x-icon.admin name="price" class="h-4 w-4" />
+            <span data-bulk-price-toggle-label>ویرایش گروهی قیمت</span>
+        </button>
+
         <a href="{{ route('admin.products.create', ['category' => $filters['category']]) }}"
            class="admin-btn admin-btn--accent">
             <x-icon.admin name="plus" class="h-4 w-4" />
@@ -70,9 +76,11 @@
     </form>
 
     {{-- Bulk price adjustment — scale prices across every item or one category
-         by a percentage or a fixed amount. Lives outside the checkbox flow. --}}
-    <x-admin.card title="ویرایش گروهی قیمت‌ها" icon="price"
-                  subtitle="افزایش قیمت همهٔ موارد یا یک دسته با درصد یا مبلغ ثابت">
+         by a percentage or a fixed amount. Hidden until the header button opens
+         it, so the list stays the quiet list most of the time. --}}
+    <x-admin.card id="bulk-price-panel" title="ویرایش گروهی قیمت‌ها" icon="price"
+                  subtitle="افزایش قیمت همهٔ موارد یا یک دسته با درصد یا مبلغ ثابت"
+                  class="admin-bulk-price-card" hidden>
         <form method="POST" action="{{ route('admin.products.bulk-price') }}" class="admin-bulk-price">
             @csrf
 

@@ -55,11 +55,11 @@
                         <x-icon.section :category="$category" class="heading-glyph mb-2" />
 
                         <h2 id="heading-{{ $category->slug }}"
-                            class="text-lg font-black text-ink sm:text-2xl">
+                            class="text-lg font-black text-ink sm:text-2xl mb-1.5">
                             {{ $category->name }}
                         </h2>
 
-                        <x-ornament.divider class="mx-auto mt-3 max-w-[14rem] sm:max-w-sm" />
+                        <x-ornament.divider class="mx-auto mt-4 max-w-[14rem] sm:max-w-sm" />
                     </header>
 
                     {{-- ─── Items ────────────────────────────────────────── --}}

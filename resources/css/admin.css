@@ -53,7 +53,8 @@
     .admin-image-preview[hidden],
     .admin-image-empty[hidden],
     .admin-image-error[hidden],
-    .admin-toast[hidden] {
+    .admin-toast[hidden],
+    .admin-bulk-price-card[hidden] {
         display: none;
     }
 
