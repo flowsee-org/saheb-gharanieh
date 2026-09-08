@@ -8,12 +8,13 @@
 >
     <style>
         .product-card .product-latin { font-size: 0.65rem !important; }
-        .product-card .price-label { font-size: 0.625rem !important; }
+        .product-card .price-label { font-size: 0.75rem !important; }
         .product-card .price-value { font-size: 0.75rem !important; }
         .product-card .price-empty { height: 0.75rem !important; }
         .product-card .product-name { font-size: 0.775rem !important; }
         @media (min-width: 640px) {
             .product-card .product-name { font-size: 1rem !important; }
+            .product-card .price-label { font-size: 0.875rem !important; }
             .product-card .price-value { font-size: 0.875rem !important; }
         }
         /* Theme-aware num-badge colors */

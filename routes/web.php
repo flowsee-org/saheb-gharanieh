@@ -51,6 +51,7 @@ Route::prefix('wp-admin')->name('admin.')->group(function () {
             Route::get('create', [ProductController::class, 'create'])->name('create');
             Route::post('/', [ProductController::class, 'store'])->name('store');
             Route::post('bulk', [ProductController::class, 'bulk'])->name('bulk');
+            Route::post('bulk-price', [ProductController::class, 'bulkPrice'])->name('bulk-price');
 
             Route::get('{product}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('{product}', [ProductController::class, 'update'])->name('update');

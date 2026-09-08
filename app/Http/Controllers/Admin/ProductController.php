@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\BulkPriceRequest;
 use App\Http\Requests\Admin\BulkProductRequest;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Http\Requests\Admin\QuickPriceRequest;
@@ -196,6 +197,52 @@ class ProductController extends Controller
             'available' => $this->set($selected, ['is_available' => true], "{$count} مورد موجود شد."),
             'unavailable' => $this->set($selected, ['is_available' => false], "{$count} مورد «تمام شد» علامت خورد."),
         };
+
+        return back()->with('status', $status);
+    }
+
+    /**
+     * Apply a percentage or fixed-price change across every item, or the ones
+     * in one category. Items without a price are skipped — there is nothing
+     * to scale — so the count only reflects what actually changed.
+     */
+    public function bulkPrice(BulkPriceRequest $request): RedirectResponse
+    {
+        $categoryId = $request->categoryId();
+
+        $scope = $categoryId !== null
+            ? "«".Category::query()->findOrFail($categoryId)->name."»"
+            : 'همهٔ منو';
+
+        $updated = 0;
+
+        DB::transaction(function () use ($request, $categoryId, &$updated) {
+            Product::query()
+                ->when($categoryId !== null, fn ($query) => $query->where('category_id', $categoryId))
+                ->whereNotNull('price')
+                ->get()
+                ->each(function (Product $product) use ($request, &$updated) {
+                    $price = $request->isPercentage()
+                        ? (int) round($product->price * (100 + $request->amount()) / 100)
+                        : $product->price + $request->amount();
+
+                    if ($price < 0) {
+                        $price = 0;
+                    }
+
+                    if ($price !== $product->price) {
+                        $product->updateQuietly(['price' => $price]);
+                        $updated++;
+                    }
+                });
+        });
+
+        $count = Persian::digits($updated);
+        $amount = Persian::digits($request->amount());
+
+        $status = $request->isPercentage()
+            ? "قیمت {$count} مورد در {$scope} {$amount}٪ افزایش یافت."
+            : "به قیمت {$count} مورد در {$scope} {$amount} تومان اضافه شد.";
 
         return back()->with('status', $status);
     }

@@ -50,11 +50,12 @@
 
                 <x-frame class="px-3 py-6 sm:px-6 sm:py-8">
                     {{-- ─── Panel heading ────────────────────────────────── --}}
-                    <header class="reveal relative mb-5 text-right">
+                    <header class="reveal relative mb-5 text-center flex flex-col items-center">
+
+                        <x-icon.section :category="$category" class="heading-glyph mb-2" />
 
                         <h2 id="heading-{{ $category->slug }}"
-                            class="inline-flex items-center gap-2 text-xl font-black text-ink sm:text-3xl">
-                            <x-icon.section :category="$category" class="heading-glyph" />
+                            class="text-lg font-black text-ink sm:text-2xl">
                             {{ $category->name }}
                         </h2>
 

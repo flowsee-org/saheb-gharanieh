@@ -69,6 +69,60 @@
         </div>
     </form>
 
+    {{-- Bulk price adjustment — scale prices across every item or one category
+         by a percentage or a fixed amount. Lives outside the checkbox flow. --}}
+    <x-admin.card title="ویرایش گروهی قیمت‌ها" icon="price"
+                  subtitle="افزایش قیمت همهٔ موارد یا یک دسته با درصد یا مبلغ ثابت">
+        <form method="POST" action="{{ route('admin.products.bulk-price') }}" class="admin-bulk-price">
+            @csrf
+
+            <div class="admin-field">
+                <label for="bp-category" class="admin-label">اعمال روی</label>
+                <select id="bp-category" name="category_id" class="admin-select">
+                    <option value="">همهٔ موارد</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="admin-bulk-price-row">
+                <div class="admin-field">
+                    <span class="admin-label">نوع تغییر</span>
+                    <div class="admin-bulk-price-modes">
+                        <label class="admin-bulk-price-mode">
+                            <input type="radio" name="mode" value="percentage" checked>
+                            <span>درصد</span>
+                        </label>
+                        <label class="admin-bulk-price-mode">
+                            <input type="radio" name="mode" value="fixed">
+                            <span>مبلغ ثابت</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="admin-field">
+                    <label for="bp-amount" class="admin-label">مقدار</label>
+                    <div class="admin-price-wrap admin-price-wrap--wide">
+                        <input id="bp-amount" type="text" name="amount"
+                               class="admin-input" inputmode="numeric"
+                               placeholder="مثلاً ۱۰" required
+                               data-price-input>
+                        <span class="admin-price-unit" data-amount-unit>٪</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-bulk-price-actions">
+                <button type="submit" class="admin-btn admin-btn--accent"
+                        data-confirm="قیمت‌های انتخاب‌شده تغییر می‌کنند. مطمئن هستید؟">
+                    <x-icon.admin name="price" class="h-4 w-4" />
+                    <span>اعمال روی قیمت‌ها</span>
+                </button>
+            </div>
+        </form>
+    </x-admin.card>
+
     {{-- The bulk form holds no rows: the row checkboxes join it by `form=` so the
          per-item forms below can stay separate elements instead of nesting. --}}
     <form method="POST" action="{{ route('admin.products.bulk') }}" id="bulk-form"

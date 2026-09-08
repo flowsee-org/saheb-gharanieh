@@ -501,6 +501,32 @@ document.querySelectorAll('[data-quick-price]').forEach((form) => {
 });
 
 /* ------------------------------------------------------------------ */
+/*  Bulk price adjustment                                               */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The price form's unit flips with its mode: درصد shows a percent sign,
+ * مبلغ ثابت shows تومان. The radios already submit without help — this only
+ * keeps the field's unit from lying about what will be applied.
+ */
+const bulkPriceForm = document.querySelector('.admin-bulk-price');
+
+if (bulkPriceForm) {
+    const modes = bulkPriceForm.querySelectorAll('input[name="mode"]');
+    const unit = bulkPriceForm.querySelector('[data-amount-unit]');
+
+    const syncUnit = () => {
+        if (!unit) return;
+
+        const checked = bulkPriceForm.querySelector('input[name="mode"]:checked');
+        unit.textContent = checked?.value === 'fixed' ? 'تومان' : '٪';
+    };
+
+    modes.forEach((radio) => radio.addEventListener('change', syncUnit));
+    syncUnit();
+}
+
+/* ------------------------------------------------------------------ */
 /*  Bulk selection                                                     */
 /* ------------------------------------------------------------------ */
 
